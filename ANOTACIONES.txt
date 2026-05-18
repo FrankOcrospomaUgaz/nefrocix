@@ -1,0 +1,1378 @@
+- AGREGAR BD HISTORIA: regimen, gradoinstruccion, gruposanguineo
+acceso vascular -> cvct, fav, cvcp, inj
+IPRESS procedencia -> de donde llega el paciente
+
+fechainicio
+horacita
+ordencitas
+ipress
+accesovascular
+
+dar estilo navvar bootstrap
+
+-----------------------------
+
+en tabla person person2_id
+
+AGREGO ESTAS COLUMNAS EN HISTORIA
+
+--------------------------
+
+ALTER TABLE `historia` 
+ADD `txtEnfermedad` text COLLATE utf8_unicode_ci,
+ADD `txtComorbilidades` text COLLATE utf8_unicode_ci,
+ADD `txtFechaPrimeraHemodialisis` date DEFAULT NULL,
+ADD `txtNumeroTransfusiones` int(11) DEFAULT NULL,
+ADD `txtIntervencionesQuirurgicas` text COLLATE utf8_unicode_ci,
+ADD `txtMedicacion` text COLLATE utf8_unicode_ci,
+ADD `txtDiuresis1` int(11) DEFAULT NULL,
+ADD `txtDiuresis2` int(11) DEFAULT NULL,
+ADD `txtAlergia`varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtRelacion`varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,s
+ADD `txtCantDosis` int(11) DEFAULT NULL,
+ADD `txtFechaCantDosis1` date DEFAULT NULL,
+ADD `txtFechaCantDosis2` date DEFAULT NULL, 
+ADD `txtFechaCantDosis3` date DEFAULT NULL,
+ADD `txtFechaCantDosis4` date DEFAULT NULL,
+ADD `txtFechaCantDosis5` date DEFAULT NULL,
+ADD `txtFechaCantDosis6` date DEFAULT NULL,
+ADD `txtFechaCantDosis7` date DEFAULT NULL,
+ADD `txtFechaCantDosis8` date DEFAULT NULL,
+ADD `txtFechaCantDosis9` date DEFAULT NULL,
+ADD `txtFechaCantDosis10` date DEFAULT NULL,
+ADD `txtFechaCantDosis11` date DEFAULT NULL,
+ADD `txtFechaCantDosis12` date DEFAULT NULL,
+ADD `txtFechaDialisisPeritoneal1` date DEFAULT NULL,
+ADD `txtFechaDialisisPeritoneal2` date DEFAULT NULL,
+ADD `txtTransplanteRenal1` date DEFAULT NULL,
+ADD `txtTransplanteRenal2` date DEFAULT NULL,
+ADD `txtAntecedentesPMedicos` text COLLATE utf8_unicode_ci,
+ADD `txtAntecedentesPQuirurgicos` text COLLATE utf8_unicode_ci,
+ADD `txtSintomasEnfermedadActual` text COLLATE utf8_unicode_ci,
+ADD `txtPresionArterial1` int(11) DEFAULT NULL,
+ADD `txtPresionArterial2` int(11) DEFAULT NULL,
+ADD `txtFC` decimal(10,2) DEFAULT NULL,
+ADD `txtFR` decimal(10,2) DEFAULT NULL,
+ADD `txtPeso` decimal(10,2) DEFAULT NULL,
+ADD `txtTalla` decimal(10,2) DEFAULT NULL,
+ADD `txtPiel` text COLLATE utf8_unicode_ci,
+ADD `txtNumeroAccesoVascular` int(11) DEFAULT NULL,
+ADD `txtTiempoPermanenciaAccesosVasculares` decimal(10,2) DEFAULT NULL,
+ADD `txtCambioPerdida` text COLLATE utf8_unicode_ci,
+ADD `cbxDescripcionResponsableRealizacion` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtDescripcionResponsableRealizacion`varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtFechaAccesoVascularActual` date DEFAULT NULL,
+ADD `cbxUbicacionVascularActual` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtUbicacionVascularActual`varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `cbxTipoDescripcionAccesoVascularActual` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtTipoDescripcionAccesoVascularActual`varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `cbxThill` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtCorazon` text COLLATE utf8_unicode_ci,
+ADD `txtPulsosPerifericos` text COLLATE utf8_unicode_ci,
+ADD `txtAparatoRespiratorio` text COLLATE utf8_unicode_ci,
+ADD `txtAbdomen` text COLLATE utf8_unicode_ci,
+ADD `txtNeurologicos` text COLLATE utf8_unicode_ci,
+ADD `txtOsteomuscular` text COLLATE utf8_unicode_ci,
+ADD `txtEstadoNutricional` text COLLATE utf8_unicode_ci,
+ADD `txtKarnofski` text COLLATE utf8_unicode_ci,
+ADD `txtFechaGrupoSanguineoLetra` date DEFAULT NULL,
+ADD `txtFechaGrupoSanguineoSigno` date DEFAULT NULL,
+ADD `txtHbHto` decimal(10,2) DEFAULT NULL,
+ADD `txtFechaHbHto` date DEFAULT NULL,
+ADD `txtTiempoHemodialisis` decimal(10,2) DEFAULT NULL,
+ADD `txtTransfusionesPrevias` int(11) DEFAULT NULL,
+ADD `txtGlicemia` decimal(10,2) DEFAULT NULL,
+ADD `txtFechaGlicemia` date DEFAULT NULL,
+ADD `txtDepuracionCreatina` decimal(10,2) DEFAULT NULL,
+ADD `txtFechaDepuracionCreatina` date DEFAULT NULL,
+ADD `txtEndogena` decimal(10,2) DEFAULT NULL,
+ADD `txtFechaEndogena` date DEFAULT NULL,
+ADD `txtUremia` decimal(10,2) DEFAULT NULL,
+ADD `txtFechaUremia` date DEFAULT NULL,
+ADD `txtCreatinina` decimal(10,2) DEFAULT NULL,
+ADD `txtFechaCreatinina` date DEFAULT NULL,
+ADD `txtAcidoUrico` decimal(10,2) DEFAULT NULL,
+ADD `txtFechaAcidoUrico` date DEFAULT NULL,
+ADD `txtProteinas` decimal(10,2) DEFAULT NULL,
+ADD `txtFechaProteinas` date DEFAULT NULL,
+ADD `txtAlbumina` decimal(10,2) DEFAULT NULL,
+ADD `txtFechaAlbumina` date DEFAULT NULL,
+ADD `txtCalcio` decimal(10,2) DEFAULT NULL,
+ADD `txtFechaCalcio` date DEFAULT NULL,
+ADD `txtFosforo` decimal(10,2) DEFAULT NULL,
+ADD `txtFechaFosforo` date DEFAULT NULL,
+ADD `txtTGO` decimal(10,2) DEFAULT NULL,
+ADD `txtFechaTGO` date DEFAULT NULL,
+ADD `txtTGP` decimal(10,2) DEFAULT NULL,
+ADD `txtFechaTGP` date DEFAULT NULL,
+ADD `txtBilirrubina` decimal(10,2) DEFAULT NULL,
+ADD `txtFechaBilirrubina` date DEFAULT NULL,
+ADD `txtHierroSerico` decimal(10,2) DEFAULT NULL,
+ADD `txtFechaHierroSerico` date DEFAULT NULL,
+ADD `txtTransferrina` decimal(10,2) DEFAULT NULL,
+ADD `txtFechaTransferrina` date DEFAULT NULL,
+ADD `txtParatohormona` decimal(10,2) DEFAULT NULL,
+ADD `txtFechaParatohormona` date DEFAULT NULL,
+ADD `cbxSerologicasLues` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtFechaSerologicasLues` date DEFAULT NULL,
+ADD `cbxAgHbs` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtFechaAgHbs` date DEFAULT NULL,
+ADD `cbxAcHbs` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtFechaAcHbs` date DEFAULT NULL,
+ADD `cbxAcHbc` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtFechaAcHbc` date DEFAULT NULL,
+ADD `cbxAcHVC` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtFechaAcHVC` date DEFAULT NULL,
+ADD `cbxHIV` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtFechaHIV` date DEFAULT NULL,
+ADD `cbxVacunacionHepatitisB` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `cbxEcografiaRenal` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtFechaEcografiaRenal` date DEFAULT NULL,
+ADD `txtObservacionEcografiaRenal` text COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `cbxRXTorax` char(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtFechaRXTorax` date DEFAULT NULL,
+ADD `txtObservacionRXTorax` text COLLATE utf8_unicode_ci DEFAULT NULL;
+
+--------------------------
+
+16-04-2019
+
+FISSAL 
+
+EMAIL
+INJERTO VASCULAR
+FAMILIAR RESPONSABLE - COMO OPCIONAL
+AGREGAR SITUACION A RESPONSABLE DEFINITIVO
+NOP DE ACCESOS VASCULARES PRECIOS ESPOECIFICAR
+AcHbs VALOR PARA DETERMINAR REPORTE
+
+EGRESOS PACIENTES QUE FALLECEN O NO LLEGAN (30 DIAS)
+
+//
+
+1. AGREGAR email campo en HISTORIA
+2. AGREGAR ESTA CONSULTA:
+
+CREATE TABLE `etiologia` (
+  `id` int(11) NOT NULL,
+  `codigo` varchar(10) DEFAULT NULL,
+  `nombre` varchar(80) DEFAULT NULL,
+  `etiologia_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `etiologia` ADD PRIMARY KEY (`id`);
+ALTER TABLE `etiologia` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;COMMIT;
+
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('A', 'DIABETES', NULL);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B', 'GLOMERULONEFRITIS', NULL);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C', 'GLOMERULONEFRITIS SECUNDARIA/VASCULITIS', NULL);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D', 'NEFRITIS INTERSTICIAL/PIELONEFRITIS', NULL);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('E', 'HIPERTENSIÓN/ENFERMDAD DE VASOS GRANDES', NULL);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F', 'ENFERMEDAD QUÍSTICA/HEREDITARIA/CONGÉNITA', NULL);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G', 'NEOPLASIAS/TUMORES', NULL);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G1', 'COMPLICACIONES DE ÓRGANO TRASPLANTADO', NULL);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H', 'OTRAS CONDICIONES', NULL);
+
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('A.1.', 'Diabetes con manifestaciones renales tipo II', 1);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('A.2.', 'Diabetes con manifestaciones renales tipo I', 1);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.1.', 'Glomerulonefritis GN (Histológicamente no examinada)', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.2.', 'Glomeruloesclerosis focal, Esclerosante focal', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.3.', 'Nefropatía membranosa', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.4.', 'GN Membranoproliferativa tipo I, GN Membranoproliferativa Difusa', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.5.', 'Enfermedad por depósitos densos, GN membranoproliferativa tipo II', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.6.', 'Nefropatía IgA, Enfermedad de Berger (demostrado por inmunofluorescencia)', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.7.', 'Nefropatía IgM, (demostrado por inmunofluorescencia)', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.8.', 'GN rápidamente progresiva', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.9.', 'Gn post infecciosa', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.10.', 'Otras GN proliferativas', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.1.', 'Lupus eritematoso', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.2.', 'Síndrome de Henoch-Schonlein', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.3.', 'Esclerodermia', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.4.', 'Síndrome urémico hemolítico', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.5.', 'Poliarteritis', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.6.', 'Granulomatosis de Wegener', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.7.', 'Nefropatía por abuso de heroína y relacionado a drogas', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.8.', 'Otras vasculitis y sus derivadas', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.9.', 'Síndrome de Goodpasture', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.10.', 'Otras GN secundarias', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.1.', 'Abuso de analgésicos', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.2.', 'Nefritis por radiación', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.3.', 'Nefropatía por plomo', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.4.', 'Nefropatía causada por otros agentes', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.5.', 'Nefropatía por gota', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.6.', 'Nefrolitiasis', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.7.', 'Uropatía obstructiva adquirida', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.8.', 'Pielonefritis crónica, nefropatía por reflujo', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.9.', 'Nefritis intersticial crónica', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.10.', 'Nefritis intersticial aguda', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.11.', 'Urolitiasis', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.12.', 'Otros desórdenes del metabolismo de calcio', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('E.1.', 'Hipertensión no especificada con falla renal', 5);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('E.2.', 'Estenosis de la arteria renal', 5);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('E.3.', 'Oclusión de la arteria renal', 5);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('E.4.', 'Embolia causada por coleterol, embolia renal', 5);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.1.', 'Riñón poliquístico del adulto tipo dominante', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.2.', 'Riñón poliquistico infantil recesivo', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.3.', 'Enfermedad quística medular, incluye nefronoptisis', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.4.', 'Esclerosis tubular', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.5.', 'Nefritis hereditaria, síndrome de Alport', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.6.', 'Cistinosis', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.7.', 'Oxalosis primaria', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.8.', 'Enfermedad de Fabry', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.9.', 'Síndrome nefrótico congénito', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.10.', 'Síndrome Drash, esclerosis mesangial', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.11.', 'Obstrucción congénita de la unión ureteropélvica', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.12.', 'Obstrucción congénita de la unión ureterovesical', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.13.', 'Otras uropatías obstructivas congénitas', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.14.', 'Hipoplasia renal, displasia, oligonefronía', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.15.', 'Síndrome del abdomen en ciruela pasa', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.16.', 'Otros (Síndromes de malformaciones congénitas)', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.1.', 'Tumor renal maligno', 7);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.2.', 'Tumor maligno del tracto urinario', 7);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.3.', 'Tumor renal benigno', 7);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.4.', 'Tumor benigno del tracto urinario', 7);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.5.', 'Tumor renal no especificado', 7);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.6.', 'Tumor de tracto urinario no especificado', 7);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.7.', 'Linfoma de riñón', 7);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.8.', 'Mieloma múltiple', 7);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.9.', 'Otras neoplasias inmunoproliferativas (Incluye nefropatía de cadena ligera', 7);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.10.', 'Amiloidosis', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.11.', 'Complicaciones de órgano trasplantado no especificado', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.12.', 'Complicaciones por trasplante de riñón', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.13.', 'Complicaciones por trasplante de hígado', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.14.', 'Complicaciones por trasplante de corazón', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.15.', 'Complicaciones por trasplante de pulmón', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.16.', 'Complicaciones por trasplante de médula ósea', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.17.', 'Complicaciones por trasplante de páncreas', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.18.', 'Complicaciones por trasplante de intestino', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.19.', 'Complicaciones de otro órgano trasplantado especificado', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H.1.', 'Enfermedad de células falciformes/anemia', 9);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H.2.', 'Rasgo de células falciformes y otras células falciformes (Hbs/Hb otras)', 9);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H.3.', 'Falla renal post parto', 9);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H.4.', 'Nefropatía por SIDA', 9);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H.5.', 'Pérdida traumática o quirúrgica de riñón', 9);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H.6.', 'Síndrome hepatorenal', 9);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H.7.', 'Necrosis tubular (sin recuperación)', 9);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H.8.', 'Otros desórdenes renales', 9);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H.9.', 'Etiología incierta', 9);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H10', 'Otras no especificadas (mencionar)', 9);
+
+---------------------------------------------
+
+txtEtiologia1_id
+txtEtiologia2_id
+txtModalidadInicioTRR
+txtFechaModalidadInicioTRR
+txtSubsistemaSaludInicioTRR
+txtTipoAccesoInicio
+txtFechaTipoAccesoInicio
+txtTituloAcHbs
+txtTipoAccesoInicio
+
+
+--------------
+
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('A, 'DIABETES', NULL)
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B, 'GLOMERULONEFRITIS', NULL)
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C, 'GLOMERULONEFRITIS SECUNDARIA/VASCULITIS', NULL)
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D, 'NEFRITIS INTERSTICIAL/PIELONEFRITIS', NULL)
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('E, 'HIPERTENSIÓN/ENFERMDAD DE VASOS GRANDES', NULL)
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F, 'ENFERMEDAD QUÍSTICA/HEREDITARIA/CONGÉNITA', NULL)
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G, 'NEOPLASIAS/TUMORES', NULL)
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G1', 'COMPLICACIONES DE ÓRGANO TRASPLANTADO', NULL)
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H, 'OTRAS CONDICIONES', NULL)
+
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('A.1.'', 'Diabetes con manifestaciones renales tipo II', 1);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('A.2.'', 'Diabetes con manifestaciones renales tipo I', 1);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.1.'', 'Glomerulonefritis GN (Histológicamente no examinada)', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.2.'', 'Glomeruloesclerosis focal, Esclerosante focal', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.3.'', 'Nefropatía membranosa', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.4.'', 'GN Membranoproliferativa tipo I, GN Membranoproliferativa Difusa', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.5.'', 'Enfermedad por depósitos densos, GN membranoproliferativa tipo II', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.6.'', 'Nefropatía IgA, Enfermedad de Berger (demostrado por inmunofluorescencia)', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.7.'', 'Nefropatía IgM, (demostrado por inmunofluorescencia)', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.8.'', 'GN rápidamente progresiva', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.9.'', 'Gn post infecciosa', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('B.10.'', 'Otras GN proliferativas', 2);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.1.'', 'Lupus eritematoso', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.2.'', 'Síndrome de Henoch-Schonlein', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.3.'', 'Esclerodermia', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.4.'', 'Síndrome urémico hemolítico', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.5.'', 'Poliarteritis', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.6.'', 'Granulomatosis de Wegener', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.7.'', 'Nefropatía por abuso de heroína y relacionado a drogas', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.8.'', 'Otras vasculitis y sus derivadas', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.9.'', 'Síndrome de Goodpasture', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('C.10.'', 'Otras GN secundarias', 3);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.1.'', 'Abuso de analgésicos', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.2.'', 'Nefritis por radiación', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.3.'', 'Nefropatía por plomo', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.4.'', 'Nefropatía causada por otros agentes', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.5.'', 'Nefropatía por gota', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.6.'', 'Nefrolitiasis', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.7.'', 'Uropatía obstructiva adquirida', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.8.'', 'Pielonefritis crónica, nefropatía por reflujo', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.9.'', 'Nefritis intersticial crónica', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.10.'', 'Nefritis intersticial aguda', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.11.'', 'Urolitiasis', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('D.12.'', 'Otros desórdenes del metabolismo de calcio', 4);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('E.1.'', 'Hipertensión no especificada con falla renal', 5);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('E.2.'', 'Estenosis de la arteria renal', 5);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('E.3.'', 'Oclusión de la arteria renal', 5);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('E.4.'', 'Embolia causada por coleterol, embolia renal', 5);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.1.'', 'Riñón poliquístico del adulto tipo dominante', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.2.'', 'Riñón poliquistico infantil recesivo', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.3.'', 'Enfermedad quística medular, incluye nefronoptisis', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.4.'', 'Esclerosis tubular', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.5.'', 'Nefritis hereditaria, síndrome de Alport', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.6.'', 'Cistinosis', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.7.'', 'Oxalosis primaria', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.8.'', 'Enfermedad de Fabry', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.9.'', 'Síndrome nefrótico congénito', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.10.'', 'Síndrome Drash, esclerosis mesangial', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.11.'', 'Obstrucción congénita de la unión ureteropélvica', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.12.'', 'Obstrucción congénita de la unión ureterovesical', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.13.'', 'Otras uropatías obstructivas congénitas', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.14.'', 'Hipoplasia renal, displasia, oligonefronía', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.15.'', 'Síndrome del abdomen en ciruela pasa', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('F.16.'', 'Otros (Síndromes de malformaciones congénitas)', 6);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.1.'', 'Tumor renal maligno', 7);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.2.'', 'Tumor maligno del tracto urinario', 7);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.3.'', 'Tumor renal benigno', 7);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.4.'', 'Tumor benigno del tracto urinario', 7);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.5.'', 'Tumor renal no especificado', 7);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.6.'', 'Tumor de tracto urinario no especificado', 7);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.7.'', 'Linfoma de riñón', 7);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.8.'', 'Mieloma múltiple', 7);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.9.'', 'Otras neoplasias inmunoproliferativas (Incluye nefropatía de cadena ligera', 7);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.10.'', 'Amiloidosis', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.11.'', 'Complicaciones de órgano trasplantado no especificado', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.12.'', 'Complicaciones por trasplante de riñón', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.13.'', 'Complicaciones por trasplante de hígado', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.14.'', 'Complicaciones por trasplante de corazón', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.15.'', 'Complicaciones por trasplante de pulmón', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.16.'', 'Complicaciones por trasplante de médula ósea', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.17.'', 'Complicaciones por trasplante de páncreas', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.18.'', 'Complicaciones por trasplante de intestino', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('G.19.'', 'Complicaciones de otro órgano trasplantado especificado', 8);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H.1.'', 'Enfermedad de células falciformes/anemia', 9);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H.2.'', 'Rasgo de células falciformes y otras células falciformes (Hbs/Hb otras)', 9);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H.3.'', 'Falla renal post parto', 9);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H.4.'', 'Nefropatía por SIDA', 9);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H.5.'', 'Pérdida traumática o quirúrgica de riñón', 9);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H.6.'', 'Síndrome hepatorenal', 9);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H.7.'', 'Necrosis tubular (sin recuperación)', 9);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H.8.'', 'Otros desórdenes renales', 9);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H.9.'', 'Etiología incierta', 9);
+INSERT INTO etiologia(codigo, nombre, etiologia_id) VALUES('H10'', 'Otras no especificadas (mencionar)', 9);
+
+-----------
+
+
+28/04/2019
+
+dejar campos nulos => cie_id y ticket_id
+
+
+ALTER TABLE `historiaclinica` 
+ADD `historia_id` decimal(10,2) DEFAULT NULL,
+ADD `ip` varchar(50) DEFAULT NULL,
+ADD `nsesion` decimal(10,2) DEFAULT NULL,
+ADD `frecuencia` decimal(10,2) DEFAULT NULL,
+ADD `turno` time DEFAULT NULL,
+ADD `txtEvoSigSin` text COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtPA` decimal(10,2) DEFAULT NULL,
+ADD `txtFC` decimal(10,2) DEFAULT NULL,
+ADD `txtFR` decimal(10,2) DEFAULT NULL,
+ADD `txtHorasHemodialisis` decimal(10,2) DEFAULT NULL,
+ADD `txtPesoInicial` decimal(10,2) DEFAULT NULL,
+ADD `txtQb` decimal(10,2) DEFAULT NULL,
+ADD `txtNaInicial` decimal(10,2) DEFAULT NULL,
+ADD `txtDosisHepa` decimal(10,2) DEFAULT NULL,
+ADD `txtPesoFinal` decimal(10,2) DEFAULT NULL,
+ADD `txtQd` decimal(10,2) DEFAULT NULL,
+ADD `txtNaFinal` decimal(10,2) DEFAULT NULL,
+ADD `txtPesoSeco` decimal(10,2) DEFAULT NULL,
+ADD `txtPerfilUF` decimal(10,2) DEFAULT NULL,
+ADD `txtBufer` decimal(10,2) DEFAULT NULL,
+ADD `txtPerfilNa` decimal(10,2) DEFAULT NULL,
+ADD `txtMedicacion` text COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtUltrafiltrado` text COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtConductividad` text COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtAreaDializador` text COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtMembranaDializador` text COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtCondicionClinicaFinal` text COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtPAInicial` decimal(10,2) DEFAULT NULL,
+ADD `txtNPuesto` decimal(10,2) DEFAULT NULL,
+ADD `txtPesoInicial2` decimal(10,2) DEFAULT NULL,
+ADD `txtMarcaModeloMaquina` text COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtUltrafiltadoProgramado` text COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtLoteSerieFiltro` text COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtAccesoVascularArterial` decimal(10,2) DEFAULT NULL,
+ADD `txtAccesoVascularVenoso` decimal(10,2) DEFAULT NULL,
+ADD `txtPAFinal` decimal(10,2) DEFAULT NULL,
+ADD `txtNMAquina` int(11) DEFAULT NULL,
+ADD `txtPesoFinal2` decimal(10,2) DEFAULT NULL,
+ADD `txtAreaMembranaFiltro` text COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtValoracionEnfermeria` text COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtEvalHemodialisis` text COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtObservacionFinal` text COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtAspectoFiltro` text COLLATE utf8_unicode_ci DEFAULT NULL,
+ADD `txtAdmiMedic` text COLLATE utf8_unicode_ci DEFAULT NULL;
+
+------------------29-04-2019-------------------------
+
+regimen - ninguno
+n plan no obligatorio
+e- mail opcional
+presioin arterial como texto
+Ultrafilt. program. numero
+Ultrafiltado munero
+Conductividad numero
+numnero pendiente en hcinicial
+hora en evaluacion previa
+bufer ?
+Área de dializador numero
+Membrana de dializador texto pequeño
+subir Administración de Medicamentos endovenosos texto opcionales
+P.A. texto
+todo PULSO y frecuencia texto
+HORA	P.A.	PULSO	Qb	CND	R.A.	R.V.	PTM	SOL./HEMODERIVADOS	OBSERVACIONES => texto
+campo muestra de analisis en rojo
+
+
+AÑADIR CIE 10 EN SIGNOS Y SINTOMAS
+
+EN LUGAR DE DOCTOR, MEDICO NEFROLOGO
+
+PESO INICIAL Y FINAL OPCIONAL PARA DOCTOR Y OBLIGATORIO PARA ENFERMERA
+
+ESSALUD NO HACE CITAS MENSUALES SOLO SIS
+
+-------------------------------------------------------
+
+FORMATO PARA CITAS MENSUALES PENDIENTE
+
+---------------------------13-05-2019--------------------
+
+txtMuestraAnalisis varchar 500 bd
+cambiar a varchar 10 los numeros de bd
+
+-- preguntar sobre el llenado de historiaclinica
+
+-- preguntar datos de formato de citas pendientes
+
+-- pendiente: guardar los cies
+
+--------------------------18-05-2019---------------------
+
+ALTER TABLE `historiaclinica` ADD `txtCies` VARCHAR(20) NULL AFTER `txtMuestraAnalisis`;
+ALTER TABLE `historiaclinica` ADD `txtHoraEvaluacionPrevia` TIME NULL AFTER `txtCies`;
+txtNMAquina a varchar
+
+CREATE TABLE `bitacoratratamiento` (
+  `id` int(11) NOT NULL,
+  `numero` int(11) NOT NULL,
+  `person_id` int(11) NOT NULL,
+  `historiaclinica_id` int(11) NOT NULL,
+  `campo` varchar(50) NOT NULL,
+  `valoranterior` varchar(500) NOT NULL,
+  `valornuevo` varchar(500) NOT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `bitacoratratamiento`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `bitacoratratamiento`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+  _____________________________________________________________________
+
+  4 consultas mensuales: nefrologicas,  -> fecha se define internamente
+
+  analisis mensual, bimensual trimestral y semestral cronograma (sis)
+  analisis mensual trimestral y semestral y anual cronograma (essalud)
+  dan dos fechas luego se puede registrar pero no antes
+
+  los datos se llenan
+
+  caso excvepcional: 15 - 16 y viene 17 igual toimo analisi
+
+  atencion ern serivi¿o social n afiliacion == cod aseguradoi
+
+  medidas antropometricas preguntar de donde jalas los datos
+
+  salud mental agregar cies
+
+  ____________________________________________________________________
+
+  null todas las opciones txt de historiaclinica
+
+  nueva opcion llamada consultamensual en atencion al cliente
+
+  agregar logo a carpeta de imagenes
+
+  CREATE TABLE `consultanefrologica` (
+  `id` int(11) NOT NULL,
+  `persona_id` int(11) NOT NULL,
+  `fecha` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `consultanutricion` (
+  `id` int(11) NOT NULL,
+  `persona_id` int(11) NOT NULL,
+  `txtHistoriaNutricional` varchar(300) NOT NULL,
+  `txtReultimo` varchar(300) NOT NULL,
+  `txtDiagnostico` varchar(300) NOT NULL,
+  `txtDiagnostico2` varchar(300) NOT NULL,
+  `txtRecoge` varchar(300) NOT NULL,
+  `txtRedie` varchar(300) NOT NULL,
+  `txtPesoseco` double(10,2) NOT NULL,
+  `txtPesoactual` double(10,2) NOT NULL,
+  `txtPesousual` double(10,2) NOT NULL,
+  `txtPesoideal` double(10,2) NOT NULL,
+  `txtTalla` double(10,2) NOT NULL,
+  `txtHemoglobina` double(10,2) NOT NULL,
+  `txtHematocrito` double(10,2) NOT NULL,
+  `txtUreapost` double(10,2) NOT NULL,
+  `txtCreatinina` double(10,2) NOT NULL,
+  `txtCalcio` double(10,2) NOT NULL,
+  `txtFosforo` double(10,2) NOT NULL,
+  `txtIMC` double(10,2) NOT NULL,
+  `fecha` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `consultasaludmental` (
+  `id` int(11) NOT NULL,
+  `persona_id` int(11) NOT NULL,
+  `txtMotivo` varchar(300) DEFAULT NULL,
+  `txtObservacion` varchar(300) DEFAULT NULL,
+  `txtPrueba` varchar(300) DEFAULT NULL,
+  `txtEuro` varchar(300) DEFAULT NULL,
+  `txtDiagnostico` varchar(300) DEFAULT NULL,
+  `txtPlan` varchar(300) DEFAULT NULL,
+  `txtRecomendacion` varchar(300) DEFAULT NULL,
+  `fecha` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `consultaserviciosocial` (
+  `id` int(11) NOT NULL,
+  `persona_id` int(11) NOT NULL,
+  `txtEpsi` varchar(300) NOT NULL,
+  `txtEfam` varchar(300) NOT NULL,
+  `txtEvivi` varchar(300) NOT NULL,
+  `txtElab` varchar(300) NOT NULL,
+  `txtEeco` varchar(300) NOT NULL,
+  `txtDiagnostico` varchar(300) NOT NULL,
+  `txtDiagnostico2` varchar(300) NOT NULL,
+  `txtMege` varchar(300) NOT NULL,
+  `txtMees` varchar(300) NOT NULL,
+  `fecha` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `consultanefrologica`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `consultanutricion`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `consultasaludmental`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `consultaserviciosocial`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `consultanefrologica`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `consultanutricion`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `consultasaludmental`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `consultaserviciosocial`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+__________________________________________________________________
+
+agregar campos a formato
+
+ALTER TABLE `historiaclinica` ADD `numeroformato` VARCHAR(30) NULL AFTER `txtHoraEvaluacionPrevia`, ADD `td` VARCHAR(10) NULL AFTER `numeroformato`, ADD `numeroconsideracion` VARCHAR(30) NULL AFTER `td`, ADD `ciesformato` VARCHAR(300) NULL AFTER `numeroconsideracion`, ADD `responsableformato_id` INT NULL AFTER `ciesformato`, ADD `fechaformato` DATE NULL AFTER `responsableformato_id2`;
+
+ALTER TABLE `historiaclinica` ADD `prestacionformato` INT NULL AFTER `fechaformato`;
+
+ALTER TABLE `historiaclinica` ADD `observacionformato` TEXT NULL AFTER `prestacionformato`;
+
+
+vaciar producto tabla
+
+ALTER TABLE `consultanefrologica` ADD (  
+  `numeroformato` varchar(30) DEFAULT NULL,
+  `td` varchar(10) DEFAULT NULL,
+  `numeroconsideracion` varchar(30) DEFAULT NULL,
+  `ciesformato` varchar(300) DEFAULT NULL,
+  `responsableformato_id` int(11) DEFAULT NULL,
+  `fechaformato` date DEFAULT NULL,
+  `prestacionformato` int(11) DEFAULT NULL,
+  `observacionformato` text
+);
+
+ALTER TABLE `consultanutricion` ADD (  
+  `numeroformato` varchar(30) DEFAULT NULL,
+  `td` varchar(10) DEFAULT NULL,
+  `numeroconsideracion` varchar(30) DEFAULT NULL,
+  `ciesformato` varchar(300) DEFAULT NULL,
+  `responsableformato_id` int(11) DEFAULT NULL,
+  `fechaformato` date DEFAULT NULL,
+  `prestacionformato` int(11) DEFAULT NULL,
+  `observacionformato` text
+);
+
+ALTER TABLE `consultasaludmental` ADD (  
+  `numeroformato` varchar(30) DEFAULT NULL,
+  `td` varchar(10) DEFAULT NULL,
+  `numeroconsideracion` varchar(30) DEFAULT NULL,
+  `ciesformato` varchar(300) DEFAULT NULL,
+  `responsableformato_id` int(11) DEFAULT NULL,
+  `fechaformato` date DEFAULT NULL,
+  `prestacionformato` int(11) DEFAULT NULL,
+  `observacionformato` text
+);
+
+ALTER TABLE `consultaserviciosocial` ADD (  
+  `numeroformato` varchar(30) DEFAULT NULL,
+  `td` varchar(10) DEFAULT NULL,
+  `numeroconsideracion` varchar(30) DEFAULT NULL,
+  `ciesformato` varchar(300) DEFAULT NULL,
+  `responsableformato_id` int(11) DEFAULT NULL,
+  `fechaformato` date DEFAULT NULL,
+  `prestacionformato` int(11) DEFAULT NULL,
+  `observacionformato` text
+);
+
+
+--REGISTRAR LOS MEDICAMENTOS
+
+--REGISTRAR LOS CIES
+
+--FALTA CITA NEFROLÓGICA
+
+--FALTA REGISTRO DE LABORATORIO
+
+--BASALES, PRIMERA HEMODIÁLISIS
+
+_________________________________________________________________________________(08-06-2019)
+
+ALTER TABLE `consultanefrologica` ADD `tipoconsulta` INT NULL AFTER `observacionformato`, ADD `anamnesis` VARCHAR(300) NULL AFTER `tipoconsulta`, ADD `pesoseco` DOUBLE(10,2) NULL AFTER `anamnesis`, ADD `temperatura` DOUBLE(10,2) NULL AFTER `pesoseco`, ADD `pa` VARCHAR(30) NULL AFTER `temperatura`, ADD `fc` DOUBLE(10,2) NULL AFTER `pa`, ADD `fr` DOUBLE(10,2) NULL AFTER `fc`, ADD `cav` VARCHAR(30) NULL AFTER `fr`, ADD `tcsc` VARCHAR(30) NULL AFTER `cav`, ADD `sisnervioso` VARCHAR(300) NULL AFTER `tcsc`, ADD `pulmones` VARCHAR(300) NULL AFTER `sisnervioso`, ADD `observacion` VARCHAR(300) NULL AFTER `pulmones`;
+
+ALTER TABLE `consultanefrologica` ADD `situacion` VARCHAR(50) NULL AFTER `observacion`;
+
+ALTER TABLE `consultanefrologica` ADD `estado` INT NULL AFTER `situacion`;
+
+ALTER TABLE `consultanefrologica` ADD `estadoexamen` INT NULL AFTER `estado`;
+
+ALTER TABLE `consultanefrologica` ADD `txtUre` DOUBLE(10,2) NULL AFTER `observacion`, ADD `txtCre` DOUBLE(10,2) NULL AFTER `txtUre`, ADD `txtDos` DOUBLE(10,2) NULL AFTER `txtCre`, ADD `txtEle` DOUBLE(10,2) NULL AFTER `txtDos`, ADD `txtFos` DOUBLE(10,2) NULL AFTER `txtEle`, ADD `txtCal` DOUBLE(10,2) NULL AFTER `txtFos`, ADD `txtPro` DOUBLE(10,2) NULL AFTER `txtCal`, ADD `txtFos2` DOUBLE(10,2) NULL AFTER `txtPro`, ADD `txtTgo` DOUBLE(10,2) NULL AFTER `txtFos2`, ADD `txtTgp` DOUBLE(10,2) NULL AFTER `txtTgo`, ADD `txtEli` DOUBLE(10,2) NULL AFTER `txtTgp`, ADD `txtPru` DOUBLE(10,2) NULL AFTER `txtEli`, ADD `txtPar` DOUBLE(10,2) NULL AFTER `txtPru`, ADD `txtDet` DOUBLE(10,2) NULL AFTER `txtPar`, ADD `txtDet2` DOUBLE(10,2) NULL AFTER `txtDet`, ADD `txtDet3` DOUBLE(10,2) NULL AFTER `txtDet2`, ADD `txtDet4` DOUBLE(10,2) NULL AFTER `txtDet3`, ADD `txtHie` DOUBLE(10,2) NULL AFTER `txtDet4`, ADD `txtFer` DOUBLE(10,2) NULL AFTER `txtHie`, ADD `txtSat` DOUBLE(10,2) NULL AFTER `txtHie`;
+
+ALTER TABLE `consultanefrologica` ADD `txtHem` DOUBLE(10,2) NULL AFTER `txtCre`;
+
+ALTER TABLE `consultanefrologica` ADD `txtUre2` DOUBLE(10,2) NULL AFTER `txtUre`;
+
+ALTER TABLE `consultanefrologica` ADD `tiempoenf` DOUBLE(10,2) NULL AFTER `deleted_at`;
+
+ALTER TABLE `consultanefrologica` ADD `talla` DOUBLE(10,2) NULL AFTER `temperatura`;
+
+ALTER TABLE `consultanefrologica` ADD `imc` DOUBLE(10,2) NULL AFTER `talla`;
+
+ALTER TABLE `consultanefrologica` ADD `cadenacies2` VARCHAR(300) NULL AFTER `estadoexamen`;
+
+--- PREGUNTAR DATOS PARA BASALES
+
+______________________________________
+
+//ELISA o prueba rápida para HIV-1 y HIV-2
+//Detección de antígeno de superficie de virus de Hepatitis B (HBsAg) por ELISA
+//Detección de anticuerpos para antígeno de superficie Hepatitis B (HBs-Ag)
+//Detección de anticuerpos totales para núcleo de virus de Hepatitis B (Total Anti-Hbcore)
+//Determinación de anticuerpos para Hepatitis C
+
+//EL PACIENTE NUEVO SÍ O S´PI BASALES, PERO INDICAR MENSUALES OPCIONALES
+
+//MENSUAL BIMENSUAL TRIMESTRAL MESUAL BIMENSUAL SEMESTRAL
+
+//lote y serie aparte
+//cperitoneal quitar
+//marca y modelo aparte
+//Área, membrana filtro 1.7, 1.9, 2.1 combo
+//presion y peso una opcion - más cerca
+//modelo: nipro diamax
+
+//pesos y presion copmo opciones inicial y final
+
+//agregar firma de doc en reporte de hemodialisis
+
+editar tratamienjtos anteriores
+
+//sexo en reporte de historia
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+ALTER TABLE `consultanefrologica` ADD `txtDatosMensuales` CHAR(2) NULL AFTER `cadenacies2`;
+ALTER TABLE `historiaclinica` ADD `txtMarcaModeloMaquina2` VARCHAR(500) NULL AFTER `txtMarcaModeloMaquina`;
+ALTER TABLE `historiaclinica` ADD `txtLoteSerieFiltro2` VARCHAR(100) NULL AFTER `txtLoteSerieFiltro`;
+ALTER TABLE `historiaclinica` CHANGE `txtMarcaModeloMaquina2` `txtMarcaModeloMaquina2` VARCHAR(500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL, CHANGE `txtLoteSerieFiltro2` `txtLoteSerieFiltro2` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+
+ALTER TABLE `consultanefrologica` ADD `situacion2` VARCHAR(30) NULL AFTER `situacion`;
+
+ALTER TABLE `consultanefrologica` ADD `cadenacies` VARCHAR(300) NULL AFTER `estadoexamen`;
+
+------------------------------
+
+//medicacion en reporte de hemodialisi
+
+//texto a todo
+
+//Acceso Vascular:
+
+//SOL./HEMODERIVADOS  opcional
+
+//Evolución: diagnostico: N18.0: Insuficiencia renal terminal
+//Signos y Síntomas: Paciente tranquilo
+
+//N° FORMATO ATENCIÓN PARA RECONSIDERACIÓN : que no salga 00000 en formato
+
+//TIPO DE PRESTACIÓN (revisar)
+//Consulta externa X Atención de procedimientos ambulatorios
+
+//que los cies salgan mayusculas
+
+//FORMATO DE ATENCIÓN revisar medicamentos
+
+:-------------------------------------------------------------------------------------
+
+1. Crear modulo de pesos y presion
+
+2. caja interna
+
+3. terminar reorte hemosialisis mensual
+
+4. establecer obligatorios de historia inicial
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+INSERT INTO `tipomovimiento` (`id`, `nombre`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'TICKET', '2017-02-23 05:00:00', '0000-00-00 00:00:00', NULL),
+(2, 'CAJA', '2017-02-23 05:00:00', '0000-00-00 00:00:00', NULL),
+(3, 'COMPRA', '2017-02-23 05:00:00', '0000-00-00 00:00:00', NULL),
+(4, 'VENTA', '2017-02-23 05:00:00', '0000-00-00 00:00:00', NULL),
+(5, 'ALMACEN', '2017-02-23 05:00:00', '0000-00-00 00:00:00', NULL),
+(6, 'NOTA DE CREDITO', '2017-06-27 05:00:00', '0000-00-00 00:00:00', NULL),
+(7, 'RECIBO BLANCO', '2017-06-30 05:00:00', '0000-00-00 00:00:00', NULL),
+(8, 'PEDIDO', '2017-09-06 15:18:01', '2017-09-06 15:18:06', NULL),
+(9, 'VENTA FACTURACION', '2017-11-02 05:00:00', '2017-11-02 05:00:00', NULL),
+(10, 'RECIBO MEDICO', '2017-11-23 05:00:00', '2017-11-23 05:00:00', NULL),
+(11, 'OTRAS COMPRAS', '2018-04-11 05:00:00', '0000-00-00 00:00:00', NULL),
+(12, 'CUENTA BANCARIA', '2018-05-04 05:00:00', '0000-00-00 00:00:00', NULL),
+(13, 'HONORARIOS MEDICO', '2018-06-01 05:00:00', '0000-00-00 00:00:00', NULL),
+(14, 'RECIBO BLANCO INGRESOS', '2018-06-13 05:00:00', '0000-00-00 00:00:00', NULL),
+(15, 'REQUERIMIENTO', '2018-12-17 05:00:00', '0000-00-00 00:00:00', NULL);
+
+INSERT INTO `tipodocumento` (`id`, `nombre`, `abreviatura`, `stock`, `codigo`, `tipomovimiento_id`, `created_at`, `updated_at`, `deleted_at`) VALUES
+(1, 'TICKET', 'TICK', 'N', '', 1, '2017-02-28 05:00:00', '0000-00-00 00:00:00', NULL),
+(2, 'INGRESOS', 'I', 'N', '', 2, '2017-03-12 05:00:00', '0000-00-00 00:00:00', NULL),
+(3, 'EGRESOS', 'E', 'N', '', 2, '2017-03-12 05:00:00', '0000-00-00 00:00:00', NULL),
+(4, 'FACTURA DE VENTA', 'F/V', 'R', '', 4, '2017-04-20 05:00:00', '2017-04-20 05:00:00', NULL),
+(5, 'BOLETA DE VENTA', 'B/V', 'R', '', 4, '2017-04-20 05:00:00', '2017-04-20 05:00:00', NULL),
+(6, 'FACTURA DE COMPRA', 'F/C', 'S', '', 3, '2017-05-25 22:45:11', '2017-05-25 22:45:14', NULL),
+(7, 'BOLETA DE COMPRA', 'B/C', 'S', '', 3, '2017-05-26 22:57:19', '2017-05-26 22:57:21', NULL),
+(8, 'DOC INGRESO', 'I', 'S', '', 5, '2017-05-26 23:10:48', '2017-05-26 23:10:49', NULL),
+(9, 'DOC SALIDA', 'E', 'R', '', 5, '2017-05-26 23:11:03', '2017-05-26 23:11:06', NULL),
+(10, 'GUIA INTERNA', 'GINT', 'S', '', 3, '2017-06-06 22:25:07', '2017-06-06 22:25:12', NULL),
+(11, 'NOTA DE CREDITO', 'NC', 'S', '', 3, '2017-06-06 22:25:30', '2017-06-06 22:25:34', NULL),
+(12, 'TICKET', 'TICK', 'S', '', 3, '2017-06-06 22:25:56', '2017-06-06 22:26:00', NULL),
+(13, 'NOTA DE CREDITO', 'NC', 'N', '', 6, '2017-06-27 05:00:00', '0000-00-00 00:00:00', NULL),
+(14, 'RECIBO BLANCO', 'RB', 'N', '', 7, '2017-06-30 05:00:00', '0000-00-00 00:00:00', NULL),
+(15, 'GUIA INTERNA', 'GINT', 'S', '', 4, '2017-07-06 18:09:02', '2017-07-06 18:09:05', NULL),
+(16, 'cuaderno', 'CUA', '', '', NULL, '0000-00-00 00:00:00', '0000-00-00 00:00:00', NULL),
+(17, 'FACTURA DE VENTA', 'F/V', 'R', '01', 9, '2017-11-02 05:00:00', '2017-11-02 05:00:00', NULL),
+(18, 'RECIBO MEDICO', 'RM', 'N', '', 10, '2017-11-23 05:00:00', '2017-11-23 05:00:00', NULL),
+(19, 'OTRAS COMPRAS', 'OC', 'N', '', 11, '2018-04-11 05:00:00', '0000-00-00 00:00:00', NULL),
+(20, 'INGRESO', 'ICB', 'N', '', 12, '2018-05-04 05:00:00', '0000-00-00 00:00:00', NULL),
+(21, 'EGRESO', 'ECB', 'N', '', 12, '2018-05-04 05:00:00', '0000-00-00 00:00:00', NULL),
+(22, 'HONORARIO MEDICO', 'HM', 'N', '', 13, '2018-06-01 05:00:00', '0000-00-00 00:00:00', NULL),
+(23, 'RECIBO BLANCO INGRESOS', 'RBI', 'N', '', 14, '2018-06-13 05:00:00', '0000-00-00 00:00:00', NULL),
+(24, 'REQUERIMIENTO', 'REQ', 'N', '', 15, '2018-12-17 05:00:00', '0000-00-00 00:00:00', NULL);
+
+
+
+.:..................................................
+
+
+ALTER TABLE `consultanefrologica` ADD `c1` INT NULL AFTER `txtDatosMensuales`, ADD `c2` INT NULL AFTER `c1`, ADD `c3` INT NULL AFTER `c2`, ADD `c4` INT NULL AFTER `c3`, ADD `c5` INT NULL AFTER `c4`, ADD `c6` INT NULL AFTER `c5`, ADD `c7` INT NULL AFTER `c6`, ADD `c8` INT NULL AFTER `c7`, ADD `c9` INT NULL AFTER `c8`, ADD `c10` INT NULL AFTER `c9`, ADD `c11` INT NULL AFTER `c10`, ADD `c12` INT NULL AFTER `c11`, ADD `c13` INT NULL AFTER `c12`, ADD `c14` INT NULL AFTER `c13`, ADD `c15` INT NULL AFTER `c14`, ADD `c16` INT NULL AFTER `c15`, ADD `c17` INT NULL AFTER `c16`, ADD `o1` VARCHAR(100) NULL AFTER `c17`, ADD `o2` VARCHAR(100) NULL AFTER `o1`, ADD `o3` VARCHAR(100) NULL AFTER `o2`, ADD `o4` VARCHAR(100) NULL AFTER `o3`, ADD `o5` VARCHAR(100) NULL AFTER `o4`, ADD `o6` VARCHAR(100) NULL AFTER `o5`, ADD `o7` VARCHAR(100) NULL AFTER `o6`, ADD `o8` VARCHAR(100) NULL AFTER `o7`, ADD `o9` VARCHAR(100) NULL AFTER `o8`, ADD `o10` VARCHAR(100) NULL AFTER `o9`, ADD `o11` VARCHAR(100) NULL AFTER `o10`, ADD `o12` VARCHAR(100) NULL AFTER `o11`, ADD `o13` VARCHAR(100) NULL AFTER `o12`, ADD `o14` VARCHAR(100) NULL AFTER `o13`, ADD `o15` VARCHAR(100) NULL AFTER `o14`, ADD `o16` VARCHAR(100) NULL AFTER `o15`, ADD `o17` VARCHAR(100) NULL AFTER `o16`;
+
+ALTER TABLE `consultanefrologica` ADD `m1` INT NULL AFTER `txtDatosMensuales`, ADD `m2` INT NULL AFTER `m1`, ADD `m3` INT NULL AFTER `m2`, ADD `m4` INT NULL AFTER `m3`, ADD `m5` INT NULL AFTER `m4`, ADD `m6` INT NULL AFTER `m5`, ADD `m7` INT NULL AFTER `m6`, ADD `m8` INT NULL AFTER `m7`, ADD `m9` INT NULL AFTER `m8`, ADD `m10` INT NULL AFTER `m9`, ADD `m11` INT NULL AFTER `m10`, ADD `m12` INT NULL AFTER `m11`, ADD `m13` INT NULL AFTER `m12`, ADD `m14` INT NULL AFTER `m13`, ADD `m15` INT NULL AFTER `m14`, ADD `m16` INT NULL AFTER `m15`, ADD `m17` INT NULL AFTER `m16`;
+
+(4, '', '', '001', 'EPOETINA ALFA 2000 UI/ML INY 1ML', '', '', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1.00, '2019-06-26 04:21:10', '2019-06-26 04:21:10', NULL),
+(5, '', '', '002', 'HIERRO (COMO SACARATO) 20MG FE/ML INY 5ML', '', '', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1.00, '2019-06-26 04:21:27', '2019-06-26 04:21:27', NULL),
+(6, '', '', '003', 'VITAMINA B12 HIDROXICOBALAMINA 1MG/ML INY 1ML', '', '', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1.00, '2019-06-26 04:21:42', '2019-06-26 04:21:42', NULL),
+(7, '', '', '004', 'CARBONATO DE CALCIO 500MG TAB', '', '', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1.00, '2019-06-26 04:21:54', '2019-06-26 04:21:54', NULL),
+(8, '', '', '005', 'PIRIDOXINA 50MG TAB', '', '', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1.00, '2019-06-26 04:22:06', '2019-06-26 04:22:06', NULL),
+(9, '', '', '006', 'TIAMINA 100MG TAB', '', '', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1.00, '2019-06-26 04:22:20', '2019-06-26 04:22:20', NULL),
+(10, '', '', '007', 'AC. FOLICO 0.5MG TAB', '', '', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1.00, '2019-06-26 04:22:33', '2019-06-26 04:22:33', NULL),
+(11, '', '', '008', 'CALCITRIOL 1MCG/ML INY', '', '', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1.00, '2019-06-26 04:22:48', '2019-06-26 04:22:48', NULL),
+(12, '', '', '009', 'ENALAPRIL MALEATO 10MG TAB', '', '', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1.00, '2019-06-26 04:23:02', '2019-06-26 04:23:02', NULL),
+(13, '', '', '010', 'CAPTOPRIL 25MG TAB', '', '', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1.00, '2019-06-26 04:23:15', '2019-06-26 04:23:15', NULL),
+(14, '', '', '011', 'AMLODIPINO (COMO BESILATO) 10MG TAB', '', '', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1.00, '2019-06-26 04:23:27', '2019-06-26 04:23:27', NULL),
+(15, '', '', '012', 'NIFEDIPINO 10MG', '', '', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1.00, '2019-06-26 04:23:40', '2019-06-26 04:23:40', NULL),
+(16, '', '', '013', 'NIFEDIPINO 30MG', '', '', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1.00, '2019-06-26 04:23:52', '2019-06-26 04:23:52', NULL),
+(17, '', '', '014', 'METILDOPA 250MG', '', '', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1.00, '2019-06-26 04:24:03', '2019-06-26 04:24:03', NULL),
+(18, '', '', '015', 'ATENOLOL 100MG', '', '', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1.00, '2019-06-26 04:24:13', '2019-06-26 04:24:13', NULL),
+(19, '', '', '017', 'LOSARTAN 50MG', '', '', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, 1.00, '2019-06-26 04:24:28', '2019-06-26 04:24:28', NULL);
+
+-------------------------------------------------------------------------------30-06-2019
+
+//Igualar pesos en atencion de hemodialisis
+
+//Peso seco jalar de la anterior atencion de hd
+
+//Agregar ui en dodid heparina
+
+//Ultrafiltado peso inicial- peso seco
+
+//Area de dializador metroa ciadrados
+
+//Membraba de dializafor POLISULFONA y OTROS
+
+//Bufer por defecto BICARBONATO
+
+//Medicacion es igual a administracion de medicamentoa
+
+//Agregar temperatura a parte medica
+
+//Abrir hemosialisis anterior
+
+//Frecuencia calcular con unidades fijas
+
+//Modulo de programacion de cantidades mensuales. Solo tres primeros medicamentos programables
+
+//Demas demicamentos se entregan en ese momento
+
+//Electrolitos sericos sodio potasio y cloro
+
+//Registro hemo mensual cav letra, pa no es kg
+
+//Diagnostico hepmensual codigo-nombrecie
+
+//Frecuencia
+
+-------------------------------------------------------------------------------------
+
+ALTER TABLE `historiaclinica` ADD `txtTemperatura` VARCHAR(10) NULL DEFAULT '' AFTER `observacionformato`;
+
+ALTER TABLE `consultanefrologica` ADD `f1` INT NULL AFTER `o17`, ADD `f2` INT NULL AFTER `f1`, ADD `f3` INT NULL AFTER `f2`, ADD `f4` INT NULL AFTER `f3`, ADD `f5` INT NULL AFTER `f4`, ADD `f6` INT NULL AFTER `f5`, ADD `f7` INT NULL AFTER `f6`, ADD `f8` INT NULL AFTER `f7`, ADD `f9` INT NULL AFTER `f8`, ADD `f10` INT NULL AFTER `f9`, ADD `f11` INT NULL AFTER `f10`, ADD `f12` INT NULL AFTER `f11`, ADD `f13` INT NULL AFTER `f12`, ADD `f14` INT NULL AFTER `f13`, ADD `f15` INT NULL AFTER `f14`, ADD `f16` INT NULL AFTER `f15`, ADD `f17` INT NULL AFTER `f16`;
+
+//no olvidar el localhost de imagenes
+
+ALTER TABLE `consultanefrologica` ADD `estadoprogramacion` INT NULL AFTER `estadoexamen`;
+
+ALTER TABLE `consultanefrologica` ADD `cadenaepo` TEXT NULL AFTER `f17`, ADD `cadenahierro` TEXT NULL AFTER `cadenaepo`, ADD `cadenavita` TEXT NULL AFTER `cadenahierro`;
+
+ALTER TABLE `consultanefrologica` ADD `txtSodio` VARCHAR(15) NULL AFTER `txtEle`, ADD `txtPotasio` VARCHAR(15) NULL AFTER `txtSodio`, ADD `txtCloro` VARCHAR(15) NULL AFTER `txtPotasio`;
+
+ALTER TABLE `historia` CHANGE `horacita` `horacita` INT NOT NULL;
+
+ALTER TABLE `historiaclinica` CHANGE `turno` `turno` INT NULL DEFAULT NULL;
+
+-----------------------------------------------------------------------
+
+//cambiar configuracion de tabla turno
+
+---------------------------------------------------------------2-7-2019
+
+//Cod. Asegurado: es num sis en hc
+//si es essalud que aparezca en hc
+
+//Turno en romano
+//maquina: 1-19	puestos 1-17
+
+//Administración de medicamentos endovenosos revisar reporte
+//Evaluación Previa: que vaya la hora
+//Turno en romano reporte
+
+//Ultrafilt. program. = ultrafiltado + 300
+
+//al llamar no se inicializan valores revisar
+
+//solo son 30 dias en reporte mensual nefrologico y si es menos, menos
+
+//sesiones en receta
+
+//TIPO DE PRESTACIÓN fua revisar
+
+//medicamentos en fua solo orales
+
+//apertura de nuevo tratamiento
+
+//Úrea Pre no años
+
+//Na; K; Cl separado
+
+//ANALISIS siguiente mes
+
+-------------------------------------------------------------------
+
+ALTER TABLE `turno` ADD `romano` VARCHAR(8) NULL AFTER `hora`;
+
+Sesión modificable (conviene que sea automatico, que pasa con doble tratamiento en un dia)
+
+¿Se administran los medicamentos cuando se suspende la sesion?
+
+¿Generan formato y fua los cancelados?
+
+--essalud njop se descarga de almacen sis si se descargar
+
+--despacho pendiente hasta que se deespache todo
+
+marcar mensual si es mensual y basal
+
+___________________________________________________________ 11-07-2019
+
+//hcinicial: sexo, edad, raza(caucásico, africano, oriental, latino);
+
+//Fecha de Primera Hemodiálisis no aparece en reporte
+
+//Comorbilidades si no hay nada = NO
+
+//Número de transfusiones SI NO HYA NADA = 0
+
+//Alergia a Medicamentos SI NO HAY NADA = NO
+
+//Tiempo promedio de permanencia en los accesos vasculares ENTERO, Y SEA TEXTO
+
+//Responsable de la realización: NO SALE EN REPORTE
+
+//Thrill: OTRO CAMPO NO APLICA
+
+//Hb/Hto dos campos (gr/L - %)
+
+//Tiempo de Hemodiálisis ENTERO, DIAS MESES O AÑOS
+
+//Bioquímica:
+//	- UREA EN VEZ DE UREMIA
+//		-> MG/DL SI ES VACIO
+//	- Glicemia: 
+//	- Depuración de Creatinina: mil/min x 1.73 m al 2
+//	- Endogena: 
+//	- Uremia: 
+//	- Creatinina: 
+//	- Ácido Úrico: 
+//	- Proteínas Totales: 
+//	- Albúmina: 
+//	- Calcio: 
+//	- Fosforo: 
+//	- TGO: UI/L
+//	- TGP: UI/L
+//	- Bilirrubina Total: 
+//	- Hierro sérico: (MICRA)g/dl
+//	- Saturación de transferrina: %
+//	- Dosaje de paratohormona: pg/ml
+
+//N° RNE no sale
+
+----
+
+//Talla jala de la inicial a la mensual
+
+//presion arterial en hcmensual dos campos __/__
+
+//Tiempo enfermedad en hcmensual (años mese y dias)
+
+//en hcmensual DIFERENTES QUE NO JALE
+//	- Alergia texto
+//	- Vacunación texto
+//	- Transfus. numero
+
+//	- Revacunación texto AGREGAR CAMPO
+
+//EPOETINA ALFA 2000 UI/ml INY 1ml EN HCMENSUAL cambiar a ampollas/semana	
+
+//en reporte no sale datos CORRECTOS de emergencia
+
+//Sesión modificable hcinicial modificable
+
+//¿Generan formato y fua los cancelados? SI CON LOS DATOS QUE HAY
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+ALTER TABLE `person` ADD `raza` VARCHAR(100) NULL AFTER `sexo`;
+
+ALTER TABLE `historia` CHANGE `txtTiempoPermanenciaAccesosVasculares` `txtTiempoPermanenciaAccesosVasculares` VARCHAR(100) NULL DEFAULT NULL;
+
+ALTER TABLE `historia` CHANGE `txtHbHto` `txtHbHto` VARCHAR(100) NULL DEFAULT NULL;
+
+ALTER TABLE `historia` CHANGE `txtTiempoHemodialisis` `txtTiempoHemodialisis` VARCHAR(100) NULL DEFAULT NULL;
+
+ALTER TABLE `consultanefrologica` CHANGE `tiempoenf` `tiempoenf` VARCHAR(100) NULL DEFAULT NULL;
+
+ALTER TABLE `consultanefrologica` ADD `txtAlergia` VARCHAR(300) NULL AFTER `cadenavita`, ADD `txtVacunacion` VARCHAR(300) NULL AFTER `txtAlergia`, ADD `txtTransfusiones` VARCHAR(300) NULL AFTER `txtVacunacion`, ADD `txtRevacunacion` VARCHAR(300) NULL AFTER `txtTransfusiones`;
+
+presion arterial en hcmensual dos campos __/__ => texto
+
+**¿Se administran los medicamentos cuando se suspende la sesion? SE PUEDE ADMINISTRAR MENOS O IGUAL, PERO NO MAS (EN ALGUNAS EXCEPCIONES)
+
+
+
+*****************************************30/08/2019******************************************
+AGREGAR OBSERVACIONFORMATO2
+AGREGAR OBSERVACIONFORMATO3
+AGREGAR OBSERVACIONFORMATO4
+
+CAMBIAR IMAGEN
+
+cadenaresultados -> agregar campo a cosultanefrologica
+
+ALTER TABLE `consultanefrologica` ADD `doctor_id` INT NULL AFTER `cadenaresultados`;
+
+ALTER TABLE `consultanutricion` ADD `doctor_id` INT NULL AFTER `observacionformato4`;
+
+ALTER TABLE `consultasaludmental` ADD `doctor_id` INT NULL AFTER `observacionformato4`;
+
+ALTER TABLE `consultaserviciosocial` ADD `doctor_id` INT NULL AFTER `observacionformato4`;
+
+PREGUNTAR: 
+
+	EN FORMATO FUA VA LA CANTIDAD O VA 1?
+	LOS CIES DE LA CONSULTA SON LOS MISMOS DE LAS FUAS?
+
+PLANTEAR SOLUCION A LAS CONSULTAS NEFROLOGICAS MENSUALES
+
+SETEAR TODOS LOS PRODUCTOS A LOTE = NO
+
+UPDATE `producto` SET LOTE = "NO"
+
+*****************************************02/09/2019******************************************
+
+//HISTORIAL DE MEDICAMENTOS
+//HISTORIAL DE RESULTADOS => CONSULTA NEFROLOGICA MENSUAL
+
+ALTER TABLE `historiaclinica` ADD `mensuales` INT NULL AFTER `txtUltrafiltadoProgramado3`;
+
+--------------------------------------------------------------------------------------------
+
+ALTER TABLE `historia` ADD `baja` CHAR(1) NULL AFTER `estado2`, ADD `motivobaja` TEXT NULL AFTER `baja`;
+
+********************************************************************************************************
+
+ALTER TABLE `historia` ADD `antecedentesfamiliares` VARCHAR(1000) NULL AFTER `motivobaja`; 
+ALTER TABLE `historia` ADD `antecedentesmedicamentos` VARCHAR(1000) NULL AFTER `antecedentesfamiliares`; 
+ALTER TABLE `historia` ADD `antecedentesfarma` VARCHAR(1000) NULL AFTER `antecedentesmedicamentos`; 
+ALTER TABLE `historia` ADD `antecedentestransfusiones` VARCHAR(1000) NULL AFTER `antecedentesfarma`; 
+ALTER TABLE `historia` ADD `antecedenteshospital` VARCHAR(1000) NULL AFTER `antecedentestransfusiones`; 
+ALTER TABLE `historia` ADD `txtTemperatura` VARCHAR(10) NULL AFTER `antecedenteshospital`; 
+ALTER TABLE `historia` ADD `txtacbe2` VARCHAR(1000) NULL AFTER `txtTemperatura`; 
+ALTER TABLE `historia` ADD `txtaghbs2` VARCHAR(1000) NULL AFTER `txtacbe2`; 
+ALTER TABLE `historia` ADD `txtachcv` VARCHAR(1000) NULL AFTER `txtaghbs2`; 
+ALTER TABLE `historia` ADD `txtvih` VARCHAR(1000) NULL AFTER `txtachcv`; 
+ALTER TABLE `historia` ADD `txtvdrl` VARCHAR(1000) NULL AFTER `txtvih`; 
+ALTER TABLE `historia` ADD `txttipoaccesovascular2` VARCHAR(1000) NULL AFTER `txtvdrl`; 
+ALTER TABLE `historia` ADD `txtubicacionaccesovascular2` VARCHAR(1000) NULL AFTER `txttipoaccesovascular2`; 
+ALTER TABLE `historia` ADD `txtfechainicioaccesovascular2` DATE NULL AFTER `txtubicacionaccesovascular2`;
+ALTER TABLE `historia` ADD `txtpresenciathrill2` VARCHAR(1000) NULL AFTER `txtfechainicioaccesovascular2`;
+
+ALTER TABLE `historia` ADD `txtpresenciasoplo2` TEXT NULL AFTER `txtpresenciathrill2`, ADD `txtpresenciapseudo2` TEXT NULL AFTER `txtpresenciasoplo2`, ADD `txtcondicioneshigiene2` TEXT NULL AFTER `txtpresenciapseudo2`, ADD `txtformulacion2` TEXT NULL AFTER `txtcondicioneshigiene2`, ADD `txtformulacion22` TEXT NULL AFTER `txtformulacion2`, ADD `txtplaneacion2` TEXT NULL AFTER `txtformulacion22`, ADD `txtidentifica2` TEXT NULL AFTER `txtplaneacion2`, ADD `txtidentifica22` TEXT NULL AFTER `txtidentifica2`, ADD `txtconocimiento2` TEXT NULL AFTER `txtidentifica22`, ADD `txtconocimiento22` TEXT NULL AFTER `txtconocimiento2`, ADD `txtedema2` TEXT NULL AFTER `txtconocimiento22`, ADD `txtconocimiento23` TEXT NULL AFTER `txtedema2`, ADD `txtmedicamentos2` TEXT NULL AFTER `txtconocimiento23`, ADD `txtconocimiento24` TEXT NULL AFTER `txtmedicamentos2`;
+
+ALTER TABLE `historia` ADD `estado3` CHAR(1) NULL AFTER `txtconocimiento24`;
+
+ALTER TABLE `historia` ADD `txtplaneacion22` TEXT NULL AFTER `estado3`;
+
+ALTER TABLE `historia` ADD `fechaformatoenfermeria` DATETIME NULL AFTER `txtplaneacion22`;
+
+UPDATE historia SET estado3 = "N";
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ALTER TABLE `consultanefrologica` CHANGE `txtDet2` `txtDet2` TEXT NULL DEFAULT NULL;
+
+ALTER TABLE `consultanefrologica` ADD `txtAlbu` DOUBLE(10,3) NULL AFTER `fecha_atencion`, ADD `txtGlobu` DOUBLE(10,3) NULL AFTER `txtAlbu`, ADD `txtTransfe` DOUBLE(10,3) NULL AFTER `txtGlobu`;
+
+
+
+
+
+
+ktv =SI(O(F20="";E20="";AD20="";AE20="");
+	"";
+	(-LN(E20/F20-0.008*AH20)+(4-3.5*E20/F20)*((AD20-AE20)/AE20)))
+
+
+
+tru =SI(O(F20="";E20="");"";100-(E20*100/F20))
+
+**********************************************************************************12-09-2019******************************
+
+UPDATE `person` SET sexo = (CASE WHEN sexo="1" THEN "M" WHEN sexo="0" THEN "F" END)
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+CREATE TABLE `baja` (
+  `id` int(11) NOT NULL,
+  `historia_id` int(11) DEFAULT NULL,
+  `ipresshospitalizacion` int(11) DEFAULT NULL,
+  `fechahospitalizacion` datetime DEFAULT NULL,
+  `motivohospitalizacion` text,
+  `fechaalta` datetime DEFAULT NULL,
+  `fechafallecido` datetime DEFAULT NULL,
+  `estado` char(1) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `baja`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `baja`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;COMMIT;
+
+ALTER TABLE `baja` ADD `usuario_id` INT NULL AFTER `deleted_at`;
+
+ALTER TABLE `baja` ADD `fechabaja` DATE NULL AFTER `usuario_id`;
+
+ALTER TABLE `baja` CHANGE `fechabaja` `fechamovimiento` DATE NULL DEFAULT NULL;
+
+ALTER TABLE `baja`
+  DROP `fechahospitalizacion`,
+  DROP `motivohospitalizacion`,
+  DROP `fechaalta`,
+  DROP `fechafallecido`,
+  DROP `fechamovimiento`;
+
+ALTER TABLE `baja` ADD `fecha` DATE NULL AFTER `usuario_id`, ADD `motivo` TEXT NULL AFTER `fecha`;
+
+ALTER TABLE `baja` CHANGE `estado` `estado` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;+
+
+ALTER TABLE `baja` CHANGE `ipresshospitalizacion` `ipresshospitalizacion` VARCHAR(300) NULL DEFAULT NULL;
+
+ALTER TABLE `historia` CHANGE `fechafallecido` `fechafallecido` DATE NULL;
+
+//UPDATE `historia` SET fechafallecido = NULL;
+//ANTES DE ESTO ANOTAR LA FECHA DE TODOS LOS FALLECIDOS Y REALIZARLE EL MOVIMIENTO DE BAJA :'3'
+
+ALTER TABLE `historia` ADD `estadobaja` CHAR(1) NULL AFTER `fechaformatoenfermeria`;
+
+ALTER TABLE `historia` CHANGE `baja` `baja` CHAR(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N';
+
+UPDATE `historia` SET baja = "N" WHERE baja = "";
+
+//CREAR reporte/hospitalizadosmensuales DENTRO DE REPORTES NEFROCIX ESTA RUTA Y DAR PERMISOS
+
+//CREAR baja DENTRO DE HOSPITALIZACION Y DAR PERMISO
+
+//DAR PERMISO A OLGA PARA QUE EDITE PRODUCTOS
+
+ALTER TABLE `baja` ADD `baja_id` INT NULL AFTER `motivo`;
+
+UPDATE `historia` SET `gradoinstruccion`=(
+        CASE
+            WHEN gradoinstruccion = "0" THEN "Inicial"    	
+            WHEN gradoinstruccion = "1" THEN "Analfabeto"
+            WHEN gradoinstruccion = "2" THEN "Primaria"
+            WHEN gradoinstruccion = "3" THEN "Secundaria"
+            WHEN gradoinstruccion = "4" THEN "Superior"
+        END
+    );
+
+ALTER TABLE `baja` ADD `motivo2` TEXT NULL AFTER `motivo`;
+
+//CREAR RUTA reporte/egresosmensuales Y DAR PERMISOS //no olvidar recepcionismo
+
+//DAR PERMISO PARA QUE OLGA EDITE PRODUCTOS
+
+
+------------------------------------------------------
+
+//UPDATE `historia` SET fechafallecido = NULL;
+//ANTES DE ESTO ANOTAR LA FECHA DE TODOS LOS FALLECIDOS Y REALIZARLE EL MOVIMIENTO DE BAJA :'3'
+
+*****************************************************************************************************
+
+reporte/stockactual DAR PERMISOS NECESARIOS
+
+ALTER TABLE `consultanutricion` ADD `txtUreapre` DOUBLE(10,2) NULL AFTER `txtUreapost`;
+
+dar permiso a NUTRICIONISTA PARA RESULTADOS MENSUALES
+
+ALTER TABLE `consultanutricion` ADD `txtIntervencion` TEXT NULL AFTER `fecha_atencion`, ADD `txtObservacion2` TEXT NULL AFTER `txtIntervencion`;
+
+ALTER TABLE `consultasaludmental` ADD `txtIntervencion` TEXT NULL AFTER `fecha_atencion`, ADD `txtObservacion2` TEXT NULL AFTER `txtIntervencion`;
+
+ALTER TABLE `consultaserviciosocial` ADD `txtIntervencion` TEXT NULL AFTER `fecha_atencion`, ADD `txtObservacion` TEXT NULL AFTER `txtIntervencion`;
+
+ALTER TABLE `consultaserviciosocial` CHANGE `txtObservacion` `txtObservacion2` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;
+
+CREADOS:
+
+	- REPORTE DE PROGRAMACION DE MEDICAMENTOS
+	- REPORTE DE RESULTADOS POR PACIENTE (PARA NEFROLOGICOS Y PARA NUTRICIONISTA)
+	- REPORTE DE CAJA
+	- COMPRAS DESDE ALMACEN
+	- REPORTE DE KARDEX
+	- REPORTE DE STOCK
+	- REPORTE DE CONSOLIDADO DE CIES PARA LAS CONSULTAS EXTERNAS (NUTR, AS SOC, SAL MEN)
+
+FALTA:
+
+	- TRATAMIENTO DE AGUA
+	- REPORTES DE STA BETTY
+	- ATENDIDOS DEL DIA (ESSALUD)
+
+CAMBIAR A MAYÚSCULA:
+
+	- UPDATE person SET nombres=UPPER(nombres), apellidopaterno=UPPER(apellidopaterno), apellidomaterno=UPPER(apellidomaterno);
+	- UPDATE cie SET codigo=UPPER(codigo), descripcion=UPPER(descripcion);
+
+	//analisis essalud y medicamentos 
+	//reporte essalud (programaciones diarias) 
+	//Falta reporte de compras. 
+	Reporte de consultas consolidados (FUAS Y REPORTES) 
+
+**************************************************************************************************************************
+
+ALTER TABLE `consultanefrologica` ADD `txtLg1` VARCHAR(300) NULL AFTER `txtTransfe`, ADD `txtLg2` VARCHAR(300) NULL AFTER `txtLg1`, ADD `txtVacu1` DATE NULL AFTER `txtLg2`, ADD `txtVacu2` DATE NULL AFTER `txtVacu1`, ADD `txtVacu3` DATE NULL AFTER `txtVacu2`, ADD `txtVacu4` DATE NULL AFTER `txtVacu3`, ADD `txtNeumo` DATE NULL AFTER `txtVacu4`, ADD `txtCre2` VARCHAR(300) NULL AFTER `txtNeumo`, ADD `txtCal2` VARCHAR(300) NULL AFTER `txtCre2`;
+
+crear consultanefrologica2 SIS y dar permisos
+crear consultanefrologica ESSALUD y dar permisos
+crear comprasalmacen y dar permisos
+crear reporte/programacionesdiariashd y dar permisos
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+ALTER TABLE `consultanefrologica` ADD `txtNumCita` INT NULL AFTER `txtCal2`, ADD `txtTipoDatos` INT NULL AFTER `txtNumCita`;
+
+UPDATE `consultanefrologica` SET situacion = (
+	CASE
+    	WHEN situacion = "NUEVO" THEN "N"
+		WHEN situacion = "MENSUAL" THEN "M"
+    	WHEN situacion = "BIMENSUAL" THEN "M-B"
+    	WHEN situacion = "TRIMESTRAL" THEN "M-T"
+    	WHEN situacion = "SEMESTRAL" THEN "M-B-T-S"
+    END
+), situacion2 = (
+	CASE
+    	WHEN situacion2 = "NUEVO" THEN "N"
+		WHEN situacion2 = "MENSUAL" THEN "M"
+    	WHEN situacion2 = "BIMENSUAL" THEN "M-B"
+    	WHEN situacion2 = "TRIMESTRAL" THEN "M-T"
+    	WHEN situacion2 = "SEMESTRAL" THEN "M-B-T-S"
+    END
+)
+
+-------------------------------------------------------------------------------------------------------
+
+//orden de apellidos
+//reporte consolidsdo de medicamentos
+//revisar imc en consulta nefrologica
+//iny ampolla
+//reporte de atencion de consulta nefrologica
+//nombres y apellidos revisar en todos los reportes
+//numero de sesiones de hemodialisis en receta, cambiar el nombre
+//fecha de atención, día del registro de consulta nefrológica
+//fua que el medico no vea
+//pro t (g/dl)
+//saturacion transferrina porcentaje
+//agregar campo en essalud pcr texto
+//revisar fecha en reporte consolidado
+//tru y ktv con dos decimales
+//borrar columna numero en reporte consolidado
+//reporte consoludado ordenar por apellido
+//dar acceso a administrador resultados por paciente
+
+------------------------------------------------------------------------------------------------------------
+
+ALTER TABLE `consultanefrologica` ADD `txtPcr` VARCHAR(100) NULL AFTER `txtTipoDatos`;
+
+--------------------------------------------------------------------------------------------------------------
+
+ALTER TABLE `consultanefrologica` ADD `selectepo` VARCHAR(200) NULL AFTER `estadoatencion`;
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+ALTER TABLE `consultanefrologica` CHANGE `c1` `c1` VARCHAR(11) NULL DEFAULT NULL, CHANGE `c2` `c2` VARCHAR(11) NULL DEFAULT NULL, CHANGE `c3` `c3` VARCHAR(11) NULL DEFAULT NULL, CHANGE `c4` `c4` VARCHAR(11) NULL DEFAULT NULL, CHANGE `c5` `c5` VARCHAR(11) NULL DEFAULT NULL, CHANGE `c6` `c6` VARCHAR(11) NULL DEFAULT NULL, CHANGE `c7` `c7` VARCHAR(11) NULL DEFAULT NULL, CHANGE `c8` `c8` VARCHAR(11) NULL DEFAULT NULL, CHANGE `c9` `c9` VARCHAR(11) NULL DEFAULT NULL, CHANGE `c10` `c10` VARCHAR(11) NULL DEFAULT NULL, CHANGE `c11` `c11` VARCHAR(11) NULL DEFAULT NULL, CHANGE `c12` `c12` VARCHAR(11) NULL DEFAULT NULL, CHANGE `c13` `c13` VARCHAR(11) NULL DEFAULT NULL, CHANGE `c14` `c14` VARCHAR(11) NULL DEFAULT NULL, CHANGE `c15` `c15` VARCHAR(11) NULL DEFAULT NULL, CHANGE `c16` `c16` VARCHAR(11) NULL DEFAULT NULL, CHANGE `c17` `c17` VARCHAR(11) NULL DEFAULT NULL;
+
+ALTER TABLE `consultanefrologica` CHANGE `f1` `f1` VARCHAR(11) NULL DEFAULT NULL, CHANGE `f2` `f2` VARCHAR(11) NULL DEFAULT NULL, CHANGE `f3` `f3` VARCHAR(11) NULL DEFAULT NULL, CHANGE `f4` `f4` VARCHAR(11) NULL DEFAULT NULL, CHANGE `f5` `f5` VARCHAR(11) NULL DEFAULT NULL, CHANGE `f6` `f6` VARCHAR(11) NULL DEFAULT NULL, CHANGE `f7` `f7` VARCHAR(11) NULL DEFAULT NULL, CHANGE `f8` `f8` VARCHAR(11) NULL DEFAULT NULL, CHANGE `f9` `f9` VARCHAR(11) NULL DEFAULT NULL, CHANGE `f10` `f10` VARCHAR(11) NULL DEFAULT NULL, CHANGE `f11` `f11` VARCHAR(11) NULL DEFAULT NULL, CHANGE `f12` `f12` VARCHAR(11) NULL DEFAULT NULL, CHANGE `f13` `f13` VARCHAR(11) NULL DEFAULT NULL, CHANGE `f14` `f14` VARCHAR(11) NULL DEFAULT NULL, CHANGE `f15` `f15` VARCHAR(11) NULL DEFAULT NULL, CHANGE `f16` `f16` VARCHAR(11) NULL DEFAULT NULL, CHANGE `f17` `f17` VARCHAR(11) NULL DEFAULT NULL;
+
+
+CAMBIAR Ci  y Fi a VARCHAR 11
+
+222222222222222222222222 C U I D A D O 222222222222222222222222222222222222
+DELETE FROM movimiento;
+DELETE FROM stock;
+DELETE FROM kardex;
+DELETE FROM lote;
+DELETE FROM detallemovimiento;
+22222222222222222222
+
+ALTER TABLE `historia` ADD `ordencitasopcional` VARCHAR(500) NULL AFTER `estadobaja`;
+
+--------------------------------------------------------------------------------------
+
+ALTER TABLE `consultanefrologica` ADD `accesovascular` VARCHAR(100) NULL AFTER `selectepo`, ADD `areadializador` VARCHAR(100) NULL AFTER `accesovascular`;
+
+--------------------------------------------------------------------------------------
+
+ALTER TABLE `consultanefrologica` CHANGE `txtEli` `txtEli` TEXT NULL DEFAULT NULL, CHANGE `txtPar` `txtPar` TEXT NULL DEFAULT NULL, CHANGE `txtDet3` `txtDet3` TEXT NULL DEFAULT NULL, CHANGE `txtHie` `txtHie` TEXT NULL DEFAULT NULL, CHANGE `txtSat` `txtSat` TEXT NULL DEFAULT NULL, CHANGE `txtFer` `txtFer` TEXT NULL DEFAULT NULL;
+
+--------------------------------------------------------------------------------------
+
+ALTER TABLE `baja` ADD `baja_id` INT NULL AFTER `motivo2`;
+
+--------------------------------------------------------------------------------------
+
+ALTER TABLE `movimiento` ADD `radmin` INT NULL AFTER `turno`;
+
+--------------------------------------------------------------------------------------
+
+ALTER TABLE `detallemovimiento` ADD `proveedor_id` INT NULL AFTER `despachado`, ADD `tipo` CHAR(1) NULL AFTER `proveedor_id`;
+ALTER TABLE `detallemovimiento` CHANGE `tipo` `tipo` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
+ALTER TABLE `detallemovimiento` ADD `tipo2` INT NULL AFTER `tipo`;
+
+--------------------------------------------------------------------------------------
+
+ALTER TABLE `movimiento` 
+ADD `documento_id` VARCHAR(20) NULL AFTER `radmin`, 
+ADD `documento_num` VARCHAR(20) NULL AFTER `documento_id`, 
+ADD `documento_rs` VARCHAR(20) NULL AFTER `documento_num`, 
+ADD `documento_fecha_rs` DATE NULL AFTER `documento_rs`;
+
+// Inserto nuevo medicamento
+
+INSERT INTO `producto` (`id`, `tipo`, `lote`, `codigobarra`, `nombre`, `codigo_producto`, `registro_sanitario`, `precioxcaja`, `preciocompra`, `precioventa`, `preciokayros`, `afecto`, `stockseguridad`, `categoria_id`, `laboratorio_id`, `especialidadfarmacia_id`, `origen_id`, `proveedor_id`, `presentacion_id`, `anaquel_id`, `fraccion`, `created_at`, `updated_at`, `deleted_at`) VALUES (NULL, '', 'NO', '-', 'CALCITRIOL 0.25ug CAP', '', '', '0.00', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '1', NULL, '1.00', '2019-06-26 04:22:48', '2019-08-29 10:55:55', NULL)
+
+AALTER TABLE `consultanefrologica` ADD `selectcalcit` VARCHAR(20) NULL AFTER `selectepo`, ADD `f91` VARCHAR(20) NULL AFTER `selectcalcit`, ADD `c91` VARCHAR(20) NULL AFTER `f91`, ADD `o91` VARCHAR(20) NULL AFTER `c91`, ADD `i91` VARCHAR(20) NULL AFTER `o91`, ADD `m91` INT NULL AFTER `i91`;
+
+//////////////////////////////////////////////////////////////////////
+
+// PARA LA NACIONALIDAD //
+
+ALTER TABLE `person` ADD `nacionalidad` VARCHAR(50) NOT NULL DEFAULT 'Peruano' AFTER `rne`;
+ALTER TABLE `person` CHANGE `dni` `dni` CHAR(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;
+ALTER TABLE `historia` CHANGE `numero` `numero` VARCHAR(12) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL;
