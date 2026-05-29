@@ -1352,6 +1352,9 @@ class ReporteController extends Controller
                             ->where(DB::raw("MONTH(c.fecha)"), "=", $mesito)
                             ->where(DB::raw("YEAR(c.fecha)"), "=", $anoo)
                             ->first();
+                        if ($resultado !== null) {
+                            $sheet->SetCellValue($i . "5", date("d-M", strtotime($resultado->fecha)));
+                        }
                         $atencion = HistoriaClinica::join("historia", "historiaclinica.historia_id", "=", "historia.id")
                             ->where("historia.id", "=", $historia->id)
                             ->where(DB::raw("MONTH(historiaclinica.fecha_atencion)"), "=", $mesito)
@@ -1877,11 +1880,11 @@ class ReporteController extends Controller
                     $sheet->row(5, $cabecera);
 
                     $column = 'A';
-                    for ($row = 6; $row <= 43; $row++) {
+                    for ($row = 6; $row <= 65; $row++) {
                         $sheet->SetCellValue($column . $row, ($row - 5));
                     }
 
-                    for ($row = 6; $row <= 43; $row++) {
+                    for ($row = 6; $row <= 65; $row++) {
                         if ($row < 32 || $row > 35) {
                             $sheet->mergeCells("B" . $row . ":C" . $row);
                         }
@@ -1932,7 +1935,29 @@ class ReporteController extends Controller
                     $sheet->SetCellValue("B41", "Peso Seco");
                     $sheet->SetCellValue("B42", "Acceso Vascular");
                     $sheet->SetCellValue("B43", "Área del dializador");
-                    $sheet->setBorder('B4:O43', 'thin');
+                    $sheet->SetCellValue("B44", "Leucocitos");
+                    $sheet->SetCellValue("B45", "Hematies");
+                    $sheet->SetCellValue("B46", "Plaquetas");
+                    $sheet->SetCellValue("B47", "VCM");
+                    $sheet->SetCellValue("B48", "HCM");
+                    $sheet->SetCellValue("B49", "CHCM");
+                    $sheet->SetCellValue("B50", "RDW (%)");
+                    $sheet->SetCellValue("B51", "RDW-SD");
+                    $sheet->SetCellValue("B52", "Abastonados");
+                    $sheet->SetCellValue("B53", "Segmentados");
+                    $sheet->SetCellValue("B54", "Eosinofilos");
+                    $sheet->SetCellValue("B55", "Basofilos");
+                    $sheet->SetCellValue("B56", "Monocitos");
+                    $sheet->SetCellValue("B57", "Linfocitos");
+                    $sheet->SetCellValue("B58", "PCR");
+                    $sheet->SetCellValue("B59", "Colesterol");
+                    $sheet->SetCellValue("B60", "Trigliceridos");
+                    $sheet->SetCellValue("B61", "HDL Colesterol");
+                    $sheet->SetCellValue("B62", "LDL Colesterol");
+                    $sheet->SetCellValue("B63", "Vitamina B12");
+                    $sheet->SetCellValue("B64", "Ac. Folico");
+                    $sheet->SetCellValue("B65", "Ac. Urico");
+                    $sheet->setBorder('B4:O65', 'thin');
 
                     $mesito = 1;
                     for ($i = "D"; $i <= "O"; $i++) {
@@ -1944,6 +1969,9 @@ class ReporteController extends Controller
                             ->where(DB::raw("MONTH(c.fecha)"), "=", $mesito)
                             ->where(DB::raw("YEAR(c.fecha)"), "=", $anoo)
                             ->first();
+                        if ($resultado !== null) {
+                            $sheet->SetCellValue($i . "5", date("d-M", strtotime($resultado->fecha)));
+                        }
                         $atencion = HistoriaClinica::join("historia", "historiaclinica.historia_id", "=", "historia.id")
                             ->where("historia.id", "=", $historia->id)
                             ->where(DB::raw("MONTH(historiaclinica.fecha_atencion)"), "=", $mesito)
@@ -2036,7 +2064,29 @@ class ReporteController extends Controller
                             $sheet->SetCellValue($i . "41", ($atencion == null ? "" : $atencion->txtPesoSeco));
                             $sheet->SetCellValue($i . "42", ($atencion == null ? "" : $accesin));
                             $sheet->SetCellValue($i . "43", ($atencion == null ? "" : $atencion->txtAreaDializador));
-                            $sheet->setBorder('B4:O43', 'thin');
+                            $sheet->SetCellValue($i . "44", $resultado->txtLeucocitos);
+                            $sheet->SetCellValue($i . "45", $resultado->txtHematies);
+                            $sheet->SetCellValue($i . "46", $resultado->txtPlaquetas);
+                            $sheet->SetCellValue($i . "47", $resultado->txtVcm);
+                            $sheet->SetCellValue($i . "48", $resultado->txtHcm);
+                            $sheet->SetCellValue($i . "49", $resultado->txtCcmh);
+                            $sheet->SetCellValue($i . "50", $resultado->txtRdw);
+                            $sheet->SetCellValue($i . "51", $resultado->txtRdwSd);
+                            $sheet->SetCellValue($i . "52", $resultado->txtAbastonados);
+                            $sheet->SetCellValue($i . "53", $resultado->txtSegmentados);
+                            $sheet->SetCellValue($i . "54", $resultado->txtEosinofilos);
+                            $sheet->SetCellValue($i . "55", $resultado->txtBasofilos);
+                            $sheet->SetCellValue($i . "56", $resultado->txtMonocitos);
+                            $sheet->SetCellValue($i . "57", $resultado->txtLinfocitos);
+                            $sheet->SetCellValue($i . "58", $resultado->txtPcr);
+                            $sheet->SetCellValue($i . "59", $resultado->txtColesterol);
+                            $sheet->SetCellValue($i . "60", $resultado->txtTrigliceridos);
+                            $sheet->SetCellValue($i . "61", $resultado->txtHdl);
+                            $sheet->SetCellValue($i . "62", $resultado->txtLdl);
+                            $sheet->SetCellValue($i . "63", $resultado->txtVitaminaB12);
+                            $sheet->SetCellValue($i . "64", $resultado->txtAcidoFolico);
+                            $sheet->SetCellValue($i . "65", $resultado->txtAcidoUrico);
+                            $sheet->setBorder('B4:O65', 'thin');
                         }
                         $mesito++;
                     }

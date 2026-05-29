@@ -48,6 +48,7 @@ $mes2 = $meses_ES[$mes2-1];
 							}
 							echo '<a href="#" onclick="modal(\'consultanefrologica2/resultados?pid=' . $value->pid . '&situacion=' . $c1->situacion . '&cid=' . $c1->id . '\', \'<b>RESULTADOS DE EXÁMENES DE LABORATORIO DE ' . $value->apellidopaterno . ' ' . $value->apellidomaterno . ' ' . $value->nombres . '&nbsp;|&nbsp;MES: ' . $mesl .  ' DEL ' . $ano . '</b>\', this);" class="btn btn-xs btn-danger"><i class="fa fa-file"></i> Llenar</a> ' . $sms;
 
+							echo '&nbsp;<a href="#" onclick="window.open(\'consultanefrologica2/pdfLaboratorio?id=' . $c1->id . '\', \'_blank\')" class="btn btn-xs btn-default" title="PDF Laboratorio Clinico"><i class="fa fa-file-pdf-o"></i> PDF</a>';
 						} else {
 							echo '-';
 						}

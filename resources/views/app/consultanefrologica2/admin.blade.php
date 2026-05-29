@@ -65,6 +65,8 @@
 							</div>
 							{!! Form::button('<i class="glyphicon glyphicon-search"></i> Buscar', array('class' => 'btn btn-success btn-xs', 'id' => 'btnBuscar', 'onclick' => 'buscar(\''.$entidad.'\')')) !!}
 							{!! Form::button('<i class="glyphicon glyphicon-print"></i> Examenes Mensuales', array('class' => 'btn btn-warning btn-xs', 'id' => 'btnBuscar', 'onclick' => 'analisisMensualesKtvTru2();')) !!}
+							{!! Form::button('<i class="fa fa-pencil"></i> Firma PDF', array('class' => 'btn btn-info btn-xs', 'onclick' => 'modal(\'consultanefrologica2/configuracionFirmaLaboratorio\', \'Firma PDF Laboratorio\', this);')) !!}
+							{!! Form::button('<i class="fa fa-cog"></i> Rangos Referenciales', array('class' => 'btn btn-default btn-xs', 'onclick' => 'modal(\'consultanefrologica2/configuracionRangosReferenciales\', \'Configuración de Rangos Referenciales\', this);')) !!}
 							{!! Form::close() !!}
 						</div>
 					</div>

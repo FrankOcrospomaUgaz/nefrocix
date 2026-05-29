@@ -1295,6 +1295,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('consultanefrologica2', 'ConsultaNefrologica2Controller', array('except' => array('show')));
 
     Route::get('consultanefrologica2/resultados', 'ConsultaNefrologica2Controller@resultados')->name('consultanefrologica2.resultados');
+    Route::get('consultanefrologica2/pdfLaboratorio', 'ConsultaNefrologica2Controller@pdfLaboratorio')->name('consultanefrologica2.pdfLaboratorio');
+    Route::get('consultanefrologica2/configuracionFirmaLaboratorio', 'ConsultaNefrologica2Controller@configuracionFirmaLaboratorio')->name('consultanefrologica2.configuracionFirmaLaboratorio');
+    Route::get('consultanefrologica2/configuracionRangosReferenciales', 'ConsultaNefrologica2Controller@configuracionRangosReferenciales')->name('consultanefrologica2.configuracionRangosReferenciales');
+    Route::post('consultanefrologica2/guardarRangosReferenciales', 'ConsultaNefrologica2Controller@guardarRangosReferenciales')->name('consultanefrologica2.guardarRangosReferenciales');
+    Route::post('consultanefrologica2/guardarFirmaLaboratorio', 'ConsultaNefrologica2Controller@guardarFirmaLaboratorio')->name('consultanefrologica2.guardarFirmaLaboratorio');
+    Route::post('consultanefrologica2/eliminarFirmaLaboratorio', 'ConsultaNefrologica2Controller@eliminarFirmaLaboratorio')->name('consultanefrologica2.eliminarFirmaLaboratorio');
+    Route::get('consultanefrologica2/firmaLaboratorioImagen', 'ConsultaNefrologica2Controller@firmaLaboratorioImagen')->name('consultanefrologica2.firmaLaboratorioImagen');
 
     Route::post('consultanefrologica2/storeresultados', 'ConsultaNefrologica2Controller@storeresultados')->name('consultanefrologica2.storeresultados');
 

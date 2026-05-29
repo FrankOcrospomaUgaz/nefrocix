@@ -25,4 +25,9 @@ class ConsultaNefrologica extends Model
     {
         return $this->belongsTo('App\Person', 'doctor_id');
     }
+
+    public function analisisAdicionales()
+    {
+        return $this->hasMany('App\ConsultaNefrologicaAnalisisAdicional', 'consultanefrologica_id')->orderBy('orden', 'asc');
+    }
 }
