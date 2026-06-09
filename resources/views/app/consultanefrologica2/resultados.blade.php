@@ -302,8 +302,16 @@ persona->apellidopaterno . ' ' . $historia->persona->apellidomaterno . ' ' . $hi
                     </div>
                     <hr>
                     <div class="form-group">
-                        <div class="col-lg-12 col-md-12 col-sm-12 text-center">
-                            <u><b style="color:blue;">PERIODICIDAD DEL EXAMEN: {{ $periodicidad }}</b></u>
+                        {!! Form::label('periodicidad_examen', 'Bateria de examenes:', array('class' => 'col-lg-2 col-md-2 col-sm-2 control-label')) !!}
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <select name="periodicidad_examen" id="periodicidad_examen" class="form-control input-sm" onchange="CambiarTipoCampo(this.value);">
+                                <option value="MENSUAL" {{ $periodicidad == 'MENSUAL' ? 'selected' : '' }}>MENSUALES</option>
+                                <option value="BIMENSUAL" {{ $periodicidad == 'BIMENSUAL' ? 'selected' : '' }}>MENSUALES + BIMENSUALES</option>
+                                <option value="TRIMESTRAL" {{ $periodicidad == 'TRIMESTRAL' ? 'selected' : '' }}>MENSUALES + TRIMESTRALES</option>
+                                <option value="SEMESTRAL" {{ $periodicidad == 'SEMESTRAL' ? 'selected' : '' }}>MENS. + BIMENS. + TRIMES. + SEMES.</option>
+                                <option value="ANUAL" {{ $periodicidad == 'ANUAL' ? 'selected' : '' }}>MENS. + BIMENS. + TRIMES. + SEMES. + ANUALES</option>
+                                <option value="NUEVO" {{ $periodicidad == 'NUEVO' ? 'selected' : '' }}>NUEVO / BASALES</option>
+                            </select>
                         </div>
                     </div>
                     <div class="campito" id="MENSUAL">
@@ -795,8 +803,9 @@ $(document).ready(function() {
 	$(".closdat").remove();
     $(".modal-title").append('<button type="button" class="close closdat" onclick="$(this).parent().parent().parent().parent().parent().modal(\'hide\')" title="Cerrar Ventana"><i style="font-weight:bold;color:red; font-weight: bold;" class="glyphicon glyphicon-remove-circle"></i></button>');
 	$('.numerillo').inputmask('decimal', { radixPoint: ".", autoGroup: true, groupSeparator: "", groupSize: 3, digits: 3 });	
-	$('.numerillo2').inputmask('decimal', { radixPoint: ".", autoGroup: true, groupSeparator: "", groupSize: 3, digits: 3 });
+    $('.numerillo2').inputmask('decimal', { radixPoint: ".", autoGroup: true, groupSeparator: "", groupSize: 3, digits: 3 });
     $("#txtFechaKTV").val("{{$atencion_id}}");
+    $('#periodicidad_examen').val('{{ $periodicidad }}');
     CambiarTipoCampo('{{ $periodicidad }}');
     initCamposSerologia();
 });

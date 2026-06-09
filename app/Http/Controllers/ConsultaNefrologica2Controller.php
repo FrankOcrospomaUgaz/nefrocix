@@ -148,7 +148,7 @@ class ConsultaNefrologica2Controller extends Controller
         $listar   = Libreria::getParam($request->input('listar'), 'NO');
         $pid = $request->input('pid');
         $tipo = $request->input('situacion');
-        $tipos = array('NUEVO'=>'NUEVO', 'MENSUAL'=>'MENSUAL', 'BIMENSUAL'=>'BIMENSUAL', 'TRIMESTRAL'=>'TRIMESTRAL', 'SEMESTRAL'=>'SEMESTRAL');
+        $tipos = array('NUEVO'=>'NUEVO', 'MENSUAL'=>'MENSUAL', 'BIMENSUAL'=>'BIMENSUAL', 'TRIMESTRAL'=>'TRIMESTRAL', 'SEMESTRAL'=>'SEMESTRAL', 'ANUAL'=>'ANUAL');
         $historia = Historia::where('person_id', '=', $pid)->first();
         $entidad  = 'HC';
         $c1 = ConsultaNefrologica::find($cid);
@@ -265,6 +265,9 @@ class ConsultaNefrologica2Controller extends Controller
             $c1->txtVitaminaB12 = ($request->input("txtVitaminaB12")==""?NULL:$request->input("txtVitaminaB12"));
             $c1->txtAcidoFolico = ($request->input("txtAcidoFolico")==""?NULL:$request->input("txtAcidoFolico"));
             $c1->txtAcidoUrico = ($request->input("txtAcidoUrico")==""?NULL:$request->input("txtAcidoUrico"));
+            $periodicidadExamen = $this->normalizarPeriodicidad($request->input("periodicidad_examen"), $this->obtenerPeriodicidad($c1));
+            $c1->situacion = $this->periodicidadCodigo($periodicidadExamen);
+            $c1->txtTipoDatos = $this->periodicidadTipoDatos($periodicidadExamen);
             $c1->estadoexamen = 1;
             $c1->save();
 
@@ -362,6 +365,11 @@ class ConsultaNefrologica2Controller extends Controller
             return 'NUEVO';
         }
 
+        $periodicidadSituacion = $this->periodicidadDesdeCodigo($hc->situacion);
+        if ($periodicidadSituacion === 'ANUAL' || $periodicidadSituacion === 'NUEVO') {
+            return $periodicidadSituacion;
+        }
+
         switch ((int) $hc->txtTipoDatos) {
             case 2:
             case 4:
@@ -379,8 +387,63 @@ class ConsultaNefrologica2Controller extends Controller
             case 5:
             case 1:
             default:
-                return 'MENSUAL';
+                return $periodicidadSituacion !== null ? $periodicidadSituacion : 'MENSUAL';
         }
+    }
+
+    private function normalizarPeriodicidad($periodicidad, $default = 'MENSUAL')
+    {
+        $periodicidad = strtoupper(trim((string) $periodicidad));
+        $permitidas = array('MENSUAL', 'BIMENSUAL', 'TRIMESTRAL', 'SEMESTRAL', 'ANUAL', 'NUEVO');
+
+        return in_array($periodicidad, $permitidas) ? $periodicidad : $default;
+    }
+
+    private function periodicidadDesdeCodigo($codigo)
+    {
+        $mapa = array(
+            'M' => 'MENSUAL',
+            'M-B' => 'BIMENSUAL',
+            'M-T' => 'TRIMESTRAL',
+            'M-B-T-S' => 'SEMESTRAL',
+            'ANUAL' => 'ANUAL',
+            'N' => 'NUEVO',
+            'MENSUAL' => 'MENSUAL',
+            'BIMENSUAL' => 'BIMENSUAL',
+            'TRIMESTRAL' => 'TRIMESTRAL',
+            'SEMESTRAL' => 'SEMESTRAL',
+            'NUEVO' => 'NUEVO',
+        );
+
+        return isset($mapa[$codigo]) ? $mapa[$codigo] : null;
+    }
+
+    private function periodicidadCodigo($periodicidad)
+    {
+        $mapa = array(
+            'MENSUAL' => 'M',
+            'BIMENSUAL' => 'M-B',
+            'TRIMESTRAL' => 'M-T',
+            'SEMESTRAL' => 'M-B-T-S',
+            'ANUAL' => 'ANUAL',
+            'NUEVO' => 'N',
+        );
+
+        return isset($mapa[$periodicidad]) ? $mapa[$periodicidad] : 'M';
+    }
+
+    private function periodicidadTipoDatos($periodicidad)
+    {
+        $mapa = array(
+            'MENSUAL' => 1,
+            'BIMENSUAL' => 2,
+            'TRIMESTRAL' => 3,
+            'SEMESTRAL' => 0,
+            'ANUAL' => 0,
+            'NUEVO' => 0,
+        );
+
+        return isset($mapa[$periodicidad]) ? $mapa[$periodicidad] : 1;
     }
 
     private function periodicidadEtiqueta($periodicidad)
