@@ -55,7 +55,6 @@ class ConsultaNefrologica2Controller extends Controller
      */
     public function buscar(Request $request)
     {
-        $this->consultasMensuales();
         date_default_timezone_set('America/Lima');
         $mes              = date("m");
         $pagina           = $request->input('page');
@@ -69,6 +68,7 @@ class ConsultaNefrologica2Controller extends Controller
         $numero           = Libreria::getParam($request->input('numero'));
         $messs            = Libreria::getParam($request->input('messs'));
         $anooo            = Libreria::getParam($request->input('anooo'));
+        $this->consultasMensuales($messs, $anooo);
         $resultado        = Historia::join('person', 'person.id', '=', 'historia.person_id')
                             ->where(DB::raw('concat(apellidopaterno,\' \',apellidomaterno,\' \',nombres)'), 'LIKE', '%'.strtoupper($nombre).'%')
                             ->where('historia.convenio_id', '=', 2)
@@ -78,6 +78,7 @@ class ConsultaNefrologica2Controller extends Controller
                             ->join("consultanefrologica as c", "c.persona_id", "=", "person.id")
                             ->where(DB::raw("MONTH(c.fecha)"), "=", $messs)
                             ->where(DB::raw("YEAR(c.fecha)"), "=", $anooo)
+                            ->whereRaw("c.id = (select max(c2.id) from consultanefrologica c2 where c2.persona_id = person.id and MONTH(c2.fecha) = " . (int) $messs . " and YEAR(c2.fecha) = " . (int) $anooo . ")")
                             ->orderBy(DB::raw('concat(apellidopaterno,\' \',apellidomaterno,\' \',nombres)'));
 
         if($examenes=="1") {
@@ -167,14 +168,16 @@ class ConsultaNefrologica2Controller extends Controller
             ->where(DB::raw("YEAR(historiaclinica.fecha_atencion)"), "=", date("Y", strtotime($c1->fecha)))
             ->where(DB::raw("LENGTH(txtMuestraAnalisis)"), ">", 0)
             ->where("historiaclinica.estado", "!=", "C")
-            ->select("historiaclinica.id", "historiaclinica.txtPesoInicial2", "historiaclinica.txtPesoFinal2", "historiaclinica.txtHorasHemodialisis")
+            ->select("historiaclinica.id", "historiaclinica.fecha_atencion", "historiaclinica.txtPesoInicial2", "historiaclinica.txtPesoFinal2", "historiaclinica.txtHorasHemodialisis")
             ->first();
 
+        $fechaLaboratorioFormulario = ($c1->txtFechaLaboratorio == '' || $c1->txtFechaLaboratorio == null ? $c1->fecha : $c1->txtFechaLaboratorio);
         if($atencion!==null) {
             $ppre = $atencion->txtPesoInicial2;
             $ppos = $atencion->txtPesoFinal2;
             $horas = $atencion->txtHorasHemodialisis;
             $atencion_id = $atencion->id;
+            $fechaLaboratorioFormulario = $atencion->fecha_atencion;
         }
 
         //dd($atencion_id . "--");
@@ -194,7 +197,7 @@ class ConsultaNefrologica2Controller extends Controller
         $boton    = 'Guardar';
         $periodicidad = $this->obtenerPeriodicidad($c1);
         $analisisAdicionales = ConsultaNefrologicaAnalisisAdicional::where('consultanefrologica_id', '=', $c1->id)->orderBy('orden', 'asc')->get();
-        return view($this->folderview.'.resultados')->with(compact('tipo', 'tipos', 'hc', 'historia', 'formData', 'entidad', 'boton', 'listar', "fechasHD", "ppre", "ppos", "horas", "atencion_id", 'periodicidad', 'analisisAdicionales'));
+        return view($this->folderview.'.resultados')->with(compact('tipo', 'tipos', 'hc', 'historia', 'formData', 'entidad', 'boton', 'listar', "fechasHD", "ppre", "ppos", "horas", "atencion_id", 'periodicidad', 'analisisAdicionales', 'fechaLaboratorioFormulario'));
     }
 
     public function storeresultados(Request $request)
@@ -215,6 +218,7 @@ class ConsultaNefrologica2Controller extends Controller
             $c1->txtVacu3 = ($request->input("txtVacu3")==""?NULL:date("Y-m-d", strtotime($request->input("txtVacu3"))));
             $c1->txtVacu4 = ($request->input("txtVacu4")==""?NULL:date("Y-m-d", strtotime($request->input("txtVacu4"))));
             $c1->txtNeumo = ($request->input("txtNeumo")==""?NULL:date("Y-m-d", strtotime($request->input("txtNeumo"))));
+            $c1->txtFechaLaboratorio = ($request->input("txtFechaLaboratorio")==""?NULL:date("Y-m-d", strtotime($request->input("txtFechaLaboratorio"))));
             $c1->txtDet3 = ($request->input("txtDet3")==""?NULL:$request->input("txtDet3"));
             $c1->txtDet4 = ($request->input("txtDet4")==""?NULL:$request->input("txtDet4"));
             $c1->txtUre = ($request->input("txtUre")==""?NULL:$request->input("txtUre"));
@@ -229,7 +233,9 @@ class ConsultaNefrologica2Controller extends Controller
             $c1->txtCloro = ($request->input("txtCloro")==""?NULL:$request->input("txtCloro"));
             $c1->txtFos = ($request->input("txtFos")==""?NULL:$request->input("txtFos"));
             $c1->txtCal = ($request->input("txtCal")==""?NULL:$request->input("txtCal"));
-            $c1->txtCal2 = ($request->input("txtCal2")==""?NULL:$request->input("txtCal2"));
+            $calcioSerico = ($request->input("txtCal")==""?NULL:(float) str_replace(",", ".", $request->input("txtCal")));
+            $albuminaPaciente = ($request->input("txtAlbu")==""?NULL:(float) str_replace(",", ".", $request->input("txtAlbu")));
+            $c1->txtCal2 = ($calcioSerico !== null && $albuminaPaciente !== null ? number_format($calcioSerico + 0.8 * (4.0 - $albuminaPaciente), 2, '.', '') : ($request->input("txtCal2")==""?NULL:$request->input("txtCal2")));
             $c1->txtPro = ($request->input("txtPro")==""?NULL:$request->input("txtPro"));
             $c1->txtFos2 = ($request->input("txtFos2")==""?NULL:$request->input("txtFos2"));
             $c1->txtTgo = ($request->input("txtTgo")==""?NULL:$request->input("txtTgo"));
@@ -333,6 +339,8 @@ class ConsultaNefrologica2Controller extends Controller
                 $historita->txtPesoFinal2 = $request->input("txtPesoFinal2KTV");
                 $historita->txtMuestraAnalisis = $txtMuestraAnalisis0;
                 $historita->save(); 
+                $c1->txtFechaLaboratorio = $historita->fecha_atencion;
+                $c1->save();
             } else {
                 //SEGUNDO ELIMINO TODOS LOS txtMuestraAnalisis ASUMIENDO QUE NINGÚNA HD VA A TOMAR DATOS MENSUALES
                 $atencionesMensuales = HistoriaClinica::join("historia", "historiaclinica.historia_id", "=", "historia.id")
@@ -780,25 +788,27 @@ class ConsultaNefrologica2Controller extends Controller
         return $altoFirma;
     }
 
-    private function dibujarFirmaLaboratorioPdfDespuesContenido()
+    private function firmaLaboratorioAltaPorPeriodicidad($periodicidad)
+    {
+        return in_array($periodicidad, array('SEMESTRAL', 'ANUAL'));
+    }
+
+    private function dibujarFirmaLaboratorioPdfEnHoja($instancia, $periodicidad = null)
     {
         $firma = $this->rutaFirmaLaboratorioPdf();
         if ($firma === null) {
             return;
         }
-        $anchoFirma = 65;
+        $anchoFirma = 50;
         $altoFirma = $this->altoFirmaLaboratorioPdf($firma, $anchoFirma);
         $altoFooter = $this->altoFooterPdfLaboratorio();
-        $margenSuperior = 8;
-        $margenInferiorFooter = $altoFooter + 5;
-        $y = TCPDF::GetY() + $margenSuperior;
-        $maxY = TCPDF::getPageHeight() - $margenInferiorFooter - $altoFirma;
-        if ($y + $altoFirma > $maxY) {
-            TCPDF::AddPage();
-            $y = TCPDF::GetY() + $margenSuperior;
+        $x = 210 - $anchoFirma - 18;
+        $y = $instancia->getPageHeight() - $altoFooter - $altoFirma + 4;
+        if ($this->firmaLaboratorioAltaPorPeriodicidad($periodicidad)) {
+            $y = $instancia->getPageHeight() - $altoFooter - $altoFirma - 4;
         }
-        $x = 210 - $anchoFirma - 10;
-        TCPDF::Image($firma, $x, $y, $anchoFirma, $altoFirma, $this->tipoImagenPdf($firma));
+
+        $instancia->Image($firma, $x, $y, $anchoFirma, $altoFirma, $this->tipoImagenPdf($firma));
     }
 
     public function configuracionFirmaLaboratorio(Request $request)
@@ -1102,11 +1112,21 @@ class ConsultaNefrologica2Controller extends Controller
 
         $edad = '-';
         if ($historia->persona->fechanacimiento !== null && $historia->persona->fechanacimiento !== '') {
-            $edad = (new DateTime())->diff(new DateTime($historia->persona->fechanacimiento))->y . ' anos';
+            $edad = (new DateTime())->diff(new DateTime($historia->persona->fechanacimiento))->y . ' años';
         }
 
         $periodicidad = $this->obtenerPeriodicidad($hc);
         $tipoExamen = $this->periodicidadEtiqueta($periodicidad);
+        $atencionLaboratorio = HistoriaClinica::join("historia", "historiaclinica.historia_id", "=", "historia.id")
+            ->where("historia.person_id", "=", $hc->persona_id)
+            ->where(DB::raw("MONTH(historiaclinica.fecha_atencion)"), "=", date("m", strtotime($hc->fecha)))
+            ->where(DB::raw("YEAR(historiaclinica.fecha_atencion)"), "=", date("Y", strtotime($hc->fecha)))
+            ->where(DB::raw("LENGTH(historiaclinica.txtMuestraAnalisis)"), ">", 0)
+            ->where("historiaclinica.estado", "!=", "C")
+            ->select("historiaclinica.fecha_atencion")
+            ->orderBy("historiaclinica.fecha_atencion", "desc")
+            ->first();
+        $fechaLaboratorio = ($atencionLaboratorio !== null && $atencionLaboratorio->fecha_atencion !== null && $atencionLaboratorio->fecha_atencion !== '') ? $atencionLaboratorio->fecha_atencion : (($hc->txtFechaLaboratorio !== null && $hc->txtFechaLaboratorio !== '') ? $hc->txtFechaLaboratorio : $hc->fecha);
         $permitidos = $this->analisisPermitidosPorPeriodicidad($periodicidad);
         $rows = $this->generarFilasPdf($hc, $permitidos);
         $rows .= $this->generarFilasAdicionalesPdf($hc);
@@ -1117,38 +1137,39 @@ class ConsultaNefrologica2Controller extends Controller
 
         $html = '<style>
             table { font-size: 8px; }
-            .box td { border: 1px solid #000; }
             .result th { border-top: 1px solid #000; border-bottom: 1px solid #000; font-weight: bold; }
             .result td { border-bottom: 1px solid #000; }
+            .datos-paciente td { border: 1px solid #000; }
+            .espacio td { border-bottom: none; font-size: 3px; }
         </style>
-        <table class="box" cellpadding="3">
-            <tr>
-                <td width="13%">Paciente:</td>
-                <td width="42%">' . htmlentities($historia->persona->apellidopaterno . ' ' . $historia->persona->apellidomaterno . ' ' . $historia->persona->nombres) . '</td>
-                <td width="15%">Sexo:</td>
-                <td width="30%">' . htmlentities($historia->persona->sexo == 'M' ? 'MASCULINO' : 'FEMENINO') . '</td>
-            </tr>
-            <tr>
-                <td>Edad:</td>
-                <td>' . htmlentities($edad) . '</td>
-                <td>Fecha:</td>
-                <td>' . date('d/m/Y', strtotime($hc->fecha)) . '</td>
-            </tr>
-            <tr>
-                <td>DNI:</td>
-                <td>' . htmlentities($historia->persona->dni) . '</td>
-                <td>Tipo de examen:</td>
-                <td>' . htmlentities($tipoExamen) . '</td>
-            </tr>
-        </table>
-        <br>
         <table class="result" cellpadding="2">
-            <tr>
-                <th width="38%">EXAMEN</th>
-                <th width="15%" align="center">RESULTADO</th>
-                <th width="12%" align="center">UNIDAD</th>
-                <th width="35%">RANGO REFERENCIAL</th>
-            </tr>
+            <thead>
+                <tr class="datos-paciente">
+                    <td width="13%">Paciente:</td>
+                    <td width="42%">' . htmlentities($historia->persona->apellidopaterno . ' ' . $historia->persona->apellidomaterno . ' ' . $historia->persona->nombres) . '</td>
+                    <td width="15%">Sexo:</td>
+                    <td width="30%">' . htmlentities($historia->persona->sexo == 'M' ? 'MASCULINO' : 'FEMENINO') . '</td>
+                </tr>
+                <tr class="datos-paciente">
+                    <td width="13%">Edad:</td>
+                    <td width="42%">' . htmlentities($edad) . '</td>
+                    <td width="15%">Fecha:</td>
+                    <td width="30%">' . date('d/m/Y', strtotime($fechaLaboratorio)) . '</td>
+                </tr>
+                <tr class="datos-paciente">
+                    <td width="13%">DNI:</td>
+                    <td width="42%">' . htmlentities($historia->persona->dni) . '</td>
+                    <td width="15%">Tipo de examen:</td>
+                    <td width="30%">' . htmlentities($tipoExamen) . '</td>
+                </tr>
+                <tr class="espacio"><td colspan="4">&nbsp;</td></tr>
+                <tr>
+                    <th width="38%">EXAMEN</th>
+                    <th width="15%" align="center">RESULTADO</th>
+                    <th width="12%" align="center">UNIDAD</th>
+                    <th width="35%">RANGO REFERENCIAL</th>
+                </tr>
+            </thead>
             ' . $rows . '
         </table>';
 
@@ -1160,7 +1181,8 @@ class ConsultaNefrologica2Controller extends Controller
         app('tcpdf')->setHeaderCallback(function ($instancia) use ($controlador) {
             $controlador->dibujarCabeceraPdfLaboratorio($instancia);
         });
-        app('tcpdf')->setFooterCallback(function ($instancia) use ($controlador) {
+        app('tcpdf')->setFooterCallback(function ($instancia) use ($controlador, $periodicidad) {
+            $controlador->dibujarFirmaLaboratorioPdfEnHoja($instancia, $periodicidad);
             $controlador->dibujarFooterPdfLaboratorio($instancia);
         });
 
@@ -1170,20 +1192,24 @@ class ConsultaNefrologica2Controller extends Controller
         $pdf::setHeaderMargin(0);
         $pdf::setFooterMargin(0);
         $pdf::SetMargins(10, $altoCabecera, 10);
-        $pdf::SetAutoPageBreak(true, $altoFooter + 2);
+        $margenInferior = $altoFooter + 2;
+        if ($this->firmaLaboratorioAltaPorPeriodicidad($periodicidad) && $this->rutaFirmaLaboratorioPdf() !== null) {
+            $margenInferior = $altoFooter + $this->altoFirmaLaboratorioPdf($this->rutaFirmaLaboratorioPdf(), 50) + 8;
+        }
+        $pdf::SetAutoPageBreak(true, $margenInferior);
         $pdf::SetTitle('LaboratorioClinico');
         $pdf::AddPage();
         $pdf::SetFont('helvetica', '', 8);
         $pdf::writeHTML($html, true, false, true, false, '');
-        $this->dibujarFirmaLaboratorioPdfDespuesContenido();
         $pdf::Output('LaboratorioClinico.pdf');
     }
 
-    public function consultasMensuales() {
+    public function consultasMensuales($mes = null, $ano = null) {
 
         date_default_timezone_set('America/Lima');
-        $mes = date('m');
-        $ano = date('Y');
+        $mes = ($mes === null || $mes === '') ? date('m') : str_pad((int) $mes, 2, '0', STR_PAD_LEFT);
+        $ano = ($ano === null || $ano === '') ? date('Y') : (int) $ano;
+        $fechaConsulta = $ano . '-' . $mes . '-01';
 
         $lista = Historia::where('historia.convenio_id', '=', 2)->where('historia.baja', '!=', "S")->get();
 
@@ -1194,7 +1220,7 @@ class ConsultaNefrologica2Controller extends Controller
             if(count($consultas)===0) {
                 //BAZAL
                 $cons = new ConsultaNefrologica();
-                $cons->fecha = date('Y-m-d');
+                $cons->fecha = $fechaConsulta;
                 $cons->persona_id = $row->person_id;
                 $cons->save();
             }

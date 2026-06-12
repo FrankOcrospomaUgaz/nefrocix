@@ -838,7 +838,7 @@ $nombreusuario = $person->apellidopaterno.' '.$person->apellidomaterno.' '.$pers
 																					</div>
 																					<label for="txtAreaMembranaFiltro" class="col-lg-2 col-md-2 col-sm-2 control-label">Área, membrana filtro</label>
 																					<div class="col-lg-4 col-md-4 col-sm-4">
-																						{!! Form::select('txtAreaMembranaFiltro', array(""=>"", "1.5"=>"1.5", "1.7"=>"1.7", "1.9"=>"1.9", "2.1"=>"2.1"), '', array('class' => 'form-control input-sm requerido', 'id' => 'txtAreaMembranaFiltro')) !!}
+																						{!! Form::select('txtAreaMembranaFiltro', array(""=>"", "1.7"=>"1.7", "1.8"=>"1.8", "2.0"=>"2.0", "2.2"=>"2.2"), '', array('class' => 'form-control input-sm requerido', 'id' => 'txtAreaMembranaFiltro')) !!}
 																					</div>
 																				</div>
 																				<div class="form-group">

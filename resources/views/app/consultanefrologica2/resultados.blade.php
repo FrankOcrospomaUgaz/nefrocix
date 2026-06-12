@@ -278,6 +278,12 @@ persona->apellidopaterno . ' ' . $historia->persona->apellidomaterno . ' ' . $hi
                         </div>
                     </div>
                     <div class="form-group">
+                        {!! Form::label('txtFechaLaboratorio', 'Fecha del analisis', array('class' => 'col-lg-2 col-md-2 col-sm-2 control-label')) !!}
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            {!! Form::date('txtFechaLaboratorio', $fechaLaboratorioFormulario, array('class' => 'form-control input-sm', 'id' => 'txtFechaLaboratorio')) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
                         {!! Form::label('txtFechaKTV', 'Fecha de Hemodiálisis (Toma de datos)', array('class' => 'col-lg-2 col-md-2 col-sm-2 control-label')) !!}
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             <select name="txtFechaKTV" id="txtFechaKTV" class="form-control input-sm">
@@ -434,7 +440,7 @@ persona->apellidopaterno . ' ' . $historia->persona->apellidomaterno . ' ' . $hi
                             {!! Form::label('txtCal2', 'Calcio corregido', array('class' => 'col-lg-2 col-md-2 col-sm-2 control-label')) !!}
                             <div class="col-lg-2 col-md-2 col-sm-2">
                                 <div class="input-group">
-                                    {!! Form::text('txtCal2', null, array('class' => 'form-control input-sm numerillo', 'id' => 'txtCal2')) !!}
+                                    {!! Form::text('txtCal2', null, array('class' => 'form-control input-sm numerillo', 'id' => 'txtCal2', 'readonly')) !!}
                                     <span class="input-group-addon">
                                         mg/dl
                                     </span>
@@ -802,12 +808,36 @@ $(document).ready(function() {
 	init(IDFORMMANTENIMIENTO+'{!! $entidad !!}', 'M', '{!! $entidad !!}');
 	$(".closdat").remove();
     $(".modal-title").append('<button type="button" class="close closdat" onclick="$(this).parent().parent().parent().parent().parent().modal(\'hide\')" title="Cerrar Ventana"><i style="font-weight:bold;color:red; font-weight: bold;" class="glyphicon glyphicon-remove-circle"></i></button>');
-	$('.numerillo').inputmask('decimal', { radixPoint: ".", autoGroup: true, groupSeparator: "", groupSize: 3, digits: 3 });	
-    $('.numerillo2').inputmask('decimal', { radixPoint: ".", autoGroup: true, groupSeparator: "", groupSize: 3, digits: 3 });
+    $('.numerillo').inputmask('decimal', opcionesMascaraDecimal());	
+    $('.numerillo2').inputmask('decimal', opcionesMascaraDecimal());
+    calcularCalcioCorregido();
     $("#txtFechaKTV").val("{{$atencion_id}}");
     $('#periodicidad_examen').val('{{ $periodicidad }}');
     CambiarTipoCampo('{{ $periodicidad }}');
     initCamposSerologia();
+});
+
+function valorDecimalCampo(selector) {
+    var valor = $.trim($(selector).val()).replace(',', '.');
+    if (valor === '') {
+        return null;
+    }
+    valor = parseFloat(valor);
+    return isNaN(valor) ? null : valor;
+}
+
+function calcularCalcioCorregido() {
+    var calcio = valorDecimalCampo('#txtCal');
+    var albumina = valorDecimalCampo('#txtAlbu');
+    if (calcio === null || albumina === null) {
+        $('#txtCal2').val('');
+        return;
+    }
+    $('#txtCal2').val((calcio + 0.8 * (4.0 - albumina)).toFixed(2));
+}
+
+$(document).on('keyup change blur', '#txtCal, #txtAlbu', function() {
+    calcularCalcioCorregido();
 });
 
 function esValorSerologiaNumerico(valor) {
@@ -821,7 +851,20 @@ function aplicarMascaraSerologiaNum($input) {
     if ($input.data('inputmask')) {
         $input.inputmask('remove');
     }
-    $input.inputmask('decimal', { radixPoint: ".", autoGroup: true, groupSeparator: "", groupSize: 3, digits: 3 });
+    $input.inputmask('decimal', opcionesMascaraDecimal());
+}
+
+function opcionesMascaraDecimal() {
+    return {
+        radixPoint: ".",
+        autoGroup: true,
+        groupSeparator: "",
+        groupSize: 3,
+        digits: 3,
+        digitsOptional: true,
+        placeholder: "",
+        rightAlign: false
+    };
 }
 
 function initCampoSerologia($bloque) {
@@ -933,7 +976,7 @@ function agregarAnalisisAdicional() {
         '<div class="col-lg-1 col-md-1 col-sm-1"><button type="button" class="btn btn-danger btn-xs" onclick="eliminarAnalisisAdicional(this);"><i class="fa fa-trash"></i></button></div>' +
         '</div>';
     $('#contenedorAnalisisAdicionales').append(html);
-    $('#contenedorAnalisisAdicionales .numerillo').inputmask('decimal', { radixPoint: ".", autoGroup: true, groupSeparator: "", groupSize: 3, digits: 3 });
+    $('#contenedorAnalisisAdicionales .numerillo').inputmask('decimal', opcionesMascaraDecimal());
 }
 
 function eliminarAnalisisAdicional(btn) {
@@ -952,6 +995,7 @@ function registrarResultados2() {
     $('.campo-serologia').each(function() {
         syncSerologiaValor($(this));
     });
+    calcularCalcioCorregido();
 	$("#btnGuardar").prop('disabled', true).html('Cargando...');
 	$.ajax({
         type: "POST",

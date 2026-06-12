@@ -1,0 +1,55 @@
+﻿SHEET: AGUINAGA CHIROQUE rows=56 cols=14
+A2=RESULTADOS DEL PACIENTE DE ESSALUD - ACEDO RIVAS JUAN PABLO - 2026
+A4=EXÁMENES DE LABORATORIO | C4=RESULTADOS
+C5=20-Ene | D5=11-Feb | E5=11-Mar | F5=15-Abr | G5=13-May
+A6=Hemoglobina (g/dl) | C6=8.70 | D6=9.00 | E6=10.00 | F6=10.00 | G6=8.70
+A7=Hematocrito (%) | C7=24.1 | D7=25.3 | E7=27.3 | F7=28.1 | G7=25.7
+A8=Urea pre (mg/dl) | C8=76.20 | D8=132.30 | E8=94.70 | F8=77.10 | G8=117.10
+A9=Urea post (mg/dl) | C9=28.30 | D9=35.10 | E9=15.80 | F9=13.50 | G9=28.30
+A10=TGO (U/l) | C10=30.00 | D10=22.40 | E10=29.40 | F10=22.90 | G10=10.40
+A11=TGP (U/l) | C11=23.10 | D11=24.10 | E11=20.50 | F11=19.10 | G11=11.70
+A12=Creatinina Pre (mg/dl) | C12=7.10 | F12=7.80
+A13=Creatinina Post (mg/dl) | C13=2.70 | F13=2.30
+A14=Proteínas Totales (g/dl) | C14=7.27 | F14=6.90
+A15=Fosfatasa Alcalina (U/L) | C15=124.60 | F15=121.40
+A16=Ferritina (ng/ml) | C16=486.00 | F16=665.00
+A17=Hierro (ug/dl) | C17=105.72 | F17=99.15
+A18=Transferrina | C18=197.61 | F18=176.73
+A19=% de Saturación de transferrina | C19=42.13 | F19=44.18
+A20=Parathormona (pg/ml) | C20=185.10 | F20=80.50
+A21=Albumina (g/dl) | C21=3.80 | E21=3.60 | G21=3.40
+A22=Fósforo (mg/dl) | C22=3.90 | E22=3.80 | G22=3.60
+A23=Calcio (mg/dl) | C23=8.20 | E23=7.30 | G23=7.00
+A24=Calcio corregido (mg/dl) | C24=8.36 | E24=7.62 | G24=7.48
+A25=Eritrocitos | C25=2.72 | D25=2.77 | E25=2.91 | F25=3.11 | G25=2.86
+A26=Leucocitos | C26=3.73 | D26=3.93 | E26=3.79 | F26=5.57 | G26=5.76
+A27=Plaquetas | C27=136 | D27=233 | E27=203 | F27=291 | G27=159
+A28=VCM | C28=88.7 | D28=91.4 | E28=92.0 | F28=90.2 | G28=89.9
+A29=HCM | C29=31.8 | D29=32.5 | E29=32.7 | F29=32.2 | G29=30.6
+A30=CHCM | C30=35.9 | D30=35.6 | E30=35.6 | F30=35.7 | G30=34.0
+A31=RDW (%) | C31=13.0 | D31=13.3 | E31=13.4 | F31=13.8 | G31=13.7
+A32=RDW-SD | C32=45.1 | D32=47.7 | E32=48.4 | F32=48.5 | G32=48.4
+A33=Abastonados | C33=0 | D33=0 | E33=0 | F33=0 | G33=0
+A34=Segmentados | C34=62 | D34=63 | E34=58 | F34=64 | G34=81
+A35=Eosinofilos | C35=2 | D35=1 | E35=1 | F35=1 | G35=1
+A36=Basofilos | C36=0 | D36=0 | E36=0 | F36=0 | G36=0
+A37=Monocitos | C37=7 | D37=5 | E37=6 | F37=6 | G37=5
+A38=Linfocitos | C38=29 | D38=31 | E38=35 | F38=29 | G38=13
+A39=PCR | C39=< 2.50 | F39=8.90
+A40=Colesterol | C40=144.80
+A41=Triglicéridos | C41=60.30
+A42=HDL Colesterol | C42=36.20
+A43=LDL Colesterol | C43=96.50
+A44=Vitamina B12 | C44=> 2000
+A45=Ác. Fólico | C45=10.10
+A46=Ác. Úrico | C46=5.17
+A47=Antígeno de superficie Hepatitis B | C47=No Reactivo | E47=No Reactivo | G47=No Reactivo
+A48=Anticuerpos antígeno de superficie Hepatitis B | C48=> 1000 | E48=> 1000
+A49=Hepatitis C (HCV) | C49=No Reactivo | E49=No Reactivo | G49=No Reactivo
+A50=ANTI HBcAg CORE TOTAL | C50=1.60 | E50=1.91 | G50=1.65
+A51=VDRL | C51=No Reactivo
+A52=HIV | C52=Negativo
+A53=KTV | C53=1.13 | D53=1.62 | E53=2.05 | F53=1.98 | G53=1.66
+A54=TRU | C54=62.86 | D54=73.47 | E54=83.32 | F54=82.49 | G54=75.83
+A55=Peso Seco | C55=48.00 | D55=47.30 | E55=47.30 | F55=47.80 | G55=47.50
+A56=Acceso Vascular | C56=FAV | D56=FAV | E56=FAV | F56=FAV | G56=FAV

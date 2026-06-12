@@ -1815,11 +1815,11 @@ class ReporteController extends Controller
                 $excel->sheet("ExaMens" . $anoo, function ($sheet) use ($request, $anoo, $historia) {
 
                     $sheet->setWidth(array(
-                        'A' => 5, 'B' => 30, 'C' => 20, 'D' => 13, 'E' => 13, 'F' => 13, 'G' => 13, 'H' => 13, 'I' => 13, 'J' => 13, 'K' => 13, 'L' => 13, 'M' => 13, 'N' => 13, 'O' => 13));
+                        'A' => 36, 'B' => 12, 'C' => 13, 'D' => 13, 'E' => 13, 'F' => 13, 'G' => 13, 'H' => 13, 'I' => 13, 'J' => 13, 'K' => 13, 'L' => 13, 'M' => 13, 'N' => 13));
 
-                    $celdas = 'B2:O2';
+                    $celdas = 'A2:N2';
                     $sheet->mergeCells($celdas);
-                    $sheet->cells("B2:O4", function ($cells) {
+                    $sheet->cells("A2:N4", function ($cells) {
                         $cells->setAlignment('center');
                         //$cells->setBorder('thin','thin','thin','thin');
                         $cells->setFont(array(
@@ -1829,7 +1829,7 @@ class ReporteController extends Controller
                         ));
                     });
 
-                    $celdas = 'B4:O4';
+                    $celdas = 'A4:N4';
                     $sheet->cells($celdas, function ($cells) {
                         $cells->setAlignment('center');
                         $cells->setFont(array(
@@ -1841,15 +1841,11 @@ class ReporteController extends Controller
                         $cells->setValignment('center');
                     });
 
-                    $sheet->mergeCells("A3:O3");
-                    $sheet->mergeCells("B4:C5");
-                    $sheet->mergeCells("A4:A5");
-                    $sheet->mergeCells("D4:O4");
-
-                    $sheet->cells("A", function ($cells) {$cells->setAlignment('center');});
+                    $sheet->mergeCells("A3:N3");
+                    $sheet->mergeCells("A4:B5");
+                    $sheet->mergeCells("C4:N4");
 
                     $title   = array();
-                    $title[] = "";
                     $title[] = "RESULTADOS DEL PACIENTE DE ESSALUD - " . strtoupper($historia->persona->apellidopaterno . " " . $historia->persona->apellidomaterno . " " . $historia->persona->nombres) . " - " . $anoo;
                     $sheet->row(2, $title);
 
@@ -1878,6 +1874,17 @@ class ReporteController extends Controller
                     $cabecera[] = "Noviembre";
                     $cabecera[] = "Diciembre";
                     $sheet->row(5, $cabecera);
+
+                    $sheet->SetCellValue("A4", "EXAMENES DE LABORATORIO");
+                    $sheet->SetCellValue("B4", "");
+                    $sheet->SetCellValue("C4", "RESULTADOS");
+                    $meses = array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre");
+                    $columnaMes = "C";
+                    foreach ($meses as $mes) {
+                        $sheet->SetCellValue($columnaMes . "5", $mes);
+                        $columnaMes++;
+                    }
+                    $sheet->SetCellValue("O5", "");
 
                     $column = 'A';
                     for ($row = 6; $row <= 65; $row++) {
@@ -1957,10 +1964,86 @@ class ReporteController extends Controller
                     $sheet->SetCellValue("B63", "Vitamina B12");
                     $sheet->SetCellValue("B64", "Ac. Folico");
                     $sheet->SetCellValue("B65", "Ac. Urico");
-                    $sheet->setBorder('B4:O65', 'thin');
+                    for ($row = 6; $row <= 65; $row++) {
+                        try {
+                            $sheet->unmergeCells("B" . $row . ":C" . $row);
+                        } catch (\Exception $e) {
+                        }
+                    }
+                    try {
+                        $sheet->unmergeCells("B32:B35");
+                    } catch (\Exception $e) {
+                    }
+
+                    for ($row = 6; $row <= 65; $row++) {
+                        foreach (range('A', 'N') as $columna) {
+                            $sheet->SetCellValue($columna . $row, "");
+                        }
+                        $sheet->SetCellValue("O" . $row, "");
+                    }
+
+                    $analisis = array(
+                        6 => 'Hemoglobina (g/dl)',
+                        7 => 'Hematocrito (%)',
+                        8 => 'Urea pre (mg/dl)',
+                        9 => 'Urea post (mg/dl)',
+                        10 => 'TGO (U/l)',
+                        11 => 'TGP (U/l)',
+                        12 => 'Creatinina Pre (mg/dl)',
+                        13 => 'Creatinina Post (mg/dl)',
+                        14 => 'Proteinas Totales (g/dl)',
+                        15 => 'Fosfatasa Alcalina (U/L)',
+                        16 => 'Ferritina (ng/ml)',
+                        17 => 'Hierro (ug/dl)',
+                        18 => 'Transferrina',
+                        19 => '% de Saturacion de transferrina',
+                        20 => 'Parathormona (pg/ml)',
+                        21 => 'Albumina (g/dl)',
+                        22 => 'Fosforo (mg/dl)',
+                        23 => 'Calcio (mg/dl)',
+                        24 => 'Calcio corregido (mg/dl)',
+                        25 => 'Eritrocitos',
+                        26 => 'Leucocitos',
+                        27 => 'Plaquetas',
+                        28 => 'VCM',
+                        29 => 'HCM',
+                        30 => 'CHCM',
+                        31 => 'RDW (%)',
+                        32 => 'RDW-SD',
+                        33 => 'Abastonados',
+                        34 => 'Segmentados',
+                        35 => 'Eosinofilos',
+                        36 => 'Basofilos',
+                        37 => 'Monocitos',
+                        38 => 'Linfocitos',
+                        39 => 'PCR',
+                        40 => 'Colesterol',
+                        41 => 'Trigliceridos',
+                        42 => 'HDL Colesterol',
+                        43 => 'LDL Colesterol',
+                        44 => 'Vitamina B12',
+                        45 => 'Ac. Folico',
+                        46 => 'Ac. Urico',
+                        47 => 'Antigeno de superficie Hepatitis B',
+                        48 => 'Anticuerpos antigeno de superficie Hepatitis B',
+                        49 => 'Hepatitis C (HCV)',
+                        50 => 'ANTI HBcAg CORE TOTAL',
+                        51 => 'VDRL',
+                        52 => 'HIV',
+                        53 => 'KTV',
+                        54 => 'TRU',
+                        55 => 'Peso Seco',
+                        56 => 'Acceso Vascular',
+                        57 => 'Area del dializador',
+                    );
+                    foreach ($analisis as $row => $nombre) {
+                        $sheet->mergeCells("A" . $row . ":B" . $row);
+                        $sheet->SetCellValue("A" . $row, $nombre);
+                    }
+                    $sheet->setBorder('A4:N57', 'thin');
 
                     $mesito = 1;
-                    for ($i = "D"; $i <= "O"; $i++) {
+                    for ($i = "C"; $i <= "N"; $i++) {
                         $resultado = Historia::join('person', 'person.id', '=', 'historia.person_id')
                             ->where('historia.convenio_id', '=', 2)
                             ->where('historia.baja', '!=', "S")
@@ -1969,17 +2052,41 @@ class ReporteController extends Controller
                             ->where(DB::raw("MONTH(c.fecha)"), "=", $mesito)
                             ->where(DB::raw("YEAR(c.fecha)"), "=", $anoo)
                             ->first();
-                        if ($resultado !== null) {
-                            $sheet->SetCellValue($i . "5", date("d-M", strtotime($resultado->fecha)));
-                        }
                         $atencion = HistoriaClinica::join("historia", "historiaclinica.historia_id", "=", "historia.id")
+                            ->select("historiaclinica.*")
                             ->where("historia.id", "=", $historia->id)
                             ->where(DB::raw("MONTH(historiaclinica.fecha_atencion)"), "=", $mesito)
                             ->where(DB::raw("YEAR(historiaclinica.fecha_atencion)"), "=", $anoo)
                             ->where(DB::raw("LENGTH(txtMuestraAnalisis)"), ">", 0)
                             ->where("historiaclinica.estado", "!=", "C")
                             ->first();
+                        $datosMedicos = HistoriaClinica::join("historia", "historiaclinica.historia_id", "=", "historia.id")
+                            ->select("historiaclinica.*")
+                            ->where("historia.id", "=", $historia->id)
+                            ->where(DB::raw("MONTH(historiaclinica.fecha_atencion)"), "=", $mesito)
+                            ->where(DB::raw("YEAR(historiaclinica.fecha_atencion)"), "=", $anoo)
+                            ->where("historiaclinica.estado", "!=", "C")
+                            ->where(function ($query) {
+                                $query->where("txtPesoSeco", "<>", "")
+                                    ->orWhere("txtAccesoVascularArterial", "<>", "")
+                                    ->orWhere("txtAreaDializador", "<>", "")
+                                    ->orWhere("txtAreaMembranaFiltro", "<>", "");
+                            })
+                            ->orderBy("historiaclinica.fecha_atencion", "desc")
+                            ->orderBy("historiaclinica.id", "desc")
+                            ->first();
+                        if ($datosMedicos === null) {
+                            $datosMedicos = $atencion;
+                        }
                         if ($resultado !== null) {
+                            $fechaResultado = $resultado->txtFechaLaboratorio ?: $resultado->fecha;
+                            if ($datosMedicos !== null && $datosMedicos->fecha_atencion !== null && $datosMedicos->fecha_atencion !== "") {
+                                $fechaResultado = $datosMedicos->fecha_atencion;
+                            }
+                            if ($atencion !== null && $atencion->fecha_atencion !== null && $atencion->fecha_atencion !== "") {
+                                $fechaResultado = $atencion->fecha_atencion;
+                            }
+                            $sheet->SetCellValue($i . "5", date("d-M", strtotime($fechaResultado)));
                             $time = 0;
                             $ppre = 0;
                             $ppos = 0;
@@ -2086,7 +2193,93 @@ class ReporteController extends Controller
                             $sheet->SetCellValue($i . "63", $resultado->txtVitaminaB12);
                             $sheet->SetCellValue($i . "64", $resultado->txtAcidoFolico);
                             $sheet->SetCellValue($i . "65", $resultado->txtAcidoUrico);
-                            $sheet->setBorder('B4:O65', 'thin');
+
+                            $accesoMedico = "";
+                            if ($datosMedicos !== null) {
+                                switch ($datosMedicos->txtAccesoVascularArterial) {
+                                    case '1':
+                                        $accesoMedico = "FAV";
+                                        break;
+                                    case '2':
+                                        $accesoMedico = "Autoinjerto";
+                                        break;
+                                    case '3':
+                                        $accesoMedico = "Injerto";
+                                        break;
+                                    case '4':
+                                        $accesoMedico = "CVCP";
+                                        break;
+                                    case '5':
+                                        $accesoMedico = "CVCT";
+                                        break;
+                                    case '6':
+                                        $accesoMedico = "VP";
+                                        break;
+                                }
+                            }
+
+                            $sheet->SetCellValue($i . "6", $resultado->txtDos);
+                            $sheet->SetCellValue($i . "7", $resultado->txtHem);
+                            $sheet->SetCellValue($i . "8", $resultado->txtUre);
+                            $sheet->SetCellValue($i . "9", $resultado->txtUre2);
+                            $sheet->SetCellValue($i . "10", $resultado->txtTgo);
+                            $sheet->SetCellValue($i . "11", $resultado->txtTgp);
+                            $sheet->SetCellValue($i . "12", $resultado->txtCre);
+                            $sheet->SetCellValue($i . "13", $resultado->txtCre2);
+                            $sheet->SetCellValue($i . "14", $resultado->txtPro);
+                            $sheet->SetCellValue($i . "15", $resultado->txtFos2);
+                            $sheet->SetCellValue($i . "16", $resultado->txtFer);
+                            $sheet->SetCellValue($i . "17", $resultado->txtHie);
+                            $sheet->SetCellValue($i . "18", $resultado->txtTransfe);
+                            $sheet->SetCellValue($i . "19", $resultado->txtSat);
+                            $sheet->SetCellValue($i . "20", $resultado->txtPar);
+                            $sheet->SetCellValue($i . "21", $resultado->txtAlbu);
+                            $sheet->SetCellValue($i . "22", $resultado->txtFos);
+                            $sheet->SetCellValue($i . "23", $resultado->txtCal);
+                            $sheet->SetCellValue($i . "24", $resultado->txtCal2);
+                            $sheet->SetCellValue($i . "25", $resultado->txtHematies);
+                            $sheet->SetCellValue($i . "26", $resultado->txtLeucocitos);
+                            $sheet->SetCellValue($i . "27", $resultado->txtPlaquetas);
+                            $sheet->SetCellValue($i . "28", $resultado->txtVcm);
+                            $sheet->SetCellValue($i . "29", $resultado->txtHcm);
+                            $sheet->SetCellValue($i . "30", $resultado->txtCcmh);
+                            $sheet->SetCellValue($i . "31", $resultado->txtRdw);
+                            $sheet->SetCellValue($i . "32", $resultado->txtRdwSd);
+                            $sheet->SetCellValue($i . "33", $resultado->txtAbastonados);
+                            $sheet->SetCellValue($i . "34", $resultado->txtSegmentados);
+                            $sheet->SetCellValue($i . "35", $resultado->txtEosinofilos);
+                            $sheet->SetCellValue($i . "36", $resultado->txtBasofilos);
+                            $sheet->SetCellValue($i . "37", $resultado->txtMonocitos);
+                            $sheet->SetCellValue($i . "38", $resultado->txtLinfocitos);
+                            $sheet->SetCellValue($i . "39", $resultado->txtPcr);
+                            $sheet->SetCellValue($i . "40", $resultado->txtColesterol);
+                            $sheet->SetCellValue($i . "41", $resultado->txtTrigliceridos);
+                            $sheet->SetCellValue($i . "42", $resultado->txtHdl);
+                            $sheet->SetCellValue($i . "43", $resultado->txtLdl);
+                            $sheet->SetCellValue($i . "44", $resultado->txtVitaminaB12);
+                            $sheet->SetCellValue($i . "45", $resultado->txtAcidoFolico);
+                            $sheet->SetCellValue($i . "46", $resultado->txtAcidoUrico);
+                            $sheet->SetCellValue($i . "47", $resultado->txtDet);
+                            $sheet->SetCellValue($i . "48", $resultado->txtDet2);
+                            $sheet->SetCellValue($i . "49", $resultado->txtDet4);
+                            $sheet->SetCellValue($i . "50", $resultado->txtDet3);
+                            $sheet->SetCellValue($i . "51", $resultado->txtPru);
+                            $sheet->SetCellValue($i . "52", $resultado->txtEli);
+                            $sheet->SetCellValue($i . "53", $ktv);
+                            $sheet->SetCellValue($i . "54", $tru);
+                            $sheet->SetCellValue($i . "55", ($datosMedicos == null ? "" : $datosMedicos->txtPesoSeco));
+                            $sheet->SetCellValue($i . "56", ($datosMedicos == null ? "" : $accesoMedico));
+                            $areaDializador = "";
+                            if ($datosMedicos !== null) {
+                                $areaDializador = ($datosMedicos->txtAreaMembranaFiltro !== null && $datosMedicos->txtAreaMembranaFiltro !== "") ? $datosMedicos->txtAreaMembranaFiltro : $datosMedicos->txtAreaDializador;
+                            }
+                            $sheet->SetCellValue($i . "57", $areaDializador);
+                            for ($filaLimpia = 58; $filaLimpia <= 65; $filaLimpia++) {
+                                $sheet->SetCellValue($i . $filaLimpia, "");
+                            }
+                            $sheet->getStyle($i . "53")->getNumberFormat()->setFormatCode('0.00');
+                            $sheet->getStyle($i . "54")->getNumberFormat()->setFormatCode('0.00');
+                            $sheet->setBorder('A4:N57', 'thin');
                         }
                         $mesito++;
                     }
@@ -2459,16 +2652,16 @@ class ReporteController extends Controller
                                     $accesito = "";
 
                                     switch ($att->txtAreaMembranaFiltro) {
-                                        case '1.5':
+                                        case '1.7':
                                             $nelisio0++;
                                             break;
-                                        case '1.7':
+                                        case '1.8':
                                             $nelisio1++;
                                             break;
-                                        case '1.9':
+                                        case '2.0':
                                             $nelisio2++;
                                             break;
-                                        case '2.1':
+                                        case '2.2':
                                             $nelisio3++;
                                             break;
                                     }
@@ -2534,7 +2727,7 @@ class ReporteController extends Controller
                         $piepagina[] = "";
                         $piepagina[] = "";
                         $piepagina[] = "N° Filtros";
-                        $piepagina[] = "Elisio 190";
+                        $piepagina[] = "Elisio 200";
                         $piepagina[] = $nelisio2;
                         $piepagina[] = "";
                         $piepagina[] = "";
@@ -2551,7 +2744,7 @@ class ReporteController extends Controller
                         $piepagina[] = "";
                         $piepagina[] = "";
                         $piepagina[] = "";
-                        $piepagina[] = "Elisio 170";
+                        $piepagina[] = "Elisio 180";
                         $piepagina[] = $nelisio1;
                         $piepagina[] = "";
                         $piepagina[] = "";
@@ -2568,7 +2761,7 @@ class ReporteController extends Controller
                         $piepagina[] = "";
                         $piepagina[] = "";
                         $piepagina[] = "";
-                        $piepagina[] = "Elisio 150";
+                        $piepagina[] = "Elisio 170";
                         $piepagina[] = $nelisio0;
                         $piepagina[] = "";
                         $piepagina[] = "";
@@ -2585,7 +2778,7 @@ class ReporteController extends Controller
                         $piepagina[] = "";
                         $piepagina[] = "";
                         $piepagina[] = "";
-                        $piepagina[] = "Elisio 210";
+                        $piepagina[] = "Elisio 220";
                         $piepagina[] = $nelisio3;
                         $piepagina[] = "";
                         $piepagina[] = "";
