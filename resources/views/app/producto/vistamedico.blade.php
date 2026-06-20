@@ -8,8 +8,13 @@ date_default_timezone_set('America/Lima');
 $fechahoy = date('j-m-Y');
 $user = Auth::user();
 $person = Person::find(Session::get('person_id'));
+if ($person === null && $user !== null && $user->person_id !== null) {
+	$person = Person::find($user->person_id);
+}
 Session::set('sucursal_id', 1);
-$nombreusuario = $person->apellidopaterno.' '.$person->apellidomaterno.' '.$person->nombres;
+$nombreusuario = $person !== null
+	? trim($person->apellidopaterno.' '.$person->apellidomaterno.' '.$person->nombres)
+	: ($user !== null ? $user->login : '');
 ?>
 @if($user != null)
 @if($user->usertype_id == 39 || $user->usertype_id == 30 || $user->usertype_id == 31 || $user->usertype_id == 1 || $user->usertype_id == 2 || $user->usertype_id == 28 || $user->usertype_id == 29)
