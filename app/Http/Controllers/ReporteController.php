@@ -1590,6 +1590,133 @@ class ReporteController extends Controller
     public function analisisMensualesKtvTru2(Request $request)
     {
         date_default_timezone_set('America/Lima');
+        $mes = (int) $request->input('mes');
+        $anoo = $request->input('anno');
+        $mesnombre = $this->meses[$mes];
+
+        $lista = Historia::join('person', 'person.id', '=', 'historia.person_id')
+            ->join('consultanefrologica as c', 'c.persona_id', '=', 'person.id')
+            ->where('historia.convenio_id', '=', 2)
+            ->where('historia.baja', '!=', 'S')
+            ->where(DB::raw('MONTH(c.fecha)'), '=', $mes)
+            ->where(DB::raw('YEAR(c.fecha)'), '=', $anoo)
+            ->select(
+                'c.*', 'person.apellidopaterno', 'person.apellidomaterno', 'person.nombres',
+                'historia.id as historia_id', 'historia.fecha as fecha_ingreso'
+            )
+            ->orderBy(DB::raw("CONCAT(person.apellidopaterno, ' ', person.apellidomaterno, ' ', person.nombres)"))
+            ->get();
+
+        Excel::create('Res' . $mesnombre . $anoo, function ($excel) use ($lista, $mesnombre, $anoo, $mes) {
+            $excel->sheet('Res' . $mesnombre . $anoo, function ($sheet) use ($lista, $mes, $anoo) {
+                $anchos = array('A' => 5, 'B' => 40, 'C' => 18, 'D' => 18);
+                for ($indice = 4; $indice < 58; $indice++) {
+                    $anchos[\PHPExcel_Cell::stringFromColumnIndex($indice)] = 12;
+                }
+                $sheet->setWidth($anchos);
+
+                $sheet->row(1, array(
+                    'N°', 'NOMBRES', 'FECHA DE INGRESO A CLÍNICA', 'FECHA TOMA DE MUESTRA',
+                    'Hto (%)', 'Hb (g/dl)', 'ERITROCITOS', 'LEUCOCITOS', 'PLAQUETAS', 'VCM',
+                    'HCM', 'CHCM', 'RDW(%)', 'RDW-SD', 'ABASTONADOS', 'SEGMENTADOS', 'EOSINOFILOS',
+                    'BASOFILOS', 'MONOCITOS', 'LINFOCITOS', 'Urea pre (mg/dl)', 'Urea post (mg/dl)',
+                    'TGO', 'TGP', 'Ca (mg/dl)', 'P (mg/dl)', 'Albu (g/dl)', 'HBsAg', 'Anti HBs',
+                    'Anti HBc', 'HCV', 'Crea-Pre (mg/dl)', 'Crea Post (mg/dl)', 'Pro T (g/dl)',
+                    'FAL (U/L)', 'Ferritina (ng/ml)', 'Hierro (ug/dl)', 'TRANSFERRINA',
+                    '% de Saturación de transferrina', 'Parathormona (pg/ml)', 'PCR', 'Colesterol',
+                    'Triglicéridos', 'HDL Colesterol', 'LDL Colesterol', 'VIH', 'VDRL', 'Vitamina B12',
+                    'Ac. Fólico', 'Ác. Úrico', 'PESO PRE', 'PESO POST', 'KTV', 'TRU', 'TIEMPO',
+                    'Peso Seco', 'Superficie de Dializador', 'Acceso'
+                ));
+                $sheet->cells('A1:BF1', function ($cells) {
+                    $cells->setAlignment('center');
+                    $cells->setValignment('center');
+                    $cells->setFont(array('family' => 'Calibri', 'size' => 11, 'bold' => true));
+                    $cells->setBackground('#5CC2C4');
+                });
+                $sheet->setBorder('A1:BF1', 'thin');
+                $sheet->getRowDimension(1)->setRowHeight(40);
+                $sheet->freezeFirstRow();
+
+                $fila = 2;
+                foreach ($lista as $resultado) {
+                    $atencion = HistoriaClinica::where('historia_id', '=', $resultado->historia_id)
+                        ->where(DB::raw('MONTH(fecha_atencion)'), '=', $mes)
+                        ->where(DB::raw('YEAR(fecha_atencion)'), '=', $anoo)
+                        ->where(DB::raw('LENGTH(txtMuestraAnalisis)'), '>', 0)
+                        ->where('estado', '!=', 'C')
+                        ->orderBy('fecha_atencion', 'desc')->orderBy('id', 'desc')->first();
+
+                    $datosMedicos = HistoriaClinica::where('historia_id', '=', $resultado->historia_id)
+                        ->where(DB::raw('MONTH(fecha_atencion)'), '=', $mes)
+                        ->where(DB::raw('YEAR(fecha_atencion)'), '=', $anoo)
+                        ->where('estado', '!=', 'C')
+                        ->where(function ($query) {
+                            $query->where('txtPesoSeco', '<>', '')
+                                ->orWhere('txtAccesoVascularArterial', '<>', '')
+                                ->orWhere('txtAreaDializador', '<>', '');
+                        })
+                        ->orderBy('fecha_atencion', 'desc')->orderBy('id', 'desc')->first();
+                    if ($datosMedicos === null) {
+                        $datosMedicos = $atencion;
+                    }
+
+                    $tiempo = $atencion === null ? '' : $atencion->txtHorasHemodialisis;
+                    $pesoPre = $atencion === null ? '' : $atencion->txtPesoInicial2;
+                    $pesoPost = $atencion === null ? '' : $atencion->txtPesoFinal2;
+                    $fechaMuestra = $atencion === null
+                        ? ($resultado->txtFechaLaboratorio ?: $resultado->fecha)
+                        : $atencion->fecha_atencion;
+                    $ktv = '';
+                    $tru = '';
+                    if ($resultado->txtUre !== null && $resultado->txtUre !== '' &&
+                        $resultado->txtUre2 !== null && $resultado->txtUre2 !== '') {
+                        $tru = '=100-(V' . $fila . '*100/U' . $fila . ')';
+                        if ($pesoPost !== null && $pesoPost !== '' && $pesoPost != 0 &&
+                            $tiempo !== null && $tiempo !== '' && $tiempo != 0) {
+                            $ktv = '=(-LN(V' . $fila . '/U' . $fila . '-0.008*BC' . $fila . '))+(4-3.5*V' . $fila . '/U' . $fila . ')*((AY' . $fila . '-AZ' . $fila . ')/AZ' . $fila . '))';
+                        }
+                    }
+
+                    $accesos = array('1' => 'FAV', '2' => 'Autoinjerto', '3' => 'Injerto', '4' => 'CVCP', '5' => 'CVCT', '6' => 'VP');
+                    $codigoAcceso = $datosMedicos === null ? '' : $datosMedicos->txtAccesoVascularArterial;
+                    $acceso = isset($accesos[$codigoAcceso]) ? $accesos[$codigoAcceso] : '';
+
+                    $sheet->row($fila, array(
+                        $fila - 1,
+                        trim($resultado->apellidopaterno . ' ' . $resultado->apellidomaterno . ' ' . $resultado->nombres),
+                        $resultado->fecha_ingreso ? date('d/m/Y', strtotime($resultado->fecha_ingreso)) : '',
+                        $fechaMuestra ? date('d/m/Y', strtotime($fechaMuestra)) : '',
+                        $resultado->txtHem, $resultado->txtDos, $resultado->txtHematies, $resultado->txtLeucocitos,
+                        $resultado->txtPlaquetas, $resultado->txtVcm, $resultado->txtHcm, $resultado->txtCcmh,
+                        $resultado->txtRdw, $resultado->txtRdwSd, $resultado->txtAbastonados,
+                        $resultado->txtSegmentados, $resultado->txtEosinofilos, $resultado->txtBasofilos,
+                        $resultado->txtMonocitos, $resultado->txtLinfocitos, $resultado->txtUre, $resultado->txtUre2,
+                        $resultado->txtTgo, $resultado->txtTgp, $resultado->txtCal, $resultado->txtFos,
+                        $resultado->txtAlbu, $resultado->txtDet, $resultado->txtDet2, $resultado->txtDet3,
+                        $resultado->txtDet4, $resultado->txtCre, $resultado->txtCre2, $resultado->txtPro,
+                        $resultado->txtFos2, $resultado->txtFer, $resultado->txtHie, $resultado->txtTransfe,
+                        $resultado->txtSat, $resultado->txtPar, $resultado->txtPcr, $resultado->txtColesterol,
+                        $resultado->txtTrigliceridos, $resultado->txtHdl, $resultado->txtLdl, $resultado->txtEli,
+                        $resultado->txtPru, $resultado->txtVitaminaB12, $resultado->txtAcidoFolico,
+                        $resultado->txtAcidoUrico, ($pesoPre == 0 ? '' : $pesoPre),
+                        ($pesoPost == 0 ? '' : $pesoPost), $ktv, $tru, ($tiempo == 0 ? '' : $tiempo),
+                        ($datosMedicos === null ? '' : $datosMedicos->txtPesoSeco),
+                        ($datosMedicos === null ? '' : $datosMedicos->txtAreaDializador), $acceso
+                    ));
+                    $sheet->getStyle('BA' . $fila . ':BB' . $fila)->getNumberFormat()->setFormatCode('0.00');
+                    $fila++;
+                }
+                if ($fila > 2) {
+                    $sheet->setBorder('A2:BF' . ($fila - 1), 'thin');
+                }
+            });
+        })->export('xls');
+    }
+
+    private function analisisMensualesKtvTru2Legacy(Request $request)
+    {
+        date_default_timezone_set('America/Lima');
         $mes       = (int) $request->input("mes");
         $anoo      = $request->input("anno");
         $mesnombre = $this->meses[$mes];
