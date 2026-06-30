@@ -227,9 +227,7 @@ class ConsultaNefrologica2Controller extends Controller
             $c1->txtCre2 = ($request->input("txtCre2")==""?NULL:$request->input("txtCre2"));
             $c1->txtHem = ($request->input("txtHem")==""?NULL:$request->input("txtHem"));
             $c1->txtDos = ($request->input("txtDos")==""?NULL:$request->input("txtDos"));
-            if ($request->has("txtEle")) {
-                $c1->txtEle = ($request->input("txtEle")==""?NULL:$request->input("txtEle"));
-            }
+            $c1->txtEle = ($request->input("txtEle")==""?NULL:$request->input("txtEle"));
             $c1->txtSodio = ($request->input("txtSodio")==""?NULL:$request->input("txtSodio"));
             $c1->txtPotasio = ($request->input("txtPotasio")==""?NULL:$request->input("txtPotasio"));
             $c1->txtCloro = ($request->input("txtCloro")==""?NULL:$request->input("txtCloro"));
@@ -472,13 +470,26 @@ class ConsultaNefrologica2Controller extends Controller
 
     private function analisisPermitidosPorPeriodicidad($periodicidad)
     {
-        $mensual = array('hemograma', 'urea_pre', 'urea_post', 'tgo', 'tgp', 'formula_rel', 'formula_abs', 'sodio', 'potasio', 'cloro', 'calcio_corregido', 'achbc_lgm', 'achbc_lgo');
-        $bimensual = array('calcio', 'fosforo', 'albumina', 'hbsag', 'anti_hbs', 'anti_hbc', 'hcv', 'globulina');
+        $mensual = array('hemograma', 'urea_pre', 'urea_post', 'tgo', 'tgp', 'formula_rel', 'formula_abs');
+        $bimensual = array('calcio', 'fosforo', 'albumina', 'hbsag', 'anti_hbs', 'anti_hbc', 'hcv');
         $trimestral = array('crea_pre', 'crea_post', 'proteinas_totales', 'fal', 'ferritina', 'hierro', 'transferrina', 'sat_transferrina', 'parathormona', 'pcr');
         $semestralExtra = array('colesterol', 'trigliceridos', 'hdl', 'ldl');
         $anualExtra = array('vih', 'vdrl', 'vitamina_b12', 'ac_folico', 'ac_urico');
 
-        return array_merge($mensual, $bimensual, $trimestral, $semestralExtra, $anualExtra);
+        switch ($periodicidad) {
+            case 'BIMENSUAL':
+                return array_merge($mensual, $bimensual);
+            case 'TRIMESTRAL':
+                return array_merge($mensual, $trimestral);
+            case 'SEMESTRAL':
+                return array_merge($mensual, $bimensual, $trimestral, $semestralExtra);
+            case 'ANUAL':
+            case 'NUEVO':
+                return array_merge($mensual, $bimensual, $trimestral, $semestralExtra, $anualExtra);
+            case 'MENSUAL':
+            default:
+                return $mensual;
+        }
     }
 
     private function analisisPermitido($clave, $permitidos)
@@ -573,13 +584,6 @@ class ConsultaNefrologica2Controller extends Controller
             'Vitamina B12|pg/mL' => 'vitamina_b12',
             'VIH|COI' => 'vih',
             'VDRL|DILS' => 'vdrl',
-            'Sodio|mmol/L' => 'sodio',
-            'Potasio|mmol/L' => 'potasio',
-            'Cloro|mmol/L' => 'cloro',
-            'Globulina|g/dL' => 'globulina',
-            'Calcio corregido|mg/dL' => 'calcio_corregido',
-            'AcHBC - lg M|COI' => 'achbc_lgm',
-            'AcHBC - lg O|COI' => 'achbc_lgo',
         );
     }
 
@@ -1065,27 +1069,6 @@ class ConsultaNefrologica2Controller extends Controller
         }
         if ($this->analisisPermitido('vdrl', $permitidos)) {
             $filas .= $this->filaLab('VDRL', $this->valorLabSerologia($hc->txtPru), 'DILS', 'Reactivo >= 2');
-        }
-        if ($this->analisisPermitido('sodio', $permitidos)) {
-            $filas .= $this->filaLab('Sodio', $this->valorLab($hc->txtSodio), 'mmol/L', '135 - 145');
-        }
-        if ($this->analisisPermitido('potasio', $permitidos)) {
-            $filas .= $this->filaLab('Potasio', $this->valorLab($hc->txtPotasio), 'mmol/L', '3.5 - 5.5');
-        }
-        if ($this->analisisPermitido('cloro', $permitidos)) {
-            $filas .= $this->filaLab('Cloro', $this->valorLab($hc->txtCloro), 'mmol/L', '96 - 106');
-        }
-        if ($this->analisisPermitido('globulina', $permitidos)) {
-            $filas .= $this->filaLab('Globulina', $this->valorLab($hc->txtGlobu, 2), 'g/dL', '2.0 - 3.5');
-        }
-        if ($this->analisisPermitido('calcio_corregido', $permitidos)) {
-            $filas .= $this->filaLab('Calcio corregido', $this->valorLab($hc->txtCal2, 2), 'mg/dL', '8.5 - 10.5');
-        }
-        if ($this->analisisPermitido('achbc_lgm', $permitidos)) {
-            $filas .= $this->filaLab('AcHBC - lg M', $this->valorLabSerologia($hc->txtLg1), 'COI', 'Reactivo <= 1.0, No Reactivo > 1.0');
-        }
-        if ($this->analisisPermitido('achbc_lgo', $permitidos)) {
-            $filas .= $this->filaLab('AcHBC - lg O', $this->valorLabSerologia($hc->txtLg2), 'COI', 'Reactivo <= 1.0, No Reactivo > 1.0');
         }
 
         $rows .= $this->seccionLabSiHayFilas('OTROS ANALISIS', $filas);
