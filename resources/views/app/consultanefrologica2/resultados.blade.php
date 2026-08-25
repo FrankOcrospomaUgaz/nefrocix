@@ -172,6 +172,12 @@ persona->apellidopaterno . ' ' . $historia->persona->apellidomaterno . ' ' . $hi
 	input, select, textarea {
 	  	text-transform:uppercase;
 	}
+	input[name="adicional_nombre[]"],
+	input[name="adicional_resultado[]"],
+	input[name="adicional_unidad[]"],
+	input[name="adicional_referencia[]"] {
+	  	text-transform:none !important;
+	}
 	.modal-title {
 		color:red;
 		font-family: Monospace;
@@ -317,6 +323,7 @@ persona->apellidopaterno . ' ' . $historia->persona->apellidomaterno . ' ' . $hi
                                 <option value="SEMESTRAL" {{ $periodicidad == 'SEMESTRAL' ? 'selected' : '' }}>MENS. + BIMENS. + TRIMES. + SEMES.</option>
                                 <option value="ANUAL" {{ $periodicidad == 'ANUAL' ? 'selected' : '' }}>MENS. + BIMENS. + TRIMES. + SEMES. + ANUALES</option>
                                 <option value="NUEVO" {{ $periodicidad == 'NUEVO' ? 'selected' : '' }}>NUEVO / BASALES</option>
+                                <option value="CONTROL" {{ $periodicidad == 'CONTROL' ? 'selected' : '' }}>CONTROL</option>
                             </select>
                         </div>
                     </div>
@@ -943,8 +950,14 @@ function CambiarTipoCampo(valor) {
     }
 
     $('.campito').addClass('hide');
-    $('#MENSUAL, #HEMOGRAMA, #ADICIONALES').removeClass('hide');
+    $('#ADICIONALES').removeClass('hide');
     $('.grp-bimensual, .grp-trimestral, .grp-semestral, .grp-anual-solo').addClass('hide');
+
+    if (valor === 'CONTROL') {
+        return;
+    }
+
+    $('#MENSUAL, #HEMOGRAMA').removeClass('hide');
 
     if ($.inArray(valor, ['BIMENSUAL', 'SEMESTRAL', 'ANUAL', 'NUEVO']) >= 0) {
         $('.grp-bimensual').removeClass('hide');

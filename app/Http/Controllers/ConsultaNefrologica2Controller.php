@@ -149,7 +149,7 @@ class ConsultaNefrologica2Controller extends Controller
         $listar   = Libreria::getParam($request->input('listar'), 'NO');
         $pid = $request->input('pid');
         $tipo = $request->input('situacion');
-        $tipos = array('NUEVO'=>'NUEVO', 'MENSUAL'=>'MENSUAL', 'BIMENSUAL'=>'BIMENSUAL', 'TRIMESTRAL'=>'TRIMESTRAL', 'SEMESTRAL'=>'SEMESTRAL', 'ANUAL'=>'ANUAL');
+        $tipos = array('NUEVO'=>'NUEVO', 'MENSUAL'=>'MENSUAL', 'BIMENSUAL'=>'BIMENSUAL', 'TRIMESTRAL'=>'TRIMESTRAL', 'SEMESTRAL'=>'SEMESTRAL', 'ANUAL'=>'ANUAL', 'CONTROL' => 'CONTROL');
         $historia = Historia::where('person_id', '=', $pid)->first();
         $entidad  = 'HC';
         $c1 = ConsultaNefrologica::find($cid);
@@ -374,7 +374,7 @@ class ConsultaNefrologica2Controller extends Controller
         }
 
         $periodicidadSituacion = $this->periodicidadDesdeCodigo($hc->situacion);
-        if ($periodicidadSituacion === 'ANUAL' || $periodicidadSituacion === 'NUEVO') {
+        if ($periodicidadSituacion === 'ANUAL' || $periodicidadSituacion === 'NUEVO' || $periodicidadSituacion === 'CONTROL') {
             return $periodicidadSituacion;
         }
 
@@ -402,7 +402,7 @@ class ConsultaNefrologica2Controller extends Controller
     private function normalizarPeriodicidad($periodicidad, $default = 'MENSUAL')
     {
         $periodicidad = strtoupper(trim((string) $periodicidad));
-        $permitidas = array('MENSUAL', 'BIMENSUAL', 'TRIMESTRAL', 'SEMESTRAL', 'ANUAL', 'NUEVO');
+        $permitidas = array('MENSUAL', 'BIMENSUAL', 'TRIMESTRAL', 'SEMESTRAL', 'ANUAL', 'NUEVO', 'CONTROL');
 
         return in_array($periodicidad, $permitidas) ? $periodicidad : $default;
     }
@@ -416,11 +416,13 @@ class ConsultaNefrologica2Controller extends Controller
             'M-B-T-S' => 'SEMESTRAL',
             'ANUAL' => 'ANUAL',
             'N' => 'NUEVO',
+            'CONTROL' => 'CONTROL',
             'MENSUAL' => 'MENSUAL',
             'BIMENSUAL' => 'BIMENSUAL',
             'TRIMESTRAL' => 'TRIMESTRAL',
             'SEMESTRAL' => 'SEMESTRAL',
             'NUEVO' => 'NUEVO',
+            'CONTROL' => 'CONTROL',
         );
 
         return isset($mapa[$codigo]) ? $mapa[$codigo] : null;
@@ -435,6 +437,7 @@ class ConsultaNefrologica2Controller extends Controller
             'SEMESTRAL' => 'M-B-T-S',
             'ANUAL' => 'ANUAL',
             'NUEVO' => 'N',
+            'CONTROL' => 'CONTROL',
         );
 
         return isset($mapa[$periodicidad]) ? $mapa[$periodicidad] : 'M';
@@ -449,6 +452,7 @@ class ConsultaNefrologica2Controller extends Controller
             'SEMESTRAL' => 0,
             'ANUAL' => 0,
             'NUEVO' => 0,
+            'CONTROL' => 9,
         );
 
         return isset($mapa[$periodicidad]) ? $mapa[$periodicidad] : 1;
@@ -463,6 +467,7 @@ class ConsultaNefrologica2Controller extends Controller
             'SEMESTRAL' => 'SEMESTRAL',
             'ANUAL' => 'ANUAL',
             'NUEVO' => 'NUEVO',
+            'CONTROL' => 'CONTROL',
         );
 
         return isset($etiquetas[$periodicidad]) ? $etiquetas[$periodicidad] : 'MENSUAL';
@@ -477,6 +482,8 @@ class ConsultaNefrologica2Controller extends Controller
         $anualExtra = array('vih', 'vdrl', 'vitamina_b12', 'ac_folico', 'ac_urico');
 
         switch ($periodicidad) {
+            case 'CONTROL':
+                return array();
             case 'BIMENSUAL':
                 return array_merge($mensual, $bimensual);
             case 'TRIMESTRAL':
@@ -793,6 +800,11 @@ class ConsultaNefrologica2Controller extends Controller
         return in_array($periodicidad, array('SEMESTRAL', 'ANUAL'));
     }
 
+    private function firmaLaboratorioAlFinal($periodicidad)
+    {
+        return in_array($periodicidad, array('ANUAL', 'NUEVO'));
+    }
+
     private function dibujarFirmaLaboratorioPdfEnHoja($instancia, $periodicidad = null)
     {
         $firma = $this->rutaFirmaLaboratorioPdf();
@@ -802,6 +814,7 @@ class ConsultaNefrologica2Controller extends Controller
         $anchoFirma = 50;
         $altoFirma = $this->altoFirmaLaboratorioPdf($firma, $anchoFirma);
         $altoFooter = $this->altoFooterPdfLaboratorio();
+
         $x = 210 - $anchoFirma - 18;
         $y = $instancia->getPageHeight() - $altoFooter - $altoFirma + 4;
         if ($this->firmaLaboratorioAltaPorPeriodicidad($periodicidad)) {
@@ -809,6 +822,29 @@ class ConsultaNefrologica2Controller extends Controller
         }
 
         $instancia->Image($firma, $x, $y, $anchoFirma, $altoFirma, $this->tipoImagenPdf($firma));
+    }
+
+    private function dibujarFirmaLaboratorioAlFinalPdf($instancia, $periodicidad)
+    {
+        $firma = $this->rutaFirmaLaboratorioPdf();
+        if ($firma === null || !$this->firmaLaboratorioAlFinal($periodicidad)) {
+            return;
+        }
+
+        $anchoFirma = 50;
+        $altoFirma = $this->altoFirmaLaboratorioPdf($firma, $anchoFirma);
+        $altoFooter = $this->altoFooterPdfLaboratorio();
+        $separacion = 4;
+        $yFirma = $instancia->getPageHeight() - $altoFooter - $altoFirma - $separacion;
+
+        // La firma es un bloque indivisible. Si la tabla llego a su zona,
+        // se coloca completa en una pagina nueva.
+        if ($instancia->getY() + $separacion > $yFirma) {
+            $instancia->AddPage();
+        }
+
+        $x = $instancia->getPageWidth() - $anchoFirma - 18;
+        $instancia->Image($firma, $x, $yFirma, $anchoFirma, $altoFirma, $this->tipoImagenPdf($firma));
     }
 
     public function configuracionFirmaLaboratorio(Request $request)
@@ -1043,6 +1079,15 @@ class ConsultaNefrologica2Controller extends Controller
         if ($this->analisisPermitido('fosforo', $permitidos)) {
             $filas .= $this->filaLab('Fosforo', $this->valorLab($hc->txtFos, 2), 'mg/dL', '2.5 - 5.5');
         }
+        if ($this->analisisPermitido('ac_urico', $permitidos)) {
+            $filas .= $this->filaLab('Acido urico', $this->valorLab($hc->txtAcidoUrico, 2), 'mg/dL', 'Mujeres: 2.6 - 6.0, Hombres: 3.4 - 7.2');
+        }
+        if ($this->analisisPermitido('ac_folico', $permitidos)) {
+            $filas .= $this->filaLab('Acido folico', $this->valorLab($hc->txtAcidoFolico, 2), 'ng/mL', 'Mujeres: 4.8 - 37.3, Hombres: 4.5 - 32.2');
+        }
+        if ($this->analisisPermitido('vitamina_b12', $permitidos)) {
+            $filas .= $this->filaLab('Vitamina B12', $this->valorLab($hc->txtVitaminaB12, 2), 'pg/mL', '211-946');
+        }
         if ($this->analisisPermitido('hbsag', $permitidos)) {
             $filas .= $this->filaLab('HBsAg (Antigeno de superficie)', $this->valorLabSerologia($hc->txtDet), 'COI', '(No reactivo < .09) (Indeterminado 0.9-1.1) (Reactivo > 1.0)');
         }
@@ -1054,15 +1099,6 @@ class ConsultaNefrologica2Controller extends Controller
         }
         if ($this->analisisPermitido('anti_hbs', $permitidos)) {
             $filas .= $this->filaLab('Anti HBsAg', $this->valorLabSerologia($hc->txtDet2), 'mIU/mL', 'Estado inmune: > 10');
-        }
-        if ($this->analisisPermitido('ac_urico', $permitidos)) {
-            $filas .= $this->filaLab('Acido urico', $this->valorLab($hc->txtAcidoUrico, 2), 'mg/dL', 'Mujeres: 2.6 - 6.0, Hombres: 3.4 - 7.2');
-        }
-        if ($this->analisisPermitido('ac_folico', $permitidos)) {
-            $filas .= $this->filaLab('Acido folico', $this->valorLab($hc->txtAcidoFolico, 2), 'ng/mL', 'Mujeres: 4.8 - 37.3, Hombres: 4.5 - 32.2');
-        }
-        if ($this->analisisPermitido('vitamina_b12', $permitidos)) {
-            $filas .= $this->filaLab('Vitamina B12', $this->valorLab($hc->txtVitaminaB12, 2), 'pg/mL', '211-946');
         }
         if ($this->analisisPermitido('vih', $permitidos)) {
             $filas .= $this->filaLab('VIH', $this->valorLabSerologia($hc->txtEli), 'COI', 'Negativo: 0 - 0.9, Indeterminado 0.9 - 1.1, Positivo: > 1.1');
@@ -1182,7 +1218,9 @@ class ConsultaNefrologica2Controller extends Controller
             $controlador->dibujarCabeceraPdfLaboratorio($instancia);
         });
         app('tcpdf')->setFooterCallback(function ($instancia) use ($controlador, $periodicidad) {
-            $controlador->dibujarFirmaLaboratorioPdfEnHoja($instancia, $periodicidad);
+            if (!$controlador->firmaLaboratorioAlFinal($periodicidad)) {
+                $controlador->dibujarFirmaLaboratorioPdfEnHoja($instancia, $periodicidad);
+            }
             $controlador->dibujarFooterPdfLaboratorio($instancia);
         });
 
@@ -1193,7 +1231,7 @@ class ConsultaNefrologica2Controller extends Controller
         $pdf::setFooterMargin(0);
         $pdf::SetMargins(10, $altoCabecera, 10);
         $margenInferior = $altoFooter + 2;
-        if ($this->firmaLaboratorioAltaPorPeriodicidad($periodicidad) && $this->rutaFirmaLaboratorioPdf() !== null) {
+        if (!$this->firmaLaboratorioAlFinal($periodicidad) && $this->firmaLaboratorioAltaPorPeriodicidad($periodicidad) && $this->rutaFirmaLaboratorioPdf() !== null) {
             $margenInferior = $altoFooter + $this->altoFirmaLaboratorioPdf($this->rutaFirmaLaboratorioPdf(), 50) + 8;
         }
         $pdf::SetAutoPageBreak(true, $margenInferior);
@@ -1201,6 +1239,9 @@ class ConsultaNefrologica2Controller extends Controller
         $pdf::AddPage();
         $pdf::SetFont('helvetica', '', 8);
         $pdf::writeHTML($html, true, false, true, false, '');
+        // Usar el servicio subyacente: la clase $pdf es una fachada y no
+        // permite invocar estos metodos como metodos de instancia.
+        $this->dibujarFirmaLaboratorioAlFinalPdf(app('tcpdf'), $periodicidad);
         $pdf::Output('LaboratorioClinico.pdf');
     }
 
