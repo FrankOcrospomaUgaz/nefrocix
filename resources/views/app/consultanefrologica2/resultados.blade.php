@@ -297,17 +297,23 @@ persona->apellidopaterno . ' ' . $historia->persona->apellidomaterno . ' ' . $hi
                                 <?php echo $fechasHD; ?>
                             </select>
                         </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <select name="txtFechaKTV" id="txtFechaKTV" class="form-control input-sm">
+                                <option value="">-- NO SELECCIONADO --</option>
+                                <?php echo $fechasHD; ?>
+                            </select>
+                        </div>
                         {!! Form::label('txtHorasHemodialisisKTV', 'Tiempo HD. (Horas)', array('class' => 'col-lg-2 col-md-2 col-sm-2 control-label')) !!}
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             {!! Form::text('txtHorasHemodialisisKTV', $horas, array('class' => 'form-control input-sm numerin', 'id' => 'txtHorasHemodialisisKTV')) !!}
                         </div>
                     </div>
                     <div class="form-group">
-                        <!--{!! Form::label('txtPesoInicial2KTV', 'Peso inicial (Kg.)', array('class' => 'col-lg-2 col-md-2 col-sm-2 control-label', "style" => "display:none;")) !!}
+                        {!! Form::label('txtPesoInicial2KTV', 'Peso Inicial (Kg.)', array('class' => 'col-lg-2 col-md-2 col-sm-2 control-label')) !!}
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            {!! Form::text('txtPesoInicial2KTV', $ppre, array('class' => 'form-control input-sm numerin', 'id' => 'txtPesoInicial2KTV', "style" => "display:none;")) !!}
-                        </div>-->
-                        {!! Form::label('txtPesoFinal2KTV', 'Peso final (Kg.)', array('class' => 'col-offset-6 col-lg-2 col-md-2 col-sm-2 control-label')) !!}
+                            {!! Form::text('txtPesoInicial2KTV', $ppre, array('class' => 'form-control input-sm numerin', 'id' => 'txtPesoInicial2KTV')) !!}
+                        </div>
+                        {!! Form::label('txtPesoFinal2KTV', 'Peso Final (Kg.)', array('class' => 'col-lg-2 col-md-2 col-sm-2 control-label')) !!}
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             {!! Form::text('txtPesoFinal2KTV', $ppos, array('class' => 'form-control input-sm numerin', 'id' => 'txtPesoFinal2KTV')) !!}
                         </div>
@@ -671,7 +677,7 @@ persona->apellidopaterno . ' ' . $historia->persona->apellidomaterno . ' ' . $hi
                         <div class="form-group grp-trimestral">
                             {!! Form::label('txtTransfe', 'Transferrina', array('class' => 'col-lg-2 col-md-2 col-sm-2 control-label')) !!}
                             <div class="col-lg-2 col-md-2 col-sm-2">
-                                {!! Form::text('txtTransfe', null, array('class' => 'form-control input-sm numerillo', 'id' => 'txtTransfe')) !!}
+                                {!! Form::text('txtTransfe', null, array('class' => 'form-control input-sm', 'id' => 'txtTransfe')) !!}
                             </div>
                         </div>
                     </div>
@@ -747,13 +753,13 @@ persona->apellidopaterno . ' ' . $historia->persona->apellidomaterno . ' ' . $hi
                         </div>
                         <div class="form-group grp-anual-solo">
                             {!! Form::label('txtVitaminaB12', 'Vitamina B12', array('class' => 'col-lg-2 col-md-2 col-sm-2 control-label')) !!}
-                            <div class="col-lg-2 col-md-2 col-sm-2">{!! Form::text('txtVitaminaB12', null, array('class' => 'form-control input-sm numerillo', 'id' => 'txtVitaminaB12')) !!}</div>
+                            <div class="col-lg-2 col-md-2 col-sm-2">{!! Form::text('txtVitaminaB12', null, array('class' => 'form-control input-sm', 'id' => 'txtVitaminaB12')) !!}</div>
                             {!! Form::label('txtAcidoFolico', 'Ac. Folico', array('class' => 'col-lg-2 col-md-2 col-sm-2 control-label')) !!}
-                            <div class="col-lg-2 col-md-2 col-sm-2">{!! Form::text('txtAcidoFolico', null, array('class' => 'form-control input-sm numerillo', 'id' => 'txtAcidoFolico')) !!}</div>
+                            <div class="col-lg-2 col-md-2 col-sm-2">{!! Form::text('txtAcidoFolico', null, array('class' => 'form-control input-sm', 'id' => 'txtAcidoFolico')) !!}</div>
                         </div>
                         <div class="form-group grp-anual-solo">
                             {!! Form::label('txtAcidoUrico', 'Ac. Urico', array('class' => 'col-lg-2 col-md-2 col-sm-2 control-label')) !!}
-                            <div class="col-lg-2 col-md-2 col-sm-2">{!! Form::text('txtAcidoUrico', null, array('class' => 'form-control input-sm numerillo', 'id' => 'txtAcidoUrico')) !!}</div>
+                            <div class="col-lg-2 col-md-2 col-sm-2">{!! Form::text('txtAcidoUrico', null, array('class' => 'form-control input-sm', 'id' => 'txtAcidoUrico')) !!}</div>
                         </div>
                     </div>
                     <div class="campito" id="ADICIONALES">
@@ -770,7 +776,7 @@ persona->apellidopaterno . ' ' . $historia->persona->apellidomaterno . ' ' . $hi
                                         <input type="text" name="adicional_nombre[]" class="form-control input-sm" placeholder="Nombre del análisis" value="{{ $adicional->nombre }}">
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2">
-                                        <input type="text" name="adicional_resultado[]" class="form-control input-sm numerillo" placeholder="Resultado" value="{{ $adicional->resultado }}">
+                                        <input type="text" name="adicional_resultado[]" class="form-control input-sm" placeholder="Resultado" value="{{ $adicional->resultado }}">
                                     </div>
                                     <div class="col-lg-2 col-md-2 col-sm-2">
                                         <input type="text" name="adicional_unidad[]" class="form-control input-sm" placeholder="Unidad" value="{{ $adicional->unidad }}">
@@ -824,6 +830,21 @@ $(document).ready(function() {
     initCamposSerologia();
 });
 
+$(document).on('change', '#txtFechaKTV', function() {
+    var $opt = $(this).find('option:selected');
+    if ($opt.val() !== '') {
+        if ($opt.data('ppre') !== undefined && $opt.data('ppre') !== '') {
+            $('#txtPesoInicial2KTV').val($opt.data('ppre'));
+        }
+        if ($opt.data('ppos') !== undefined && $opt.data('ppos') !== '') {
+            $('#txtPesoFinal2KTV').val($opt.data('ppos'));
+        }
+        if ($opt.data('horas') !== undefined && $opt.data('horas') !== '') {
+            $('#txtHorasHemodialisisKTV').val($opt.data('horas'));
+        }
+    }
+});
+
 function valorDecimalCampo(selector) {
     var valor = $.trim($(selector).val()).replace(',', '.');
     if (valor === '') {
@@ -851,14 +872,18 @@ function esValorSerologiaNumerico(valor) {
     if (valor === null || valor === '') {
         return false;
     }
-    return !isNaN(parseFloat(valor)) && isFinite(valor);
+    var v = $.trim(valor).toUpperCase();
+    var cualitativos = ['NO REACTIVO', 'REACTIVO', 'INDETERMINADO', 'NEGATIVO', 'POSITIVO', 'NO_REACTIVO'];
+    if ($.inArray(v, cualitativos) >= 0) {
+        return false;
+    }
+    return true;
 }
 
 function aplicarMascaraSerologiaNum($input) {
     if ($input.data('inputmask')) {
         $input.inputmask('remove');
     }
-    $input.inputmask('decimal', opcionesMascaraDecimal());
 }
 
 function opcionesMascaraDecimal() {
@@ -903,7 +928,6 @@ function initCampoSerologia($bloque) {
         $num.addClass('hide');
         $cual.removeClass('hide');
     }
-    aplicarMascaraSerologiaNum($num);
     syncSerologiaValor($bloque);
 }
 
@@ -983,19 +1007,12 @@ function CambiarTipoCampo(valor) {
 function agregarAnalisisAdicional() {
     var html = '<div class="form-group fila-analisis-adicional">' +
         '<div class="col-lg-3 col-md-3 col-sm-3"><input type="text" name="adicional_nombre[]" class="form-control input-sm" placeholder="Nombre del análisis"></div>' +
-        '<div class="col-lg-2 col-md-2 col-sm-2"><input type="text" name="adicional_resultado[]" class="form-control input-sm numerillo" placeholder="Resultado"></div>' +
+        '<div class="col-lg-2 col-md-2 col-sm-2"><input type="text" name="adicional_resultado[]" class="form-control input-sm" placeholder="Resultado"></div>' +
         '<div class="col-lg-2 col-md-2 col-sm-2"><input type="text" name="adicional_unidad[]" class="form-control input-sm" placeholder="Unidad"></div>' +
         '<div class="col-lg-4 col-md-4 col-sm-4"><input type="text" name="adicional_referencia[]" class="form-control input-sm" placeholder="Rango referencial"></div>' +
         '<div class="col-lg-1 col-md-1 col-sm-1"><button type="button" class="btn btn-danger btn-xs" onclick="eliminarAnalisisAdicional(this);"><i class="fa fa-trash"></i></button></div>' +
         '</div>';
     $('#contenedorAnalisisAdicionales').append(html);
-    $('#contenedorAnalisisAdicionales .numerillo').inputmask('decimal', opcionesMascaraDecimal());
-}
-
-function eliminarAnalisisAdicional(btn) {
-    $(btn).closest('.fila-analisis-adicional').remove();
-}
-
 $(document).on('keyup', '.requerido2', function(event) {
 	event.preventDefault();
 	var palabra = $(this).val();

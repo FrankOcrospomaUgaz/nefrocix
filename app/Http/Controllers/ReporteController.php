@@ -143,6 +143,8 @@ class ReporteController extends Controller
             ->join("consultanefrologica as c", "c.persona_id", "=", "person.id")
             ->where(DB::raw("MONTH(c.fecha)"), "=", $mes)
             ->where(DB::raw("YEAR(c.fecha)"), "=", $anoo)
+            ->where('c.estadoexamen', '=', 1)
+            ->whereRaw("c.id = (select max(c2.id) from consultanefrologica c2 where c2.persona_id = person.id and MONTH(c2.fecha) = " . (int) $mes . " and YEAR(c2.fecha) = " . (int) $anoo . " and c2.estadoexamen = 1)")
             ->orderBy(DB::raw("CONCAT(person.apellidopaterno, ' ', person.apellidomaterno, ' ', person.nombres)"));
 
         $lista = $resultado->get();
@@ -236,15 +238,32 @@ class ReporteController extends Controller
                         ->where(DB::raw("YEAR(historiaclinica.fecha_atencion)"), "=", $anoo)
                         ->where(DB::raw("LENGTH(txtMuestraAnalisis)"), ">", 0)
                         ->where("historiaclinica.estado", "!=", "C")
-                        //->where("mensuales2", "=", 1)
+                        ->orderBy("historiaclinica.fecha_atencion", "desc")
                         ->first();
+
+                    if ($atencion === null) {
+                        $atencion = HistoriaClinica::join("historia", "historiaclinica.historia_id", "=", "historia.id")
+                            ->where("historia.person_id", "=", $row->persona_id)
+                            ->where(DB::raw("MONTH(historiaclinica.fecha_atencion)"), "=", $mes)
+                            ->where(DB::raw("YEAR(historiaclinica.fecha_atencion)"), "=", $anoo)
+                            ->where("historiaclinica.estado", "!=", "C")
+                            ->where(function ($query) {
+                                $query->where('txtPesoInicial2', '<>', '')
+                                    ->orWhere('txtPesoInicial', '<>', '')
+                                    ->orWhere('txtPesoFinal2', '<>', '')
+                                    ->orWhere('txtPesoFinal', '<>', '');
+                            })
+                            ->orderBy("historiaclinica.fecha_atencion", "desc")
+                            ->first();
+                    }
+
                     $time = 0;
                     $ppre = 0;
                     $ppos = 0;
                     if ($atencion !== null) {
                         $time = $atencion->txtHorasHemodialisis;
-                        $ppre = $atencion->txtPesoInicial2;
-                        $ppos = $atencion->txtPesoFinal2;
+                        $ppre = $atencion->txtPesoInicial2 !== null && $atencion->txtPesoInicial2 !== '' ? $atencion->txtPesoInicial2 : $atencion->txtPesoInicial;
+                        $ppos = $atencion->txtPesoFinal2 !== null && $atencion->txtPesoFinal2 !== '' ? $atencion->txtPesoFinal2 : $atencion->txtPesoFinal;
                     }
                     $cabecera = array();
                     //$cabecera[]=($c-4);
@@ -289,7 +308,7 @@ class ReporteController extends Controller
                     $ktv = "";
                     $tru = "";
                     if ($row->txtUre !== null && $row->txtUre !== "" && $ppos !== null && $ppos !== "" && $time != 0) {
-                        $ktv = '=(-LN((E' . $c . '/F' . $c . ')-(0.008*AI' . $c . ')))+(4-((3.5*E' . $c . ')/F' . $c . '))*((AE' . $c . '-AF' . $c . ')/AF' . $c . '))';
+                        $ktv = '=(-LN((E' . $c . '/F' . $c . ')-(0.008*AI' . $c . ')))+(4-((3.5*E' . $c . ')/F' . $c . '))*((AE' . $c . '-AF' . $c . ')/AF' . $c . ')';
                         //$ktv = -log(($row->txtUre/$row->txtUre2)-(0.008*$time))+(4-(3.5*$row->txtUre/$row->txtUre2))*(($ppre-$ppos)/$ppos);
                     }
 
@@ -1361,22 +1380,39 @@ class ReporteController extends Controller
                             ->where(DB::raw("YEAR(historiaclinica.fecha_atencion)"), "=", $anoo)
                             ->where(DB::raw("LENGTH(txtMuestraAnalisis)"), ">", 0)
                             ->where("historiaclinica.estado", "!=", "C")
-                            //->where("mensuales2", "=", 1)
+                            ->orderBy("historiaclinica.fecha_atencion", "desc")
                             ->first();
+
+                        if ($atencion === null) {
+                            $atencion = HistoriaClinica::join("historia", "historiaclinica.historia_id", "=", "historia.id")
+                                ->where("historia.id", "=", $historia->id)
+                                ->where(DB::raw("MONTH(historiaclinica.fecha_atencion)"), "=", $mesito)
+                                ->where(DB::raw("YEAR(historiaclinica.fecha_atencion)"), "=", $anoo)
+                                ->where("historiaclinica.estado", "!=", "C")
+                                ->where(function ($query) {
+                                    $query->where('txtPesoInicial2', '<>', '')
+                                        ->orWhere('txtPesoInicial', '<>', '')
+                                        ->orWhere('txtPesoFinal2', '<>', '')
+                                        ->orWhere('txtPesoFinal', '<>', '');
+                                })
+                                ->orderBy("historiaclinica.fecha_atencion", "desc")
+                                ->first();
+                        }
+
                         if ($resultado !== null) {
                             $time = 0;
                             $ppre = 0;
                             $ppos = 0;
                             if ($atencion !== null) {
                                 $time = $atencion->txtHorasHemodialisis;
-                                $ppre = $atencion->txtPesoInicial2;
-                                $ppos = $atencion->txtPesoFinal2;
+                                $ppre = $atencion->txtPesoInicial2 !== null && $atencion->txtPesoInicial2 !== '' ? $atencion->txtPesoInicial2 : $atencion->txtPesoInicial;
+                                $ppos = $atencion->txtPesoFinal2 !== null && $atencion->txtPesoFinal2 !== '' ? $atencion->txtPesoFinal2 : $atencion->txtPesoFinal;
                             }
                             //ARMO VALOR DE KTV
                             $ktv = "";
                             $tru = "";
                             if ($resultado->txtUre !== null && $resultado->txtUre !== "" && $ppos !== null && $ppos !== "" && $time != 0) {
-                                $ktv = '=(-LN(' . $i . '9/' . $i . '8-0.008*' . $time . '))+(4-3.5*' . $i . '9/' . $i . '8)*((' . $ppre . '-' . $ppos . ')/' . $ppos . '))';
+                                $ktv = '=(-LN(' . $i . '9/' . $i . '8-0.008*' . $time . '))+(4-3.5*' . $i . '9/' . $i . '8)*((' . $ppre . '-' . $ppos . ')/' . $ppos . ')';
                             }
 
                             //ARMO VALOR DE TRU
@@ -1600,6 +1636,8 @@ class ReporteController extends Controller
             ->where('historia.baja', '!=', 'S')
             ->where(DB::raw('MONTH(c.fecha)'), '=', $mes)
             ->where(DB::raw('YEAR(c.fecha)'), '=', $anoo)
+            ->where('c.estadoexamen', '=', 1)
+            ->whereRaw("c.id = (select max(c2.id) from consultanefrologica c2 where c2.persona_id = person.id and MONTH(c2.fecha) = " . (int) $mes . " and YEAR(c2.fecha) = " . (int) $anoo . " and c2.estadoexamen = 1)")
             ->select(
                 'c.*', 'person.apellidopaterno', 'person.apellidomaterno', 'person.nombres',
                 'historia.id as historia_id', 'historia.fecha as fecha_ingreso'
@@ -1647,6 +1685,20 @@ class ReporteController extends Controller
                         ->where('estado', '!=', 'C')
                         ->orderBy('fecha_atencion', 'desc')->orderBy('id', 'desc')->first();
 
+                    if ($atencion === null) {
+                        $atencion = HistoriaClinica::where('historia_id', '=', $resultado->historia_id)
+                            ->where(DB::raw('MONTH(fecha_atencion)'), '=', $mes)
+                            ->where(DB::raw('YEAR(fecha_atencion)'), '=', $anoo)
+                            ->where('estado', '!=', 'C')
+                            ->where(function ($query) {
+                                $query->where('txtPesoInicial2', '<>', '')
+                                    ->orWhere('txtPesoInicial', '<>', '')
+                                    ->orWhere('txtPesoFinal2', '<>', '')
+                                    ->orWhere('txtPesoFinal', '<>', '');
+                            })
+                            ->orderBy('fecha_atencion', 'desc')->orderBy('id', 'desc')->first();
+                    }
+
                     $datosMedicos = HistoriaClinica::where('historia_id', '=', $resultado->historia_id)
                         ->where(DB::raw('MONTH(fecha_atencion)'), '=', $mes)
                         ->where(DB::raw('YEAR(fecha_atencion)'), '=', $anoo)
@@ -1658,12 +1710,22 @@ class ReporteController extends Controller
                         })
                         ->orderBy('fecha_atencion', 'desc')->orderBy('id', 'desc')->first();
                     if ($datosMedicos === null) {
+                        $datosMedicos = HistoriaClinica::where('historia_id', '=', $resultado->historia_id)
+                            ->where('estado', '!=', 'C')
+                            ->where(function ($query) {
+                                $query->where('txtPesoSeco', '<>', '')
+                                    ->orWhere('txtAccesoVascularArterial', '<>', '')
+                                    ->orWhere('txtAreaDializador', '<>', '');
+                            })
+                            ->orderBy('fecha_atencion', 'desc')->orderBy('id', 'desc')->first();
+                    }
+                    if ($datosMedicos === null) {
                         $datosMedicos = $atencion;
                     }
 
                     $tiempo = $atencion === null ? '' : $atencion->txtHorasHemodialisis;
-                    $pesoPre = $atencion === null ? '' : $atencion->txtPesoInicial2;
-                    $pesoPost = $atencion === null ? '' : $atencion->txtPesoFinal2;
+                    $pesoPre = $atencion === null ? '' : ($atencion->txtPesoInicial2 !== null && $atencion->txtPesoInicial2 !== '' ? $atencion->txtPesoInicial2 : $atencion->txtPesoInicial);
+                    $pesoPost = $atencion === null ? '' : ($atencion->txtPesoFinal2 !== null && $atencion->txtPesoFinal2 !== '' ? $atencion->txtPesoFinal2 : $atencion->txtPesoFinal);
                     $fechaMuestra = $atencion === null
                         ? ($resultado->txtFechaLaboratorio ?: $resultado->fecha)
                         : $atencion->fecha_atencion;
@@ -1674,7 +1736,7 @@ class ReporteController extends Controller
                         $tru = '=100-(V' . $fila . '*100/U' . $fila . ')';
                         if ($pesoPost !== null && $pesoPost !== '' && $pesoPost != 0 &&
                             $tiempo !== null && $tiempo !== '' && $tiempo != 0) {
-                            $ktv = '=(-LN(V' . $fila . '/U' . $fila . '-0.008*BC' . $fila . '))+(4-3.5*V' . $fila . '/U' . $fila . ')*((AY' . $fila . '-AZ' . $fila . ')/AZ' . $fila . '))';
+                            $ktv = '=(-LN(V' . $fila . '/U' . $fila . '-0.008*BC' . $fila . '))+(4-3.5*V' . $fila . '/U' . $fila . ')*((AY' . $fila . '-AZ' . $fila . ')/AZ' . $fila . ')';
                         }
                     }
 
@@ -1726,6 +1788,8 @@ class ReporteController extends Controller
             ->join("consultanefrologica as c", "c.persona_id", "=", "person.id")
             ->where(DB::raw("MONTH(c.fecha)"), "=", $mes)
             ->where(DB::raw("YEAR(c.fecha)"), "=", $anoo)
+            ->where('c.estadoexamen', '=', 1)
+            ->whereRaw("c.id = (select max(c2.id) from consultanefrologica c2 where c2.persona_id = person.id and MONTH(c2.fecha) = " . (int) $mes . " and YEAR(c2.fecha) = " . (int) $anoo . " and c2.estadoexamen = 1)")
             ->orderBy(DB::raw("CONCAT(person.apellidopaterno, ' ', person.apellidomaterno, ' ', person.nombres)"));
 
         $lista = $resultado->get();
@@ -1822,14 +1886,32 @@ class ReporteController extends Controller
                         ->where(DB::raw("YEAR(historiaclinica.fecha_atencion)"), "=", $anoo)
                         ->where(DB::raw("LENGTH(txtMuestraAnalisis)"), ">", 0)
                         ->where("historiaclinica.estado", "!=", "C")
+                        ->orderBy("historiaclinica.fecha_atencion", "desc")
                         ->first();
+
+                    if ($atencion === null) {
+                        $atencion = HistoriaClinica::join("historia", "historiaclinica.historia_id", "=", "historia.id")
+                            ->where("historia.person_id", "=", $row->persona_id)
+                            ->where(DB::raw("MONTH(historiaclinica.fecha_atencion)"), "=", $mes)
+                            ->where(DB::raw("YEAR(historiaclinica.fecha_atencion)"), "=", $anoo)
+                            ->where("historiaclinica.estado", "!=", "C")
+                            ->where(function ($query) {
+                                $query->where('txtPesoInicial2', '<>', '')
+                                    ->orWhere('txtPesoInicial', '<>', '')
+                                    ->orWhere('txtPesoFinal2', '<>', '')
+                                    ->orWhere('txtPesoFinal', '<>', '');
+                            })
+                            ->orderBy("historiaclinica.fecha_atencion", "desc")
+                            ->first();
+                    }
+
                     $time = 0;
                     $ppre = 0;
                     $ppos = 0;
                     if ($atencion !== null) {
                         $time = $atencion->txtHorasHemodialisis;
-                        $ppre = $atencion->txtPesoInicial2;
-                        $ppos = $atencion->txtPesoFinal2;
+                        $ppre = $atencion->txtPesoInicial2 !== null && $atencion->txtPesoInicial2 !== '' ? $atencion->txtPesoInicial2 : $atencion->txtPesoInicial;
+                        $ppos = $atencion->txtPesoFinal2 !== null && $atencion->txtPesoFinal2 !== '' ? $atencion->txtPesoFinal2 : $atencion->txtPesoFinal;
                     }
                     $cabecera = array();
                     //$cabecera[]=($c-4);
@@ -1874,7 +1956,7 @@ class ReporteController extends Controller
                     $ktv = "";
                     $tru = "";
                     if ($row->txtUre !== null && $row->txtUre !== "" && $ppos !== null && $ppos !== "" && $time != 0) {
-                        $ktv = '=(-LN(E' . $c . '/F' . $c . '-0.008*AI' . $c . '))+(4-3.5*E' . $c . '/F' . $c . ')*((AE' . $c . '-AF' . $c . ')/AF' . $c . '))';
+                        $ktv = '=(-LN(E' . $c . '/F' . $c . '-0.008*AI' . $c . '))+(4-3.5*E' . $c . '/F' . $c . ')*((AE' . $c . '-AF' . $c . ')/AF' . $c . ')';
                     }
 
                     //ARMO VALOR DE TRU
@@ -2186,7 +2268,26 @@ class ReporteController extends Controller
                             ->where(DB::raw("YEAR(historiaclinica.fecha_atencion)"), "=", $anoo)
                             ->where(DB::raw("LENGTH(txtMuestraAnalisis)"), ">", 0)
                             ->where("historiaclinica.estado", "!=", "C")
+                            ->orderBy("historiaclinica.fecha_atencion", "desc")
                             ->first();
+
+                        if ($atencion === null) {
+                            $atencion = HistoriaClinica::join("historia", "historiaclinica.historia_id", "=", "historia.id")
+                                ->select("historiaclinica.*")
+                                ->where("historia.id", "=", $historia->id)
+                                ->where(DB::raw("MONTH(historiaclinica.fecha_atencion)"), "=", $mesito)
+                                ->where(DB::raw("YEAR(historiaclinica.fecha_atencion)"), "=", $anoo)
+                                ->where("historiaclinica.estado", "!=", "C")
+                                ->where(function ($query) {
+                                    $query->where('txtPesoInicial2', '<>', '')
+                                        ->orWhere('txtPesoInicial', '<>', '')
+                                        ->orWhere('txtPesoFinal2', '<>', '')
+                                        ->orWhere('txtPesoFinal', '<>', '');
+                                })
+                                ->orderBy("historiaclinica.fecha_atencion", "desc")
+                                ->first();
+                        }
+
                         $datosMedicos = HistoriaClinica::join("historia", "historiaclinica.historia_id", "=", "historia.id")
                             ->select("historiaclinica.*")
                             ->where("historia.id", "=", $historia->id)
@@ -2202,6 +2303,21 @@ class ReporteController extends Controller
                             ->orderBy("historiaclinica.fecha_atencion", "desc")
                             ->orderBy("historiaclinica.id", "desc")
                             ->first();
+                        if ($datosMedicos === null) {
+                            $datosMedicos = HistoriaClinica::join("historia", "historiaclinica.historia_id", "=", "historia.id")
+                                ->select("historiaclinica.*")
+                                ->where("historia.id", "=", $historia->id)
+                                ->where("historiaclinica.estado", "!=", "C")
+                                ->where(function ($query) {
+                                    $query->where("txtPesoSeco", "<>", "")
+                                        ->orWhere("txtAccesoVascularArterial", "<>", "")
+                                        ->orWhere("txtAreaDializador", "<>", "")
+                                        ->orWhere("txtAreaMembranaFiltro", "<>", "");
+                                })
+                                ->orderBy("historiaclinica.fecha_atencion", "desc")
+                                ->orderBy("historiaclinica.id", "desc")
+                                ->first();
+                        }
                         if ($datosMedicos === null) {
                             $datosMedicos = $atencion;
                         }
@@ -2219,14 +2335,14 @@ class ReporteController extends Controller
                             $ppos = 0;
                             if ($atencion !== null) {
                                 $time = $atencion->txtHorasHemodialisis;
-                                $ppre = $atencion->txtPesoInicial2;
-                                $ppos = $atencion->txtPesoFinal2;
+                                $ppre = $atencion->txtPesoInicial2 !== null && $atencion->txtPesoInicial2 !== '' ? $atencion->txtPesoInicial2 : $atencion->txtPesoInicial;
+                                $ppos = $atencion->txtPesoFinal2 !== null && $atencion->txtPesoFinal2 !== '' ? $atencion->txtPesoFinal2 : $atencion->txtPesoFinal;
                             }
                             //ARMO VALOR DE KTV
                             $ktv = "";
                             $tru = "";
                             if ($resultado->txtUre !== null && $resultado->txtUre !== "" && $ppos !== null && $ppos !== "" && $time != 0) {
-                                $ktv = '=(-LN(' . $i . '9/' . $i . '8-0.008*' . $time . '))+(4-3.5*' . $i . '9/' . $i . '8)*((' . $ppre . '-' . $ppos . ')/' . $ppos . '))';
+                                $ktv = '=(-LN(' . $i . '9/' . $i . '8-0.008*' . $time . '))+(4-3.5*' . $i . '9/' . $i . '8)*((' . $ppre . '-' . $ppos . ')/' . $ppos . ')';
                             }
 
                             //ARMO VALOR DE TRU

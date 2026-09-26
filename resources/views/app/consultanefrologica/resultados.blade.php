@@ -385,11 +385,11 @@ if(date("Y-m-d") >= date("Y-m-d", strtotime('2021-08-03'))) {
                         </div>
                     </div>
                     <div class="form-group">
-                        <!--{!! Form::label('txtPesoInicial2KTV', 'Peso inicial (Kg.)', array('class' => 'col-lg-2 col-md-2 col-sm-2 control-label', "style" => "display:none;")) !!}
+                        {!! Form::label('txtPesoInicial2KTV', 'Peso Inicial (Kg.)', array('class' => 'col-lg-2 col-md-2 col-sm-2 control-label')) !!}
                         <div class="col-lg-4 col-md-4 col-sm-4">
-                            {!! Form::text('txtPesoInicial2KTV', $ppre, array('class' => 'form-control input-sm numerin', 'id' => 'txtPesoInicial2KTV', "style" => "display:none;")) !!}
-                        </div>-->
-                        {!! Form::label('txtPesoFinal2KTV', 'Peso final (Kg.)', array('class' => 'col-offset-6 col-lg-2 col-md-2 col-sm-2 control-label')) !!}
+                            {!! Form::text('txtPesoInicial2KTV', $ppre, array('class' => 'form-control input-sm numerin', 'id' => 'txtPesoInicial2KTV')) !!}
+                        </div>
+                        {!! Form::label('txtPesoFinal2KTV', 'Peso Final (Kg.)', array('class' => 'col-lg-2 col-md-2 col-sm-2 control-label')) !!}
                         <div class="col-lg-4 col-md-4 col-sm-4">
                             {!! Form::text('txtPesoFinal2KTV', $ppos, array('class' => 'form-control input-sm numerin', 'id' => 'txtPesoFinal2KTV')) !!}
                         </div>
@@ -691,7 +691,7 @@ if(date("Y-m-d") >= date("Y-m-d", strtotime('2021-08-03'))) {
                                 <div id="ddatos">
                                     {!! Form::label('txtTransfe', $examenesGeneral['84466'], array('class' => 'col-lg-2 col-md-2 col-sm-2 control-label')) !!}
                                     <div class="col-lg-2 col-md-2 col-sm-2">
-                                        {!! Form::text('txtTransfe', "hola", array('class' => 'form-control input-sm numerillo', 'id' => 'txtTransfe')) !!}
+                                        {!! Form::text('txtTransfe', null, array('class' => 'form-control input-sm', 'id' => 'txtTransfe')) !!}
                                     </div>
                                 </div>
                             </div>
@@ -732,6 +732,21 @@ $(document).ready(function() {
 	//alert("{{ $situacion2 }}");
 	$("#txtFechaKTV").val("{{$atencion_id}}");
     $('#txtTransfe').val("{{($hc!==null)?$hc->txtTransfe:''}}");
+});
+
+$(document).on('change', '#txtFechaKTV', function() {
+    var $opt = $(this).find('option:selected');
+    if ($opt.val() !== '') {
+        if ($opt.data('ppre') !== undefined && $opt.data('ppre') !== '') {
+            $('#txtPesoInicial2KTV').val($opt.data('ppre'));
+        }
+        if ($opt.data('ppos') !== undefined && $opt.data('ppos') !== '') {
+            $('#txtPesoFinal2KTV').val($opt.data('ppos'));
+        }
+        if ($opt.data('horas') !== undefined && $opt.data('horas') !== '') {
+            $('#txtHorasHemodialisisKTV').val($opt.data('horas'));
+        }
+    }
 });
 
 $(document).on('click', '.switch', function(event) {

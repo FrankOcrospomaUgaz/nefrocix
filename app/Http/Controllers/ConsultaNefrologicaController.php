@@ -246,12 +246,30 @@ class ConsultaNefrologicaController extends Controller
             ->where(DB::raw("YEAR(historiaclinica.fecha_atencion)"), "=", $request->input("anillo"))
             ->where(DB::raw("LENGTH(txtMuestraAnalisis)"), ">", 0)
             ->where("historiaclinica.estado", "!=", "C")
-            ->select("historiaclinica.id", "historiaclinica.txtPesoInicial2", "historiaclinica.txtPesoFinal2", "historiaclinica.txtHorasHemodialisis")
+            ->select("historiaclinica.id", "historiaclinica.fecha_atencion", "historiaclinica.txtPesoInicial", "historiaclinica.txtPesoInicial2", "historiaclinica.txtPesoFinal", "historiaclinica.txtPesoFinal2", "historiaclinica.txtHorasHemodialisis")
+            ->orderBy("historiaclinica.fecha_atencion", "desc")
             ->first();
 
+        if ($atencion === null) {
+            $atencion = HistoriaClinica::join("historia", "historiaclinica.historia_id", "=", "historia.id")
+                ->where("historia.person_id", "=", $pid)
+                ->where(DB::raw("MONTH(historiaclinica.fecha_atencion)"), "=", date("m", strtotime($c1->fecha)))
+                ->where(DB::raw("YEAR(historiaclinica.fecha_atencion)"), "=", $request->input("anillo"))
+                ->where("historiaclinica.estado", "!=", "C")
+                ->where(function ($query) {
+                    $query->where('txtPesoInicial2', '<>', '')
+                        ->orWhere('txtPesoInicial', '<>', '')
+                        ->orWhere('txtPesoFinal2', '<>', '')
+                        ->orWhere('txtPesoFinal', '<>', '');
+                })
+                ->select("historiaclinica.id", "historiaclinica.fecha_atencion", "historiaclinica.txtPesoInicial", "historiaclinica.txtPesoInicial2", "historiaclinica.txtPesoFinal", "historiaclinica.txtPesoFinal2", "historiaclinica.txtHorasHemodialisis")
+                ->orderBy("historiaclinica.fecha_atencion", "desc")
+                ->first();
+        }
+
         if($atencion!==null) {
-            $ppre = $atencion->txtPesoInicial2;
-            $ppos = $atencion->txtPesoFinal2;
+            $ppre = $atencion->txtPesoInicial2 !== null && $atencion->txtPesoInicial2 !== '' ? $atencion->txtPesoInicial2 : $atencion->txtPesoInicial;
+            $ppos = $atencion->txtPesoFinal2 !== null && $atencion->txtPesoFinal2 !== '' ? $atencion->txtPesoFinal2 : $atencion->txtPesoFinal;
             $horas = $atencion->txtHorasHemodialisis;
             $atencion_id = $atencion->id;
         }
@@ -261,10 +279,14 @@ class ConsultaNefrologicaController extends Controller
             ->where(DB::raw("MONTH(historiaclinica.fecha_atencion)"), "=", date("m", strtotime($c1->fecha)))
             ->where(DB::raw("YEAR(historiaclinica.fecha_atencion)"), "=", $request->input("anillo"))
             ->where("historiaclinica.estado", "!=", "C")
-            ->select("historiaclinica.id", "historiaclinica.fecha_atencion")
+            ->select("historiaclinica.id", "historiaclinica.fecha_atencion", "historiaclinica.txtPesoInicial", "historiaclinica.txtPesoInicial2", "historiaclinica.txtPesoFinal", "historiaclinica.txtPesoFinal2", "historiaclinica.txtHorasHemodialisis")
+            ->orderBy("historiaclinica.fecha_atencion", "desc")
             ->get();
         foreach ($atencionesMensuales as $aM) {
-            $fechasHD .= '<option value="' . $aM->id . '">' . date("d-m-Y", strtotime($aM->fecha_atencion)) . '</option>';
+            $ppreOpt = $aM->txtPesoInicial2 !== null && $aM->txtPesoInicial2 !== '' ? $aM->txtPesoInicial2 : $aM->txtPesoInicial;
+            $pposOpt = $aM->txtPesoFinal2 !== null && $aM->txtPesoFinal2 !== '' ? $aM->txtPesoFinal2 : $aM->txtPesoFinal;
+            $horasOpt = $aM->txtHorasHemodialisis;
+            $fechasHD .= '<option value="' . $aM->id . '" data-ppre="' . $ppreOpt . '" data-ppos="' . $pposOpt . '" data-horas="' . $horasOpt . '">' . date("d-m-Y", strtotime($aM->fecha_atencion)) . '</option>';
         }
 
         //Analizo siguiente tio de consulta del siguiente mes:
@@ -572,12 +594,15 @@ class ConsultaNefrologicaController extends Controller
                 foreach ($atencionesMensuales as $aM) {
                     $aM = HistoriaClinica::find($aM->id);
                     $aM->txtMuestraAnalisis = "";
+                    $aM->txtHorasHemodialisis = "";
+                    $aM->txtPesoInicial2 = "";
+                    $aM->txtPesoFinal2 = "";
                     $aM->save();
                 }
 
                 $historita = HistoriaClinica::find($txtFechaKTV);
                 $historita->txtHorasHemodialisis = $request->input("txtHorasHemodialisisKTV");
-                //$historita->txtPesoInicial2 = $request->input("txtPesoInicial2KTV");
+                $historita->txtPesoInicial2 = $request->input("txtPesoInicial2KTV");
                 $historita->txtPesoFinal2 = $request->input("txtPesoFinal2KTV");
                 $historita->txtMuestraAnalisis = $txtMuestraAnalisis0;
                 $historita->save(); 
