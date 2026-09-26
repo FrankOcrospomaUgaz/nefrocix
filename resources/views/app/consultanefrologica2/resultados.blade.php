@@ -1013,6 +1013,12 @@ function agregarAnalisisAdicional() {
         '<div class="col-lg-1 col-md-1 col-sm-1"><button type="button" class="btn btn-danger btn-xs" onclick="eliminarAnalisisAdicional(this);"><i class="fa fa-trash"></i></button></div>' +
         '</div>';
     $('#contenedorAnalisisAdicionales').append(html);
+}
+
+function eliminarAnalisisAdicional(btn) {
+    $(btn).closest('.fila-analisis-adicional').remove();
+}
+
 $(document).on('keyup', '.requerido2', function(event) {
 	event.preventDefault();
 	var palabra = $(this).val();
